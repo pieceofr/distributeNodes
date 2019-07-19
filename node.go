@@ -88,21 +88,8 @@ func (p *PeerNode) Init(cfg config) error {
 		}
 		p.Host = newHost
 	}
-	addr, err := GetAServer()
-	if err != nil {
-		return err
-	}
-	log.Infof("Client is connect to %s", addr)
-	for i := 0; i < 5; i++ {
-		err := p.ConnectTo(addr)
-		if nil == err {
-			i = 10
-		}
-		log.Errorf("The Error is %s", err.Error())
-		time.Sleep(2 * time.Second)
-	}
-
-	log.Info("Exist the Client")
+	go p.ConnectToFixPeer()
+	log.Info("Exist the Initialization")
 	return nil
 }
 
@@ -182,6 +169,29 @@ func (p *PeerNode) Listen() error {
 		log.Info("\nWaiting for incoming connection\n\n")
 	}
 	<-make(chan struct{})
+	return nil
+}
+
+//ConnectToFixPeer connect to fixed peer
+func (p *PeerNode) ConnectToFixPeer() error {
+	addr, err := GetAServer()
+	if err != nil {
+		return err
+	}
+	log.Infof("Client is connect to %s", addr)
+	for i := 0; i < 5; i++ {
+		err := p.ConnectTo(addr)
+		if nil == err {
+			i = 10
+		}
+		log.Errorf("The Error is %s", err.Error())
+		time.Sleep(3 * time.Second)
+	}
+	if err != nil {
+		log.Info("Exist ConnectToFixPeer")
+		return err
+	}
+
 	return nil
 }
 
