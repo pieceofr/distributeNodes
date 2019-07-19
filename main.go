@@ -32,10 +32,8 @@ func main() {
 	if err := theNode.Init(cfg); err != nil {
 		panic(fmt.Sprintf("node initialization failed: %s", err))
 	}
-
 	// Initialize messageRecord
 	msgRecord.init()
-
 	defer func() {
 		log.Info("----- Reset and Exit -----")
 		theNode.Reset()

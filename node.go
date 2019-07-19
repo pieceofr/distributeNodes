@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"context"
 	"crypto/rand"
 	"errors"
@@ -8,9 +9,13 @@ import (
 	"io/ioutil"
 	"math"
 	"strconv"
+	"strings"
+	"time"
 
 	"github.com/libp2p/go-libp2p"
 	libp2pcore "github.com/libp2p/go-libp2p-core"
+	"github.com/libp2p/go-libp2p-core/peer"
+	peerstore "github.com/libp2p/go-libp2p-peerstore"
 	"github.com/multiformats/go-multiaddr"
 )
 
@@ -48,28 +53,56 @@ type Connection struct {
 
 //Init a peer node
 func (p *PeerNode) Init(cfg config) error {
-
+	p.NodeType = NodeType(cfg.NodeType)
+	p.Port = strconv.Itoa(cfg.Port)
+	p.PublicIP = cfg.PublicIP
 	if cfg.StaticIdentity.UseStatic {
 		log.Info("Use Static Identity")
-		p.NodeType = NodeType(cfg.NodeType)
-		p.Port = strconv.Itoa(cfg.Port)
 		privateKeyFileName = cfg.StaticIdentity.KeyFile
 		if loadErr := p.LoadIdentity(); loadErr != nil {
 			return loadErr
 		}
 	} else {
-		p.NodeType = NodeType(cfg.NodeType)
 		if genRandErr := p.NewRandomNode(); genRandErr != nil {
 			return genRandErr
 		}
 	}
-	if Servant == p.NodeType {
+	if Servant == p.NodeType || Server == p.NodeType {
 		if createHostErr := p.NewHost(); createHostErr != nil {
+			log.Error("createHostErr")
 			return createHostErr
 		}
-	}
-	log.Info(p.Port)
+		err := p.Listen()
+		if err != nil {
+			log.Error(err.Error())
+			return err
+		}
+	} else {
+		newHost, err := libp2p.New(
+			context.Background(),
+			libp2p.Identity(p.Identity.PrvKey),
+		)
 
+		if err != nil {
+			return err
+		}
+		p.Host = newHost
+	}
+	addr, err := GetAServer()
+	if err != nil {
+		return err
+	}
+	log.Infof("Client is connect to %s", addr)
+	for i := 0; i < 5; i++ {
+		err := p.ConnectTo(addr)
+		if nil == err {
+			i = 10
+		}
+		log.Errorf("The Error is %s", err.Error())
+		time.Sleep(2 * time.Second)
+	}
+
+	log.Info("Exist the Client")
 	return nil
 }
 
@@ -136,10 +169,67 @@ func (p *PeerNode) NewHost() error {
 
 //Listen host start to listen
 func (p *PeerNode) Listen() error {
-	if p.Host != nil {
+	if p.Host == nil {
 		return errors.New("NoHost")
 	}
-	p.Host.SetStreamHandler("/peer/1.0.0", handleStream)
+	p.Host.SetStreamHandler("/p2p/1.0.0", handleStream)
+	for _, la := range p.Host.Network().ListenAddresses() {
+		if _, err := la.ValueForProtocol(multiaddr.P_TCP); err == nil {
+			return err
+		}
+		log.Infof("Listen port:%s", p.Port)
+		log.Infof("Run './chat -d /ip4/%s/tcp/%v/p2p/%s' on another console.\n", p.PublicIP, p.Port, p.Host.ID().Pretty())
+		log.Info("\nWaiting for incoming connection\n\n")
+	}
+	<-make(chan struct{})
+	return nil
+}
+
+//ConnectTo connect to servant or server
+func (p *PeerNode) ConnectTo(address string) error {
+	if p.NodeType == Server {
+		return errors.New("NodeType:Server.Do not have ability to connect")
+	}
+	if p.IsSameNode(address) {
+		return ErrSameNode
+	}
+
+	maddr, err := multiaddr.NewMultiaddr(address)
+	if err != nil {
+		log.Error(err.Error())
+		return err
+	}
+	// Extract the peer ID from the multiaddr.
+	info, err := peer.AddrInfoFromP2pAddr(maddr)
+	if err != nil {
+		log.Error(err.Error())
+		return err
+	}
+	if info == nil {
+		return errors.New("info is nil")
+	}
+	log.Debugf("ID:%s, address:%s TTL:%d", info.ID.String(), info.Addrs[0].String(), peerstore.PermanentAddrTTL)
+
+	time.Sleep(1 * time.Second)
+	// Add the destination's peer multiaddress in the peerstore.
+	// This will be used during connection and stream creation by libp2p.
+	p.Host.Peerstore().AddAddrs(info.ID, info.Addrs, peerstore.PermanentAddrTTL)
+
+	// Start a stream with the destination.
+	// Multiaddress of the destination peer is fetched from the peerstore using 'peerId'.
+	s, err := p.Host.NewStream(context.Background(), info.ID, "/p2p/1.0.0")
+	if err != nil {
+		panic(err)
+	}
+
+	// Create a buffered stream so that read and writes are non blocking.
+	rw := bufio.NewReadWriter(bufio.NewReader(s), bufio.NewWriter(s))
+
+	// Create a thread to read and write data.
+	go writeData(rw)
+	go readData(rw)
+
+	<-make(chan struct{})
 	return nil
 }
 
@@ -153,6 +243,18 @@ func (p *PeerNode) Reset() {
 		p.Host.Close()
 	}
 	log.Warn("Reset Peer Node")
+}
+
+//IsSameNode check if provided address has the same ip and port with peerNode
+func (p *PeerNode) IsSameNode(addr string) bool {
+	elems := strings.Split(addr, "/")
+	if elems[2] != "" && elems[2] == p.PublicIP {
+		if elems[4] == p.Port {
+			log.Debugf("addr[2]:%s  p.Public:%s   elemes[4]:%s p.Port:%s", elems[2], p.PublicIP, elems[4], p.Port)
+			return true
+		}
+	}
+	return false
 }
 
 func randomPort() (int, error) {
