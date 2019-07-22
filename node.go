@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"context"
 	"crypto/rand"
 	"errors"
@@ -109,7 +108,7 @@ func (p *PeerNode) SaveIdentity() error {
 func (p *PeerNode) LoadIdentity() error {
 	keyBytes, err := ioutil.ReadFile(privateKeyFileName)
 	if err != nil {
-		return err
+		return errSameNode
 	}
 	err = p.UnmarshalPrvKey(string(keyBytes))
 	if err != nil {
@@ -159,7 +158,9 @@ func (p *PeerNode) Listen() error {
 	if p.Host == nil {
 		return errors.New("NoHost")
 	}
-	p.Host.SetStreamHandler("/p2p/1.0.0", handleStream)
+	var handleStream NodeStreamHandler
+	handleStream.Setup(p.Identity)
+	p.Host.SetStreamHandler("/p2p/1.0.0", handleStream.Handler)
 	for _, la := range p.Host.Network().ListenAddresses() {
 		if _, err := la.ValueForProtocol(multiaddr.P_TCP); err == nil {
 			return err
@@ -201,7 +202,7 @@ func (p *PeerNode) ConnectTo(address string) error {
 		return errors.New("NodeType:Server.Do not have ability to connect")
 	}
 	if p.IsSameNode(address) {
-		return ErrSameNode
+		return errSameNode
 	}
 
 	maddr, err := multiaddr.NewMultiaddr(address)
@@ -232,13 +233,9 @@ func (p *PeerNode) ConnectTo(address string) error {
 		panic(err)
 	}
 
-	// Create a buffered stream so that read and writes are non blocking.
-	rw := bufio.NewReadWriter(bufio.NewReader(s), bufio.NewWriter(s))
-
-	// Create a thread to read and write data.
-	go writeData(rw)
-	go readData(rw)
-
+	var handleStream NodeStreamHandler
+	handleStream.Setup(p.Identity)
+	handleStream.Handler(s)
 	<-make(chan struct{})
 	return nil
 }

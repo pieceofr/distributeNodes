@@ -6,8 +6,8 @@ import (
 )
 
 var (
-	//ErrSameNode the same peer node
-	ErrSameNode = errors.New("The Same Peer Node")
+	errSameNode      = errors.New("The Same Peer Node")
+	errMessageFormat = errors.New("Message Format Is Invalid")
 )
 
 //ErrCombind all Errors together
