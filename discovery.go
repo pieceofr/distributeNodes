@@ -46,7 +46,8 @@ func GetAServer() (string, error) {
 	rNum := rand.New(sNum)
 
 	if len(servers) > 1 {
-		serverIdx := rNum.Intn(len(servers) - 1)
+		serverIdx := rNum.Intn(len(servers))
+		log.Infof("serverIdx:%d\n", serverIdx)
 		return servers[serverIdx], nil
 	}
 	return servers[0], nil

@@ -63,8 +63,9 @@ func (h *NodeStreamHandler) Reciever() error {
 		case "peer":
 			log.Infof("header:%s\ncontent:%s", header, content)
 		default:
-			log.Error(err.Error())
+			log.Error(errMessageFormat.Error())
 		}
+		time.Sleep(1 * time.Second)
 	}
 }
 

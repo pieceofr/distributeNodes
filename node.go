@@ -163,6 +163,10 @@ func (p *PeerNode) Listen() error {
 	if p.Host == nil {
 		return errors.New("NoHost")
 	}
+	var handleStream NodeStreamHandler
+	handleStream.Setup(p.NodeInfo)
+	p.Host.SetStreamHandler("/p2p/1.0.0", handleStream.Handler)
+
 	for _, la := range p.Host.Network().ListenAddresses() {
 		if _, err := la.ValueForProtocol(multiaddr.P_TCP); err == nil {
 			return err
@@ -177,22 +181,19 @@ func (p *PeerNode) Listen() error {
 
 //ConnectToFixPeer connect to fixed peer
 func (p *PeerNode) ConnectToFixPeer() error {
-	addr, err := GetAServer()
-	if err != nil {
-		return err
-	}
-	log.Infof("Client is connect to %s", addr)
 	for i := 0; i < 5; i++ {
-		err := p.ConnectTo(addr)
+		addr, err := GetAServer()
+		if err != nil {
+			return err
+		}
+		log.Infof("Client is connect to %s", addr)
+
+		err = p.ConnectTo(addr)
 		if nil == err {
 			i = 10
 		}
 		log.Errorf("The Error is %s", err.Error())
 		time.Sleep(3 * time.Second)
-	}
-	if err != nil {
-		log.Info("Exist ConnectToFixPeer")
-		return err
 	}
 
 	return nil
@@ -222,7 +223,6 @@ func (p *PeerNode) ConnectTo(address string) error {
 		return errors.New("info is nil")
 	}
 	log.Debugf("ID:%s, address:%s TTL:%d", info.ID.String(), info.Addrs[0].String(), peerstore.PermanentAddrTTL)
-
 	time.Sleep(1 * time.Second)
 	// Add the destination's peer multiaddress in the peerstore.
 	// This will be used during connection and stream creation by libp2p.
@@ -231,6 +231,7 @@ func (p *PeerNode) ConnectTo(address string) error {
 	// Start a stream with the destination.
 	// Multiaddress of the destination peer is fetched from the peerstore using 'peerId'.
 	s, err := p.Host.NewStream(context.Background(), info.ID, "/p2p/1.0.0")
+
 	if err != nil {
 		return err
 	}
