@@ -6,8 +6,9 @@ import (
 )
 
 var (
-	errSameNode      = errors.New("The Same Peer Node")
-	errMessageFormat = errors.New("Message Format Is Invalid")
+	errSameNode           = errors.New("The Same Peer Node")
+	errMessageFormat      = errors.New("Message Format Is Invalid")
+	errPeerHasInPeerStore = errors.New("peer has in the peer store")
 )
 
 //ErrCombind all Errors together

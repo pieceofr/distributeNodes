@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
 	"strings"
 	"time"
@@ -54,31 +55,47 @@ func (h *NodeStreamHandler) Handler(s network.Stream) {
 //Reciever for NodeStreamHandler
 func (h *NodeStreamHandler) Reciever() error {
 	for {
-		str, _ := h.ReadWriter.ReadString('\n')
+		str, err := h.ReadWriter.ReadString('\n')
+		if err != nil {
+			log.Errorf("Read buff error:%s\n", err.Error())
+			break
+		}
 		header, content, err := h.MessageParser(str)
 		if err != nil {
-			log.Error(err.Error())
+			log.Errorf("MessageParser error : %s\n", err.Error())
+			break
 		}
+		var peerInfo NodeInfoMessage
 		switch header {
 		case "peer":
-			log.Infof("header:%s\ncontent:%s", header, content)
+			err := json.Unmarshal([]byte(content), &peerInfo)
+			if err != nil {
+				log.Error(errMessageFormat.Error())
+				break
+			}
+			log.Debugf("peer message recieved:%s\n", peerInfo.Address)
+			Bus.TestQueue.Send("peer", []byte(peerInfo.Address))
 		default:
 			log.Error(errMessageFormat.Error())
 		}
-		time.Sleep(1 * time.Second)
+		time.Sleep(2 * time.Second)
 	}
+	return nil
 }
 
 //Sender for NodeStreamHandler
 func (h *NodeStreamHandler) Sender() {
 	for {
-		message, err := h.MessageComposer(HeaderAnnounceSelf, h.NodeInfo.PublicKey)
+		message, err := h.MessageComposer(HeaderAnnounceSelf, h.NodeInfo.String())
 		if err != nil {
 			break
 		}
-		h.ReadWriter.WriteString(fmt.Sprintf("%s\n", message))
-		h.ReadWriter.Flush()
-		time.Sleep(10 * time.Second)
+		if h.NodeInfo.NodeType != Client {
+			h.ReadWriter.WriteString(fmt.Sprintf("%s\n", message))
+			h.ReadWriter.Flush()
+			log.Infof("Sender SEND: %s\n", fmt.Sprintf("%s\n", message))
+		}
+		time.Sleep(5 * time.Second)
 	}
 }
 
@@ -102,4 +119,12 @@ func (h *NodeStreamHandler) MessageComposer(header string, messages ...string) (
 		}
 	}
 	return fmt.Sprintf("%s::%s", header, content), nil
+}
+
+func (i *NodeInfoMessage) String() string {
+	byteStr, err := json.Marshal(i)
+	if err != nil {
+		return ""
+	}
+	return string(byteStr)
 }

@@ -1,9 +1,4 @@
-// SPDX-License-Identifier: ISC
-// Copyright (c) 2014-2019 Bitmark Inc.
-// Use of this source code is governed by an ISC
-// license that can be found in the LICENSE file.
-
-package messagebus
+package main
 
 import (
 	"container/list"
@@ -15,7 +10,7 @@ import (
 	"golang.org/x/crypto/sha3"
 )
 
-// for select the default queue size
+//Default for select the default queue size
 const Default = -1
 
 // internal constants
@@ -204,11 +199,9 @@ func (queue *BroadcastQueue) Chan(size int) <-chan Message {
 
 // Release - release the incoming and outgoing queue
 func (queue *BroadcastQueue) Release() {
-
 	for _, o := range queue.out {
 		close(o)
 	}
-
 	// empty the list
 	queue.out = make([]chan Message, 0, 10)
 }

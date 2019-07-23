@@ -177,21 +177,19 @@ func (p *PeerNode) Listen() error {
 
 //ConnectToFixPeer connect to fixed peer
 func (p *PeerNode) ConnectToFixPeer() error {
-	for i := 0; i < 5; i++ {
+	for i := 0; i < 3; i++ {
 		addr, err := GetAServer()
 		if err != nil {
 			return err
 		}
-		log.Infof("Client is connect to %s", addr)
-
 		err = p.ConnectTo(addr)
 		if nil == err {
 			i = 10
+			log.Infof("HAS CONNECT TO : ", addr)
 		}
-		log.Errorf("The Error is %s", err.Error())
+		log.Error(err.Error())
 		time.Sleep(3 * time.Second)
 	}
-
 	return nil
 }
 
@@ -218,12 +216,13 @@ func (p *PeerNode) ConnectTo(address string) error {
 	if info == nil {
 		return errors.New("info is nil")
 	}
-	log.Debugf("ID:%s, address:%s TTL:%d", info.ID.String(), info.Addrs[0].String(), peerstore.PermanentAddrTTL)
-	time.Sleep(1 * time.Second)
+	log.Debugf("Connecting .... ID:%s, address:%s TTL:%d", info.ID.String(), info.Addrs[0].String(), peerstore.PermanentAddrTTL)
 	// Add the destination's peer multiaddress in the peerstore.
 	// This will be used during connection and stream creation by libp2p.
 	p.Host.Peerstore().AddAddrs(info.ID, info.Addrs, peerstore.PermanentAddrTTL)
-
+	if p.IsPeerExisted(maddr) {
+		return errPeerHasInPeerStore
+	}
 	// Start a stream with the destination.
 	// Multiaddress of the destination peer is fetched from the peerstore using 'peerId'.
 	s, err := p.Host.NewStream(context.Background(), info.ID, "/p2p/1.0.0")
@@ -236,6 +235,18 @@ func (p *PeerNode) ConnectTo(address string) error {
 	handleStream.Handler(s)
 	<-make(chan struct{})
 	return nil
+}
+
+//IsPeerExisted peer is existed in the Peerstore
+func (p *PeerNode) IsPeerExisted(newAddr multiaddr.Multiaddr) bool {
+	for _, ID := range p.Host.Peerstore().Peers() {
+		for _, addr := range p.Host.Peerstore().PeerInfo(ID).Addrs {
+			if addr.Equal(newAddr) {
+				return true
+			}
+		}
+	}
+	return false
 }
 
 //Reset is to close a peer node
@@ -274,4 +285,30 @@ func randomPort() (int, error) {
 	}
 	port := 12137 + int(math.Mod(float64(b[0]), float64(13)))
 	return port, nil
+}
+
+// MessageCenter for peer node
+func (p *PeerNode) MessageCenter() {
+	queue := Bus.TestQueue.Chan()
+	for {
+		select {
+		case item := <-queue:
+			if item.Command == "peer" {
+				newAddr := string(item.Parameters[0])
+				log.Infof("BUS RECIEVE Peer  %s\n", newAddr)
+				if p.IsSameNode(newAddr) {
+					log.Warnf("p has the same address with new address \n")
+				}
+				maddr, err := multiaddr.NewMultiaddr(newAddr)
+				if err != nil {
+					log.Error(err.Error())
+					break
+				}
+				if p.IsPeerExisted(maddr) {
+					log.Warnf("p has  the peer \n")
+				}
+				//go p.ConnectTo(string(item.Parameters[0]))
+			}
+		}
+	}
 }
