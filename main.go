@@ -28,11 +28,14 @@ func main() {
 		panic(fmt.Sprintf("logger initialization failed: %s", err))
 	}
 	log = logger.New("nodes")
+	//Initialize messagebus
+	messagebusInit()
 	// Initialize a peer node
 	if err := theNode.Init(cfg); err != nil {
 		panic(fmt.Sprintf("node initialization failed: %s", err))
 	}
 	// Initialize messageRecord
+
 	msgRecord.init()
 	defer func() {
 		log.Info("----- Reset and Exit -----")
