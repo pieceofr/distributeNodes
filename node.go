@@ -220,7 +220,6 @@ func (p *PeerNode) ConnectTo(address string) error {
 		return errors.New("info is nil")
 	}
 	log.Debugf("ID:%s, address:%s TTL:%d", info.ID.String(), info.Addrs[0].String(), peerstore.PermanentAddrTTL)
-
 	time.Sleep(1 * time.Second)
 	// Add the destination's peer multiaddress in the peerstore.
 	// This will be used during connection and stream creation by libp2p.
@@ -229,8 +228,9 @@ func (p *PeerNode) ConnectTo(address string) error {
 	// Start a stream with the destination.
 	// Multiaddress of the destination peer is fetched from the peerstore using 'peerId'.
 	s, err := p.Host.NewStream(context.Background(), info.ID, "/p2p/1.0.0")
+
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	var handleStream NodeStreamHandler
