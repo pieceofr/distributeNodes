@@ -84,14 +84,10 @@ func (p *PeerNode) Init(cfg config) error {
 	log.Infof("NodeAddress:%s\n", p.NodeInfo.Address)
 
 	if Servant == p.NodeType || Server == p.NodeType {
-		err := p.Listen()
-		if err != nil {
-			log.Error(err.Error())
-			return err
-		}
-	} else {
-		go p.ConnectToFixPeer()
+		go p.Listen()
+
 	}
+	go p.ConnectToFixPeer()
 
 	log.Info("Exist the Initialization")
 	return nil
