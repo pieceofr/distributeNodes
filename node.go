@@ -40,15 +40,9 @@ type PeerNode struct {
 	PublicIP string
 	Port     string
 	Identity
-	Host libp2pcore.Host
+	Host     libp2pcore.Host
+	NodeInfo NodeInfoMessage
 }
-
-// Connection is a p2p connection struct
-/*
-type Connection struct {
-	privateKey crypto.PrivKey
-	connHost   libp2pcore.Host
-}*/
 
 //Init a peer node
 func (p *PeerNode) Init(cfg config) error {
@@ -71,23 +65,34 @@ func (p *PeerNode) Init(cfg config) error {
 			log.Error("createHostErr")
 			return createHostErr
 		}
+	} else {
+		newHost, err := libp2p.New(
+			context.Background(),
+			libp2p.Identity(p.Identity.PrvKey),
+		)
+		if err != nil {
+			return err
+		}
+		p.Host = newHost
+	}
+	pubKeyStr, err := p.Identity.MarshalPublicKey()
+	if err != nil {
+		return nil
+	}
+
+	p.NodeInfo = NodeInfoMessage{NodeType: p.NodeType, PublicKey: pubKeyStr, Address: fmt.Sprintf("/ip4/%s/tcp/%v/p2p/%s", p.PublicIP, p.Port, p.Host.ID().Pretty())}
+	log.Infof("NodeAddress:%s\n", p.NodeInfo.Address)
+
+	if Servant == p.NodeType || Server == p.NodeType {
 		err := p.Listen()
 		if err != nil {
 			log.Error(err.Error())
 			return err
 		}
 	} else {
-		newHost, err := libp2p.New(
-			context.Background(),
-			libp2p.Identity(p.Identity.PrvKey),
-		)
-
-		if err != nil {
-			return err
-		}
-		p.Host = newHost
+		go p.ConnectToFixPeer()
 	}
-	go p.ConnectToFixPeer()
+
 	log.Info("Exist the Initialization")
 	return nil
 }
@@ -158,9 +163,6 @@ func (p *PeerNode) Listen() error {
 	if p.Host == nil {
 		return errors.New("NoHost")
 	}
-	var handleStream NodeStreamHandler
-	handleStream.Setup(p.Identity)
-	p.Host.SetStreamHandler("/p2p/1.0.0", handleStream.Handler)
 	for _, la := range p.Host.Network().ListenAddresses() {
 		if _, err := la.ValueForProtocol(multiaddr.P_TCP); err == nil {
 			return err
@@ -230,11 +232,10 @@ func (p *PeerNode) ConnectTo(address string) error {
 	// Multiaddress of the destination peer is fetched from the peerstore using 'peerId'.
 	s, err := p.Host.NewStream(context.Background(), info.ID, "/p2p/1.0.0")
 	if err != nil {
-		panic(err)
+		return err
 	}
-
 	var handleStream NodeStreamHandler
-	handleStream.Setup(p.Identity)
+	handleStream.Setup(p.NodeInfo)
 	handleStream.Handler(s)
 	<-make(chan struct{})
 	return nil

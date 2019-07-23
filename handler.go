@@ -16,6 +16,13 @@ const (
 	HeaderAnnounceSelf = "peer"
 )
 
+// NodeInfoMessage is a message to inform peers about noder
+type NodeInfoMessage struct {
+	NodeType
+	Address   string
+	PublicKey string
+}
+
 //BiStreamHandler Bidirectional  StreamHandler
 type BiStreamHandler interface {
 	Handler(s network.Stream)
@@ -27,13 +34,12 @@ type BiStreamHandler interface {
 type NodeStreamHandler struct {
 	Stream     network.Stream
 	ReadWriter *bufio.ReadWriter
-	Identity
+	NodeInfo   NodeInfoMessage
 }
 
 //Setup setup Handler
-func (h *NodeStreamHandler) Setup(ID Identity) {
-	// Create a buffer stream for non blocking read and write.
-	h.Identity = ID
+func (h *NodeStreamHandler) Setup(info NodeInfoMessage) {
+	h.NodeInfo = info
 }
 
 // Handler  for streamHandler
@@ -43,8 +49,6 @@ func (h *NodeStreamHandler) Handler(s network.Stream) {
 	h.ReadWriter = bufio.NewReadWriter(bufio.NewReader(s), bufio.NewWriter(s))
 	go h.Reciever()
 	go h.Sender()
-
-	// stream 's' will stay open until you close it (or the other side closes it).
 }
 
 //Reciever for NodeStreamHandler
@@ -67,12 +71,7 @@ func (h *NodeStreamHandler) Reciever() error {
 //Sender for NodeStreamHandler
 func (h *NodeStreamHandler) Sender() {
 	for {
-		ID, err := h.Identity.MarshalPrvKey()
-		if err != nil {
-			log.Error(err.Error())
-			break
-		}
-		message, err := h.MessageComposer(HeaderAnnounceSelf, ID)
+		message, err := h.MessageComposer(HeaderAnnounceSelf, h.NodeInfo.PublicKey)
 		if err != nil {
 			break
 		}
@@ -94,6 +93,12 @@ func (h *NodeStreamHandler) MessageParser(msg string) (header string, content st
 }
 
 //MessageComposer parsing messages
-func (h *NodeStreamHandler) MessageComposer(header string, content string) (message string, err error) {
+func (h *NodeStreamHandler) MessageComposer(header string, messages ...string) (message string, err error) {
+	var content string
+	for _, msg := range messages {
+		if len(msg) != 0 {
+			content = content + msg
+		}
+	}
 	return fmt.Sprintf("%s::%s", header, content), nil
 }

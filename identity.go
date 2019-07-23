@@ -68,3 +68,31 @@ func (i *Identity) UnmarshalPrvKey(prvKey string) error {
 	i.PrvKey = unmarshalKey
 	return nil
 }
+
+//MarshalPublicKey from base58 string to public  key
+func (i *Identity) MarshalPublicKey() (string, error) {
+	pkey, err := i.PublicKey()
+	if err != nil {
+		return "", err
+	}
+	marshalKey, err := crypto.MarshalPublicKey(pkey)
+	if err != nil {
+		return "", err
+	}
+	encoded := base58.Encode(marshalKey)
+	return encoded, nil
+}
+
+//UnmarshalPublicKey from base58 string to private key
+func (i *Identity) UnmarshalPublicKey(pubKey string) (crypto.PubKey, error) {
+	decoded, err := base58.Decode(pubKey)
+	if err != nil {
+		return nil, err
+	}
+	unmarshalKey, err := crypto.UnmarshalPublicKey(decoded)
+	if err != nil {
+		return nil, err
+	}
+
+	return unmarshalKey, nil
+}
