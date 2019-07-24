@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"strconv"
 	"strings"
 	"time"
 
@@ -14,6 +15,7 @@ const (
 	MessageSeperator = "::"
 	//HeaderAnnounceSelf s the header to announce self
 	HeaderAnnounceSelf = "peer"
+	cycleInterval      = 5 * time.Second
 )
 
 //BiStreamHandler Bidirectional  StreamHandler
@@ -28,6 +30,7 @@ type NodeStreamHandler struct {
 	Stream     network.Stream
 	ReadWriter *bufio.ReadWriter
 	NodeInfoMessage
+	Shutdown chan<- struct{}
 }
 
 //Setup setup Handler
@@ -40,8 +43,10 @@ func (h *NodeStreamHandler) Handler(s network.Stream) {
 	log.Infof("Start a new stream! direction:%d\n", s.Stat().Direction)
 	h.Stream = s
 	h.ReadWriter = bufio.NewReadWriter(bufio.NewReader(s), bufio.NewWriter(s))
+	shutdown := make(chan struct{})
+	h.Shutdown = shutdown
 	go h.Reciever()
-	go h.Sender()
+	go h.Sender(shutdown)
 }
 
 //Reciever for NodeStreamHandler
@@ -79,20 +84,56 @@ func (h *NodeStreamHandler) Reciever() error {
 }
 
 //Sender for NodeStreamHandler
-func (h *NodeStreamHandler) Sender() {
+func (h *NodeStreamHandler) Sender(shutdown <-chan struct{}) {
+	queue := Bus.Broadcast.Chan(-1)
+	cycleTimer := time.After(cycleInterval)
+
 	for {
-		info, err := h.NodeInfoMessage.Marshal()
-		if err != nil {
-			time.Sleep(10 * time.Second)
-			continue
+		select {
+		case <-shutdown:
+			break
+
+		case <-cycleTimer:
+			log.Info("timeUp")
+			info, err := h.NodeInfoMessage.Marshal()
+			if err != nil {
+				time.Sleep(10 * time.Second)
+				continue
+			}
+			message, err := h.MessageComposer(HeaderAnnounceSelf, string(info))
+			if err != nil {
+				time.Sleep(10 * time.Second)
+				continue
+			}
+			h.ReadWriter.WriteString(fmt.Sprintf("%s\n", message))
+			h.ReadWriter.Flush()
+		case item := <-queue:
+			switch item.Command {
+			case "peer":
+				var peerInfo NodeInfoMessage
+				nType, err := strconv.Atoi(string(item.Parameters[0]))
+				if err != nil {
+					log.Error(err.Error())
+					continue
+				}
+				peerInfo.NodeType = NodeType(nType)
+				peerInfo.PublicKey = string(item.Parameters[1])
+				peerInfo.Address = string(item.Parameters[2])
+				infoOut, err := peerInfo.Marshal()
+				if err != nil {
+					log.Error(err.Error())
+					continue
+				}
+				message, err := h.MessageComposer(HeaderAnnounceSelf, string(infoOut))
+				if err != nil {
+					time.Sleep(10 * time.Second)
+					continue
+				}
+				h.ReadWriter.WriteString(fmt.Sprintf("%s\n", message))
+				h.ReadWriter.Flush()
+			}
 		}
-		message, err := h.MessageComposer(HeaderAnnounceSelf, string(info))
-		if err != nil {
-			time.Sleep(10 * time.Second)
-			continue
-		}
-		h.ReadWriter.WriteString(fmt.Sprintf("%s\n", message))
-		h.ReadWriter.Flush()
+
 		//log.Infof("NodeType:%v Sender  %s SEND", h.NodeInfoMessage, h.NodeInfoMessage.PublicKey[len(h.NodeInfoMessage.PublicKey)-10:len(h.NodeInfoMessage.PublicKey)-1])
 		time.Sleep(10 * time.Second)
 	}

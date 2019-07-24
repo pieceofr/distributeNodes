@@ -302,7 +302,6 @@ func (p *PeerNode) BusReciever(shutdown <-chan struct{}) {
 		case <-shutdown:
 			break
 		case item := <-queue:
-			log.Info("RECIEVE QUEUE COMMAND")
 			var peerInfo NodeInfoMessage
 			nType, err := strconv.Atoi(string(item.Parameters[0]))
 			if err != nil {
