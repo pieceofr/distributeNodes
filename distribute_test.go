@@ -31,10 +31,24 @@ func TestMain(m *testing.M) {
 		panic(fmt.Sprintf("logger initialization failed: %s", err))
 	}
 	log = logger.New("nodes")
-
+	messagebusInit()
 	os.Exit(m.Run())
 }
 
+func TestNodeInfoMessage(t *testing.T) {
+	info := NodeInfoMessage{
+		NodeType:  Servant,
+		Publickey: "PublickKey",
+		Address:   "/ip4/127.0.0.1/tcp/12136/p2p/QmdBNQhudua6rWxHy6MY7Z6ciNMBePhjCAx2YHfmupGR15"
+	}
+}
+func TestMessagebus(t *testing.T) {
+	Bus.TestQueue.Send("peer")
+	queue := Bus.TestQueue.Chan()
+	item := <-queue
+	assert.Equal(t, item.Command, "peer", "TestQueue Error")
+	log.Warnf("PASSTestMessagebus command%s ", item.Command)
+}
 func TestIsSameNode(t *testing.T) {
 	addr := `/ip4/118.163.120.180/tcp/12136/p2p/QmeHidiFxXLosH44wkAyq3modWku5gprV168t9VeH1JSyV`
 	addrDiffPort := "/ip4/118.163.120.180/tcp/12140/p2p/QmeHidiFxXLosH44wkAyq3modWku5gprV168t9VeH1JSyV"
@@ -53,7 +67,7 @@ func TestGetServer(t *testing.T) {
 		server, err := GetAServer()
 		assert.NoError(t, err, "get server error")
 		assert.NotEmpty(t, len(server), "Empty Server")
-		fmt.Println("getServer:", server)
+		//fmt.Println("getServer:", server)
 	}
 }
 func TestLoadServer(t *testing.T) {
@@ -79,7 +93,7 @@ func TestConfig(t *testing.T) {
 
 }
 
-func TestMarshalUnmarshal(t *testing.T) {
+func TestKeyMarshalUnmarshal(t *testing.T) {
 	prv, err := randKey()
 	//Marshall Key
 	assert.NoError(t, err, "randKey Error")
@@ -116,9 +130,9 @@ func TestSaveLoadPrivateKey(t *testing.T) {
 	assert.NotNil(t, node.Identity.PrvKey, "generate Identity fail")
 	oriKey, err := node.MarshalPrvKey()
 	assert.NoError(t, err, "marshal key error")
-	node.SaveIdentity()
+	node.SaveIdentity("peerUnittest.prv")
 	var newNode PeerNode
-	newNode.LoadIdentity()
+	newNode.LoadIdentity("peerUnittest.prv")
 	newKey, err := newNode.MarshalPrvKey()
 	assert.NoError(t, err, "marshal key error")
 	assert.Equal(t, oriKey, newKey, "oriKey, newKey not equal")

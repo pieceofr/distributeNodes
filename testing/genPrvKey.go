@@ -13,18 +13,18 @@ import (
 
 func main() {
 	for i := 1; i < 5; i++ {
-		saveGenKey(i)
+		saveGenKey(i, "servant")
 	}
 
 }
 
-func saveGenKey(count int) error {
+func saveGenKey(count int, prefix string) error {
 	prv, err := randKey()
 	if err != nil {
 		return err
 	}
 
-	keyfile := path.Join(os.Getenv("PWD"), "client", "peer"+strconv.Itoa(count)+".prv")
+	keyfile := path.Join(os.Getenv("PWD"), "key", prefix+strconv.Itoa(count)+".prv")
 
 	encodedKey, err := marshalPrvKey(prv)
 	if err := ioutil.WriteFile(keyfile, []byte(encodedKey), 0644); err != nil {

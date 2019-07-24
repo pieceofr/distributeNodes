@@ -16,13 +16,6 @@ const (
 	HeaderAnnounceSelf = "peer"
 )
 
-// NodeInfoMessage is a message to inform peers about noder
-type NodeInfoMessage struct {
-	NodeType
-	Address   string
-	PublicKey string
-}
-
 //BiStreamHandler Bidirectional  StreamHandler
 type BiStreamHandler interface {
 	Handler(s network.Stream)
@@ -34,12 +27,12 @@ type BiStreamHandler interface {
 type NodeStreamHandler struct {
 	Stream     network.Stream
 	ReadWriter *bufio.ReadWriter
-	NodeInfo   NodeInfoMessage
+	NodeInfoMessage
 }
 
 //Setup setup Handler
 func (h *NodeStreamHandler) Setup(info NodeInfoMessage) {
-	h.NodeInfo = info
+	h.NodeInfoMessage = info
 }
 
 // Handler  for streamHandler
@@ -54,15 +47,30 @@ func (h *NodeStreamHandler) Handler(s network.Stream) {
 //Reciever for NodeStreamHandler
 func (h *NodeStreamHandler) Reciever() error {
 	for {
-		str, _ := h.ReadWriter.ReadString('\n')
+		str, err := h.ReadWriter.ReadString('\n')
+		if err != nil {
+			log.Error(err.Error())
+			time.Sleep(1 * time.Second)
+			continue
+		}
 		header, content, err := h.MessageParser(str)
 		if err != nil {
 			log.Error(err.Error())
+			time.Sleep(1 * time.Second)
+			continue
 		}
 		switch header {
 		case "peer":
-			log.Infof("NodeType:%d Reciever READ", h.NodeInfo.NodeType)
-			Bus.TestQueue.Send("peer", []byte(content))
+			var peerInfo NodeInfoMessage
+			err := peerInfo.Unmarshal([]byte(content))
+			if err != nil {
+				log.Error(ErrCombind(err, errMessageFormat).Error())
+				time.Sleep(1 * time.Second)
+				continue
+			}
+			log.Infof("RECIEVE form %v", peerInfo.Address[len(peerInfo.Address)-10:len(peerInfo.Address)-1])
+			Bus.TestQueue.Send("peer", []byte(fmt.Sprintf("%v", peerInfo.NodeType)), []byte(peerInfo.PublicKey), []byte(peerInfo.Address))
+
 		default:
 			log.Error(errMessageFormat.Error())
 		}
@@ -73,14 +81,19 @@ func (h *NodeStreamHandler) Reciever() error {
 //Sender for NodeStreamHandler
 func (h *NodeStreamHandler) Sender() {
 	for {
-		message, err := h.MessageComposer(HeaderAnnounceSelf, h.NodeInfo.PublicKey)
+		info, err := h.NodeInfoMessage.Marshal()
+		if err != nil {
+			time.Sleep(10 * time.Second)
+			continue
+		}
+		message, err := h.MessageComposer(HeaderAnnounceSelf, string(info))
 		if err != nil {
 			time.Sleep(10 * time.Second)
 			continue
 		}
 		h.ReadWriter.WriteString(fmt.Sprintf("%s\n", message))
 		h.ReadWriter.Flush()
-		log.Infof("NodeType:%d Sender  %s SEND", h.NodeInfo.NodeType, h.NodeInfo.PublicKey[len(h.NodeInfo.PublicKey)-10:len(h.NodeInfo.PublicKey)-1])
+		//log.Infof("NodeType:%v Sender  %s SEND", h.NodeInfoMessage, h.NodeInfoMessage.PublicKey[len(h.NodeInfoMessage.PublicKey)-10:len(h.NodeInfoMessage.PublicKey)-1])
 		time.Sleep(10 * time.Second)
 	}
 }
@@ -94,6 +107,7 @@ func (h *NodeStreamHandler) MessageParser(msg string) (header string, content st
 		return s[0], "", nil
 	}
 	return s[0], s[1], nil
+
 }
 
 //MessageComposer parsing messages

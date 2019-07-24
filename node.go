@@ -42,6 +42,7 @@ type PeerNode struct {
 	Identity
 	Host     libp2pcore.Host
 	NodeInfo NodeInfoMessage
+	Shutdown chan<- struct{}
 }
 
 //Init a peer node
@@ -62,6 +63,9 @@ func (p *PeerNode) Init(cfg config) error {
 			return genRandErr
 		}
 	}
+	shutdown := make(chan struct{})
+	p.Shutdown = shutdown
+	go p.BusReciever(shutdown)
 	if Servant == p.NodeType || Server == p.NodeType {
 		if createHostErr := p.NewHost(); createHostErr != nil {
 			log.Error("createHostErr")
@@ -97,12 +101,15 @@ func (p *PeerNode) Init(cfg config) error {
 }
 
 //SaveIdentity save private key to file
-func (p *PeerNode) SaveIdentity() error {
+func (p *PeerNode) SaveIdentity(file string) error {
+	if "" == file {
+		file = privateKeyFileName
+	}
 	keyStr, err := p.Identity.MarshalPrvKey()
 	if err != nil {
 		return err
 	}
-	if err := ioutil.WriteFile(privateKeyFileName, []byte(keyStr), 0600); err != nil {
+	if err := ioutil.WriteFile(file, []byte(keyStr), 0600); err != nil {
 		return err
 	}
 	return nil
@@ -253,6 +260,7 @@ func (p *PeerNode) Reset() {
 	p.PublicIP = ""
 	p.Port = ""
 	p.Identity.PrvKey = nil
+
 	if p.Host != nil {
 		p.Host.Close()
 	}
@@ -294,7 +302,23 @@ func (p *PeerNode) BusReciever(shutdown <-chan struct{}) {
 		case <-shutdown:
 			break
 		case item := <-queue:
-			log.Infof("from queue: %q  %x", item.Command, item.Parameters)
+			log.Info("RECIEVE QUEUE COMMAND")
+			var peerInfo NodeInfoMessage
+			nType, err := strconv.Atoi(string(item.Parameters[0]))
+			if err != nil {
+				log.Error(err.Error())
+				continue
+			}
+			peerInfo.NodeType = NodeType(nType)
+			peerInfo.PublicKey = string(item.Parameters[1])
+			peerInfo.Address = string(item.Parameters[2])
+
+			log.Infof("from queue: %q  %s\n", item.Command, peerInfo.Address)
+			if peerInfo.NodeType != Client {
+				log.Infof("Attempt to connect to:%s\n", peerInfo.Address)
+				p.ConnectTo(peerInfo.Address)
+			}
+
 		}
 	}
 }
