@@ -52,12 +52,13 @@ func (p *PeerNode) Init(cfg config) error {
 	if cfg.StaticIdentity.UseStatic {
 		log.Info("Use Static Identity")
 		privateKeyFileName = cfg.StaticIdentity.KeyFile
-		if loadErr := p.LoadIdentity(); loadErr != nil {
+		if loadErr := p.LoadIdentity(privateKeyFileName); loadErr != nil {
 			return loadErr
 		}
+		log.Info("Load Static Identity")
 	} else {
 		if genRandErr := p.NewRandomNode(); genRandErr != nil {
-			log.Error(genRandErr)
+			log.Error(genRandErr.Error())
 			return genRandErr
 		}
 	}
@@ -85,6 +86,7 @@ func (p *PeerNode) Init(cfg config) error {
 	log.Infof("NodeAddress:%s\n", p.NodeInfo.Address)
 
 	if Servant == p.NodeType || Server == p.NodeType {
+		log.Info("Servant go listen routine")
 		go p.Listen()
 
 	}
@@ -107,11 +109,15 @@ func (p *PeerNode) SaveIdentity() error {
 }
 
 //LoadIdentity Load private key from file
-func (p *PeerNode) LoadIdentity() error {
-	keyBytes, err := ioutil.ReadFile(privateKeyFileName)
-	if err != nil {
-		return errSameNode
+func (p *PeerNode) LoadIdentity(file string) error {
+	if len(file) == 0 {
+		file = privateKeyFileName
 	}
+	keyBytes, err := ioutil.ReadFile(file)
+	if err != nil {
+		return err
+	}
+
 	err = p.UnmarshalPrvKey(string(keyBytes))
 	if err != nil {
 		return err
@@ -133,7 +139,8 @@ func (p *PeerNode) NewRandomNode() error {
 		return err
 	}
 	p.Port = strconv.Itoa(port)
-	log.Debugf("PublicIPD:%s   Port:%s", p.PublicIP, p.Port)
+	pkey, err := p.MarshalPublicKey()
+	log.Debugf("NewRandomNode:PublicKey:%s   Port:%s", pkey, p.Port)
 	return nil
 }
 
@@ -179,7 +186,7 @@ func (p *PeerNode) Listen() error {
 
 //ConnectToFixPeer connect to fixed peer
 func (p *PeerNode) ConnectToFixPeer() error {
-	for i := 0; i < 5; i++ {
+	for i := 0; i < 3; i++ {
 		addr, err := GetAServer()
 		if err != nil {
 			return err
@@ -276,4 +283,18 @@ func randomPort() (int, error) {
 	}
 	port := 12137 + int(math.Mod(float64(b[0]), float64(13)))
 	return port, nil
+}
+
+//BusReciever recieve message from other component
+func (p *PeerNode) BusReciever(shutdown <-chan struct{}) {
+	queue := Bus.TestQueue.Chan()
+
+	for {
+		select {
+		case <-shutdown:
+			break
+		case item := <-queue:
+			log.Infof("from queue: %q  %x", item.Command, item.Parameters)
+		}
+	}
 }

@@ -61,7 +61,8 @@ func (h *NodeStreamHandler) Reciever() error {
 		}
 		switch header {
 		case "peer":
-			log.Infof("header:%s\ncontent:%s", header, content)
+			log.Infof("NodeType:%d Reciever READ", h.NodeInfo.NodeType)
+			Bus.TestQueue.Send("peer", []byte(content))
 		default:
 			log.Error(errMessageFormat.Error())
 		}
@@ -74,10 +75,12 @@ func (h *NodeStreamHandler) Sender() {
 	for {
 		message, err := h.MessageComposer(HeaderAnnounceSelf, h.NodeInfo.PublicKey)
 		if err != nil {
-			break
+			time.Sleep(10 * time.Second)
+			continue
 		}
 		h.ReadWriter.WriteString(fmt.Sprintf("%s\n", message))
 		h.ReadWriter.Flush()
+		log.Infof("NodeType:%d Sender  %s SEND", h.NodeInfo.NodeType, h.NodeInfo.PublicKey[len(h.NodeInfo.PublicKey)-10:len(h.NodeInfo.PublicKey)-1])
 		time.Sleep(10 * time.Second)
 	}
 }

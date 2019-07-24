@@ -41,7 +41,6 @@ func (i *Identity) randIdentity() error {
 		return err
 	}
 	i.PrvKey = prv
-	//	fmt.Println("private key:", prvByte, " public key:", pubByte)
 	return nil
 }
 
