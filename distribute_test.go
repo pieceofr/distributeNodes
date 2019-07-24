@@ -53,6 +53,7 @@ func TestGetServer(t *testing.T) {
 		server, err := GetAServer()
 		assert.NoError(t, err, "get server error")
 		assert.NotEmpty(t, len(server), "Empty Server")
+		fmt.Println("getServer:", server)
 	}
 }
 func TestLoadServer(t *testing.T) {
@@ -127,25 +128,19 @@ func TestSaveLoadPrivateKey(t *testing.T) {
 func TestClientConnect(t *testing.T) {
 	var servantCfg config
 	var servantNode PeerNode
-	path := filepath.Join(os.Getenv("PWD"), "servant.conf")
-	if err := ParseConfigurationFile(path, &servantCfg); err != nil {
-		panic(fmt.Sprintf("config file read failed: %s", err))
-	}
-
-	if err := servantNode.Init(servantCfg); err != nil {
-		panic(fmt.Sprintf("node initialization failed: %s", err))
-	}
+	path := filepath.Join(os.Getenv("PWD"), "testing", "servant", "servant.conf")
+	err := ParseConfigurationFile(path, &servantCfg)
+	assert.NoError(t, err, "Parse servant Configuration file error")
+	err = servantNode.Init(servantCfg)
+	assert.NoError(t, err, "Init servant node error")
 
 	time.Sleep(3 * time.Second)
 	var clientConfig config
 	var clientNode PeerNode
-	pathClient := filepath.Join(os.Getenv("PWD"), "client0.conf")
-	if err := ParseConfigurationFile(pathClient, &clientConfig); err != nil {
-		panic(fmt.Sprintf("config file read failed: %s", err))
-	}
-
-	if err := clientNode.Init(clientConfig); err != nil {
-		panic(fmt.Sprintf("node initialization failed: %s", err))
-	}
+	pathClient := filepath.Join(os.Getenv("PWD"), "testing", "client", "client1.conf")
+	err = ParseConfigurationFile(pathClient, &clientConfig)
+	assert.NoError(t, err, "Parse client Configuration file error")
+	clientNode.Init(clientConfig)
+	assert.NoError(t, err, "Init client node error")
 
 }

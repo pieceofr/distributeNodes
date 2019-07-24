@@ -57,6 +57,7 @@ func (p *PeerNode) Init(cfg config) error {
 		}
 	} else {
 		if genRandErr := p.NewRandomNode(); genRandErr != nil {
+			log.Error(genRandErr)
 			return genRandErr
 		}
 	}
@@ -77,7 +78,7 @@ func (p *PeerNode) Init(cfg config) error {
 	}
 	pubKeyStr, err := p.Identity.MarshalPublicKey()
 	if err != nil {
-		return nil
+		return err
 	}
 
 	p.NodeInfo = NodeInfoMessage{NodeType: p.NodeType, PublicKey: pubKeyStr, Address: fmt.Sprintf("/ip4/%s/tcp/%v/p2p/%s", p.PublicIP, p.Port, p.Host.ID().Pretty())}
@@ -132,6 +133,7 @@ func (p *PeerNode) NewRandomNode() error {
 		return err
 	}
 	p.Port = strconv.Itoa(port)
+	log.Debugf("PublicIPD:%s   Port:%s", p.PublicIP, p.Port)
 	return nil
 }
 

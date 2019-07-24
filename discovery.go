@@ -44,10 +44,8 @@ func GetAServer() (string, error) {
 	}
 	sNum := rand.NewSource(time.Now().UnixNano())
 	rNum := rand.New(sNum)
-
 	if len(servers) > 1 {
-		serverIdx := rNum.Intn(len(servers))
-		log.Infof("serverIdx:%d\n", serverIdx)
+		serverIdx := rNum.Intn(len(servers)) // n does not included
 		return servers[serverIdx], nil
 	}
 	return servers[0], nil
