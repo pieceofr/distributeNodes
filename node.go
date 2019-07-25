@@ -42,6 +42,7 @@ type PeerNode struct {
 	Identity
 	Host     libp2pcore.Host
 	NodeInfo NodeInfoMessage
+	Shutdown chan<- struct{}
 }
 
 //Init a peer node
@@ -52,14 +53,19 @@ func (p *PeerNode) Init(cfg config) error {
 	if cfg.StaticIdentity.UseStatic {
 		log.Info("Use Static Identity")
 		privateKeyFileName = cfg.StaticIdentity.KeyFile
-		if loadErr := p.LoadIdentity(); loadErr != nil {
+		if loadErr := p.LoadIdentity(privateKeyFileName); loadErr != nil {
 			return loadErr
 		}
+		log.Info("Load Static Identity")
 	} else {
 		if genRandErr := p.NewRandomNode(); genRandErr != nil {
+			log.Error(genRandErr.Error())
 			return genRandErr
 		}
 	}
+	shutdown := make(chan struct{})
+	p.Shutdown = shutdown
+	go p.BusReciever(shutdown)
 	if Servant == p.NodeType || Server == p.NodeType {
 		if createHostErr := p.NewHost(); createHostErr != nil {
 			log.Error("createHostErr")
@@ -77,13 +83,14 @@ func (p *PeerNode) Init(cfg config) error {
 	}
 	pubKeyStr, err := p.Identity.MarshalPublicKey()
 	if err != nil {
-		return nil
+		return err
 	}
 
 	p.NodeInfo = NodeInfoMessage{NodeType: p.NodeType, PublicKey: pubKeyStr, Address: fmt.Sprintf("/ip4/%s/tcp/%v/p2p/%s", p.PublicIP, p.Port, p.Host.ID().Pretty())}
 	log.Infof("NodeAddress:%s\n", p.NodeInfo.Address)
 
 	if Servant == p.NodeType || Server == p.NodeType {
+		log.Info("Servant go listen routine")
 		go p.Listen()
 
 	}
@@ -94,23 +101,30 @@ func (p *PeerNode) Init(cfg config) error {
 }
 
 //SaveIdentity save private key to file
-func (p *PeerNode) SaveIdentity() error {
+func (p *PeerNode) SaveIdentity(file string) error {
+	if "" == file {
+		file = privateKeyFileName
+	}
 	keyStr, err := p.Identity.MarshalPrvKey()
 	if err != nil {
 		return err
 	}
-	if err := ioutil.WriteFile(privateKeyFileName, []byte(keyStr), 0600); err != nil {
+	if err := ioutil.WriteFile(file, []byte(keyStr), 0600); err != nil {
 		return err
 	}
 	return nil
 }
 
 //LoadIdentity Load private key from file
-func (p *PeerNode) LoadIdentity() error {
-	keyBytes, err := ioutil.ReadFile(privateKeyFileName)
-	if err != nil {
-		return errSameNode
+func (p *PeerNode) LoadIdentity(file string) error {
+	if len(file) == 0 {
+		file = privateKeyFileName
 	}
+	keyBytes, err := ioutil.ReadFile(file)
+	if err != nil {
+		return err
+	}
+
 	err = p.UnmarshalPrvKey(string(keyBytes))
 	if err != nil {
 		return err
@@ -132,6 +146,8 @@ func (p *PeerNode) NewRandomNode() error {
 		return err
 	}
 	p.Port = strconv.Itoa(port)
+	pkey, err := p.MarshalPublicKey()
+	log.Debugf("NewRandomNode:PublicKey:%s   Port:%s", pkey, p.Port)
 	return nil
 }
 
@@ -255,6 +271,7 @@ func (p *PeerNode) Reset() {
 	p.PublicIP = ""
 	p.Port = ""
 	p.Identity.PrvKey = nil
+
 	if p.Host != nil {
 		p.Host.Close()
 	}
@@ -287,6 +304,7 @@ func randomPort() (int, error) {
 	return port, nil
 }
 
+<<<<<<< HEAD
 // MessageCenter for peer node
 func (p *PeerNode) MessageCenter() {
 	queue := Bus.TestQueue.Chan()
@@ -309,6 +327,33 @@ func (p *PeerNode) MessageCenter() {
 				}
 				//go p.ConnectTo(string(item.Parameters[0]))
 			}
+=======
+//BusReciever recieve message from other component
+func (p *PeerNode) BusReciever(shutdown <-chan struct{}) {
+	queue := Bus.TestQueue.Chan()
+
+	for {
+		select {
+		case <-shutdown:
+			break
+		case item := <-queue:
+			var peerInfo NodeInfoMessage
+			nType, err := strconv.Atoi(string(item.Parameters[0]))
+			if err != nil {
+				log.Error(err.Error())
+				continue
+			}
+			peerInfo.NodeType = NodeType(nType)
+			peerInfo.PublicKey = string(item.Parameters[1])
+			peerInfo.Address = string(item.Parameters[2])
+
+			log.Infof("from queue: %q  %s\n", item.Command, peerInfo.Address)
+			if peerInfo.NodeType != Client {
+				log.Infof("Attempt to connect to:%s\n", peerInfo.Address)
+				p.ConnectTo(peerInfo.Address)
+			}
+
+>>>>>>> 1a5381d06e23cc8e00aa0bc8b98e07eae11ccdf8
 		}
 	}
 }
