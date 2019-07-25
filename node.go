@@ -304,33 +304,9 @@ func randomPort() (int, error) {
 	return port, nil
 }
 
-<<<<<<< HEAD
-// MessageCenter for peer node
-func (p *PeerNode) MessageCenter() {
-	queue := Bus.TestQueue.Chan()
-	for {
-		select {
-		case item := <-queue:
-			if item.Command == "peer" {
-				newAddr := string(item.Parameters[0])
-				log.Infof("BUS RECIEVE Peer  %s\n", newAddr)
-				if p.IsSameNode(newAddr) {
-					log.Warnf("p has the same address with new address \n")
-				}
-				maddr, err := multiaddr.NewMultiaddr(newAddr)
-				if err != nil {
-					log.Error(err.Error())
-					break
-				}
-				if p.IsPeerExisted(maddr) {
-					log.Warnf("p has  the peer \n")
-				}
-				//go p.ConnectTo(string(item.Parameters[0]))
-			}
-=======
 //BusReciever recieve message from other component
 func (p *PeerNode) BusReciever(shutdown <-chan struct{}) {
-	queue := Bus.TestQueue.Chan()
+	queue := Bus.Broadcast.Chan(-1)
 
 	for {
 		select {
@@ -353,7 +329,6 @@ func (p *PeerNode) BusReciever(shutdown <-chan struct{}) {
 				p.ConnectTo(peerInfo.Address)
 			}
 
->>>>>>> 1a5381d06e23cc8e00aa0bc8b98e07eae11ccdf8
 		}
 	}
 }

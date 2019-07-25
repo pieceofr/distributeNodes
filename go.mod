@@ -14,5 +14,6 @@ require (
 	github.com/stretchr/testify v1.3.0
 	github.com/yuin/gluamapper v0.0.0-20150323120927-d836955830e7
 	github.com/yuin/gopher-lua v0.0.0-20190514113301-1cd887cd7036
+	golang.org/x/crypto v0.0.0-20190618222545-ea8f1a30c443
 	golang.org/x/tools v0.0.0-20190226205152-f727befe758c
 )

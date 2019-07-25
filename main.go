@@ -27,7 +27,6 @@ func main() {
 		panic(fmt.Sprintf("logger initialization failed: %s", err))
 	}
 	log = logger.New("nodes")
-	go theNode.MessageCenter()
 	//Initialize messagebus
 	messagebusInit()
 	// Initialize a peer node

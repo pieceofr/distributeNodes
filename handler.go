@@ -55,15 +55,6 @@ func (h *NodeStreamHandler) Reciever() error {
 	for {
 		str, err := h.ReadWriter.ReadString('\n')
 		if err != nil {
-<<<<<<< HEAD
-			log.Errorf("Read buff error:%s\n", err.Error())
-			break
-		}
-		header, content, err := h.MessageParser(str)
-		if err != nil {
-			log.Errorf("MessageParser error : %s\n", err.Error())
-			break
-=======
 			log.Error(err.Error())
 			time.Sleep(1 * time.Second)
 			continue
@@ -73,20 +64,10 @@ func (h *NodeStreamHandler) Reciever() error {
 			log.Error(err.Error())
 			time.Sleep(1 * time.Second)
 			continue
->>>>>>> 1a5381d06e23cc8e00aa0bc8b98e07eae11ccdf8
 		}
-		var peerInfo NodeInfoMessage
+
 		switch header {
 		case "peer":
-<<<<<<< HEAD
-			err := json.Unmarshal([]byte(content), &peerInfo)
-			if err != nil {
-				log.Error(errMessageFormat.Error())
-				break
-			}
-			log.Debugf("peer message recieved:%s\n", peerInfo.Address)
-			Bus.TestQueue.Send("peer", []byte(peerInfo.Address))
-=======
 			var peerInfo NodeInfoMessage
 			err := peerInfo.Unmarshal([]byte(content))
 			if err != nil {
@@ -94,10 +75,9 @@ func (h *NodeStreamHandler) Reciever() error {
 				time.Sleep(1 * time.Second)
 				continue
 			}
-			log.Infof("RECIEVE form %v", peerInfo.Address[len(peerInfo.Address)-10:len(peerInfo.Address)-1])
+			log.Infof("RECIEVE From %v", peerInfo.Address[len(peerInfo.Address)-10:len(peerInfo.Address)-1])
 			Bus.TestQueue.Send("peer", []byte(fmt.Sprintf("%v", peerInfo.NodeType)), []byte(peerInfo.PublicKey), []byte(peerInfo.Address))
 
->>>>>>> 1a5381d06e23cc8e00aa0bc8b98e07eae11ccdf8
 		default:
 			log.Error(errMessageFormat.Error())
 		}
@@ -110,31 +90,35 @@ func (h *NodeStreamHandler) Reciever() error {
 func (h *NodeStreamHandler) Sender(shutdown <-chan struct{}) {
 	queue := Bus.Broadcast.Chan(-1)
 	cycleTimer := time.After(cycleInterval)
-
+	shortPubkey := h.NodeInfoMessage.PublicKey[len(h.NodeInfoMessage.PublicKey)-10 : len(h.NodeInfoMessage.PublicKey)-1]
 	for {
-<<<<<<< HEAD
-		message, err := h.MessageComposer(HeaderAnnounceSelf, h.NodeInfo.String())
-		if err != nil {
-=======
 		select {
 		case <-shutdown:
->>>>>>> 1a5381d06e23cc8e00aa0bc8b98e07eae11ccdf8
 			break
 
 		case <-cycleTimer:
-			log.Info("timeUp")
-			info, err := h.NodeInfoMessage.Marshal()
-			if err != nil {
-				time.Sleep(10 * time.Second)
-				continue
+			cycleTimer = time.After(cycleInterval)
+			if h.NodeInfoMessage.NodeType != Client {
+				info, err := h.NodeInfoMessage.Marshal()
+				if err != nil {
+					log.Errorf("Marshal Error:%s\n", err)
+					time.Sleep(5 * time.Second)
+					continue
+				}
+				message, err := h.MessageComposer(HeaderAnnounceSelf, string(info))
+				if err != nil {
+					log.Errorf("MessageComposer Error:%s\n", err)
+					time.Sleep(5 * time.Second)
+					continue
+				}
+				h.ReadWriter.WriteString(fmt.Sprintf("%s\n", message))
+				h.ReadWriter.Flush()
+				log.Infof("Timeup PEER is Servant:%s type:%d\n", shortPubkey, h.NodeInfoMessage.NodeType)
+
+			} else {
+				log.Infof("Timeup PEER is Client:%s type:%d\n", shortPubkey, h.NodeInfoMessage.NodeType)
 			}
-			message, err := h.MessageComposer(HeaderAnnounceSelf, string(info))
-			if err != nil {
-				time.Sleep(10 * time.Second)
-				continue
-			}
-			h.ReadWriter.WriteString(fmt.Sprintf("%s\n", message))
-			h.ReadWriter.Flush()
+
 		case item := <-queue:
 			switch item.Command {
 			case "peer":
@@ -161,18 +145,9 @@ func (h *NodeStreamHandler) Sender(shutdown <-chan struct{}) {
 				h.ReadWriter.Flush()
 			}
 		}
-<<<<<<< HEAD
-		if h.NodeInfo.NodeType != Client {
-			h.ReadWriter.WriteString(fmt.Sprintf("%s\n", message))
-			h.ReadWriter.Flush()
-			log.Infof("Sender SEND: %s\n", fmt.Sprintf("%s\n", message))
-		}
-		time.Sleep(5 * time.Second)
-=======
 
 		//log.Infof("NodeType:%v Sender  %s SEND", h.NodeInfoMessage, h.NodeInfoMessage.PublicKey[len(h.NodeInfoMessage.PublicKey)-10:len(h.NodeInfoMessage.PublicKey)-1])
 		time.Sleep(10 * time.Second)
->>>>>>> 1a5381d06e23cc8e00aa0bc8b98e07eae11ccdf8
 	}
 }
 
