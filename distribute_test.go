@@ -34,14 +34,6 @@ func TestMain(m *testing.M) {
 	messagebusInit()
 	os.Exit(m.Run())
 }
-
-func TestNodeInfoMessage(t *testing.T) {
-	info := NodeInfoMessage{
-		NodeType:  Servant,
-		Publickey: "PublickKey",
-		Address:   "/ip4/127.0.0.1/tcp/12136/p2p/QmdBNQhudua6rWxHy6MY7Z6ciNMBePhjCAx2YHfmupGR15"
-	}
-}
 func TestMessagebus(t *testing.T) {
 	Bus.TestQueue.Send("peer")
 	queue := Bus.TestQueue.Chan()
@@ -139,10 +131,12 @@ func TestSaveLoadPrivateKey(t *testing.T) {
 
 }
 
-func TestClientConnect(t *testing.T) {
+func TestPeersStore(t *testing.T) {
+	log.Warn("===== Start TestPeersStore ======")
 	var servantCfg config
 	var servantNode PeerNode
-	path := filepath.Join(os.Getenv("PWD"), "testing", "servant", "servant.conf")
+	//path := filepath.Join(os.Getenv("PWD"), "testing", "servant", "servant.conf")
+	path := filepath.Join(os.Getenv("PWD"), "servant.conf")
 	err := ParseConfigurationFile(path, &servantCfg)
 	assert.NoError(t, err, "Parse servant Configuration file error")
 	err = servantNode.Init(servantCfg)
@@ -150,11 +144,28 @@ func TestClientConnect(t *testing.T) {
 
 	time.Sleep(3 * time.Second)
 	var clientConfig config
-	var clientNode PeerNode
-	pathClient := filepath.Join(os.Getenv("PWD"), "testing", "client", "client1.conf")
-	err = ParseConfigurationFile(pathClient, &clientConfig)
+	var clientNode1 PeerNode
+	pathClient1 := filepath.Join(os.Getenv("PWD"), "testing", "client", "client1.conf")
+	err = ParseConfigurationFile(pathClient1, &clientConfig)
 	assert.NoError(t, err, "Parse client Configuration file error")
-	clientNode.Init(clientConfig)
+	clientNode1.Init(clientConfig)
 	assert.NoError(t, err, "Init client node error")
+
+	time.Sleep(3 * time.Second)
+	var clientNode2 PeerNode
+	pathClient2 := filepath.Join(os.Getenv("PWD"), "testing", "client", "client2.conf")
+	err = ParseConfigurationFile(pathClient2, &clientConfig)
+	assert.NoError(t, err, "Parse client Configuration file error")
+	clientNode2.Init(clientConfig)
+	assert.NoError(t, err, "Init client node error")
+	log.Infof("PeerStore:%v\n", servantNode.Host.Peerstore().Peers().Len())
+
+	for _, val := range servantNode.Host.Peerstore().Peers() {
+		log.Infof("SERVANT:%v STORE Peer:%v\n", servantNode.Host.ID(), val)
+	}
+
+	for _, val := range clientNode1.Host.Peerstore().Peers() {
+		log.Infof("CLIENT:%v STORE Peer:%v\n", clientNode1.Host.ID(), val)
+	}
 
 }

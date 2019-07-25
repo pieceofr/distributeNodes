@@ -81,12 +81,8 @@ func (p *PeerNode) Init(cfg config) error {
 		}
 		p.Host = newHost
 	}
-	pubKeyStr, err := p.Identity.MarshalPublicKey()
-	if err != nil {
-		return err
-	}
 
-	p.NodeInfo = NodeInfoMessage{NodeType: p.NodeType, PublicKey: pubKeyStr, Address: fmt.Sprintf("/ip4/%s/tcp/%v/p2p/%s", p.PublicIP, p.Port, p.Host.ID().Pretty())}
+	p.NodeInfo = NodeInfoMessage{NodeType: p.NodeType, ID: fmt.Sprintf("%v", p.Host.ID()), Address: fmt.Sprintf("/ip4/%s/tcp/%v/p2p/%s", p.PublicIP, p.Port, p.Host.ID().Pretty())}
 	log.Infof("NodeAddress:%s\n", p.NodeInfo.Address)
 
 	if Servant == p.NodeType || Server == p.NodeType {
@@ -306,7 +302,7 @@ func randomPort() (int, error) {
 
 //BusReciever recieve message from other component
 func (p *PeerNode) BusReciever(shutdown <-chan struct{}) {
-	queue := Bus.Broadcast.Chan(-1)
+	queue := Bus.TestQueue.Chan()
 
 	for {
 		select {
@@ -320,7 +316,7 @@ func (p *PeerNode) BusReciever(shutdown <-chan struct{}) {
 				continue
 			}
 			peerInfo.NodeType = NodeType(nType)
-			peerInfo.PublicKey = string(item.Parameters[1])
+			peerInfo.ID = string(item.Parameters[1])
 			peerInfo.Address = string(item.Parameters[2])
 
 			log.Infof("from queue: %q  %s\n", item.Command, peerInfo.Address)

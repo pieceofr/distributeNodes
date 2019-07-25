@@ -76,7 +76,7 @@ func (h *NodeStreamHandler) Reciever() error {
 				continue
 			}
 			log.Infof("RECIEVE From %v", peerInfo.Address[len(peerInfo.Address)-10:len(peerInfo.Address)-1])
-			Bus.TestQueue.Send("peer", []byte(fmt.Sprintf("%v", peerInfo.NodeType)), []byte(peerInfo.PublicKey), []byte(peerInfo.Address))
+			Bus.TestQueue.Send("peer", []byte(fmt.Sprintf("%v", peerInfo.NodeType)), []byte(peerInfo.ID), []byte(peerInfo.Address))
 
 		default:
 			log.Error(errMessageFormat.Error())
@@ -90,7 +90,6 @@ func (h *NodeStreamHandler) Reciever() error {
 func (h *NodeStreamHandler) Sender(shutdown <-chan struct{}) {
 	queue := Bus.Broadcast.Chan(-1)
 	cycleTimer := time.After(cycleInterval)
-	shortPubkey := h.NodeInfoMessage.PublicKey[len(h.NodeInfoMessage.PublicKey)-10 : len(h.NodeInfoMessage.PublicKey)-1]
 	for {
 		select {
 		case <-shutdown:
@@ -113,10 +112,10 @@ func (h *NodeStreamHandler) Sender(shutdown <-chan struct{}) {
 				}
 				h.ReadWriter.WriteString(fmt.Sprintf("%s\n", message))
 				h.ReadWriter.Flush()
-				log.Infof("Timeup PEER is Servant:%s type:%d\n", shortPubkey, h.NodeInfoMessage.NodeType)
+				log.Infof("Timeup PEER is Servant:%s type:%d\n", shortID(h.NodeInfoMessage.ID), h.NodeInfoMessage.NodeType)
 
 			} else {
-				log.Infof("Timeup PEER is Client:%s type:%d\n", shortPubkey, h.NodeInfoMessage.NodeType)
+				log.Infof("Timeup PEER is Client:%s type:%d\n", shortID(h.NodeInfoMessage.ID), h.NodeInfoMessage.NodeType)
 			}
 
 		case item := <-queue:
@@ -129,7 +128,7 @@ func (h *NodeStreamHandler) Sender(shutdown <-chan struct{}) {
 					continue
 				}
 				peerInfo.NodeType = NodeType(nType)
-				peerInfo.PublicKey = string(item.Parameters[1])
+				peerInfo.ID = string(item.Parameters[1])
 				peerInfo.Address = string(item.Parameters[2])
 				infoOut, err := peerInfo.Marshal()
 				if err != nil {
