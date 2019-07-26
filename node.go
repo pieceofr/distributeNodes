@@ -13,6 +13,7 @@ import (
 
 	"github.com/libp2p/go-libp2p"
 	libp2pcore "github.com/libp2p/go-libp2p-core"
+	"github.com/libp2p/go-libp2p-core/network"
 	"github.com/libp2p/go-libp2p-core/peer"
 	peerstore "github.com/libp2p/go-libp2p-peerstore"
 	"github.com/multiformats/go-multiaddr"
@@ -152,6 +153,7 @@ func (p *PeerNode) NewHost() error {
 	// 0.0.0.0 will listen on any interface device.
 	sourceMultiAddr, err := multiaddr.NewMultiaddr(fmt.Sprintf("/ip4/%s/tcp/%s", "0.0.0.0", p.Port))
 	if err != nil {
+		log.Error(err.Error())
 		return err
 	}
 	newHost, err := libp2p.New(
@@ -162,6 +164,10 @@ func (p *PeerNode) NewHost() error {
 	if err != nil {
 		return err
 	}
+	for _, a := range newHost.Addrs() {
+		log.Infof("New Host Address: %s/%v/%s\n", a, "p2p", peer.IDB58Encode(newHost.ID()))
+	}
+
 	p.Host = newHost
 	return nil
 }
@@ -179,8 +185,9 @@ func (p *PeerNode) Listen() error {
 		if _, err := la.ValueForProtocol(multiaddr.P_TCP); err == nil {
 			return err
 		}
-		log.Infof("Listen port:%s", p.Port)
-		log.Infof("Run './chat -d /ip4/%s/tcp/%v/p2p/%s' on another console.\n", p.PublicIP, p.Port, p.Host.ID().Pretty())
+		log.Infof("LISTEN ON ===")
+		log.Infof("/ip4/%s/tcp/%v/%v/%s' on another console.\n", p.PublicIP, p.Port, "p2p", p.Host.ID().Pretty())
+		log.Infof("%s\n", la.String())
 		log.Info("\nWaiting for incoming connection\n\n")
 	}
 	<-make(chan struct{})
@@ -231,17 +238,26 @@ func (p *PeerNode) ConnectTo(address string) error {
 	log.Debugf("Connecting .... ID:%s, address:%s TTL:%d", info.ID.String(), info.Addrs[0].String(), peerstore.PermanentAddrTTL)
 	// Add the destination's peer multiaddress in the peerstore.
 	// This will be used during connection and stream creation by libp2p.
-	p.Host.Peerstore().AddAddrs(info.ID, info.Addrs, peerstore.PermanentAddrTTL)
 	if p.IsPeerExisted(maddr) {
+		if p.Host.Network().Connectedness(info.ID) != network.Connected {
+			fmt.Printf("Found %s!\n", shortID(info.ID.String()))
+			connectErr := p.Host.Connect(context.Background(), *info)
+			if connectErr != nil {
+				log.Errorf("RECONNECT Stream Error:%v", ErrCombind(errReconnectStream, connectErr))
+				return ErrCombind(errReconnectStream, connectErr)
+			}
+		}
 		return errPeerHasInPeerStore
 	}
+	p.Host.Peerstore().AddAddrs(info.ID, info.Addrs, peerstore.PermanentAddrTTL)
 	// Start a stream with the destination.
 	// Multiaddress of the destination peer is fetched from the peerstore using 'peerId'.
 	s, err := p.Host.NewStream(context.Background(), info.ID, "/p2p/1.0.0")
-
 	if err != nil {
 		return err
 	}
+
+	log.Infof("NEW STREAM ID:%s, address:%s TTL:%d", info.ID.String(), info.Addrs[0].String(), peerstore.PermanentAddrTTL)
 	var handleStream NodeStreamHandler
 	handleStream.Setup(p.NodeInfo)
 	handleStream.Handler(s)
@@ -254,6 +270,7 @@ func (p *PeerNode) IsPeerExisted(newAddr multiaddr.Multiaddr) bool {
 	for _, ID := range p.Host.Peerstore().Peers() {
 		for _, addr := range p.Host.Peerstore().PeerInfo(ID).Addrs {
 			if addr.Equal(newAddr) {
+				log.Warn("Peer is in PeerStore")
 				return true
 			}
 		}
@@ -321,8 +338,7 @@ func (p *PeerNode) BusReciever(shutdown <-chan struct{}) {
 
 			log.Infof("from queue: %q  %s\n", item.Command, peerInfo.Address)
 			if peerInfo.NodeType != Client {
-				log.Infof("Attempt to connect to:%s\n", peerInfo.Address)
-				p.ConnectTo(peerInfo.Address)
+				go p.ConnectTo(peerInfo.Address)
 			}
 
 		}

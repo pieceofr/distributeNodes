@@ -9,6 +9,7 @@ type NodeInfoMessage struct {
 	NodeType `json:"nodeType"`
 	Address  string `json:"address"`
 	ID       string `json:"id"`
+	Extra    string
 }
 
 //Marshal  convert NodeInfoMessage to []byte

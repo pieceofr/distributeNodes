@@ -9,6 +9,7 @@ var (
 	errSameNode           = errors.New("The Same Peer Node")
 	errMessageFormat      = errors.New("Message Format Is Invalid")
 	errPeerHasInPeerStore = errors.New("peer has in the peer store")
+	errReconnectStream    = errors.New("Stream Recconect Fail")
 )
 
 //ErrCombind all Errors together

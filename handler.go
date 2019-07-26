@@ -16,7 +16,7 @@ const (
 	MessageSeperator = "::"
 	//HeaderAnnounceSelf s the header to announce self
 	HeaderAnnounceSelf = "peer"
-	cycleInterval      = 5 * time.Second
+	cycleInterval      = 10 * time.Second
 )
 
 //BiStreamHandler Bidirectional  StreamHandler
@@ -75,7 +75,7 @@ func (h *NodeStreamHandler) Reciever() error {
 				time.Sleep(1 * time.Second)
 				continue
 			}
-			log.Infof("RECIEVE From %v", peerInfo.Address[len(peerInfo.Address)-10:len(peerInfo.Address)-1])
+			log.Infof("RECIEVE From %v Extra:%v", shortID(peerInfo.ID), peerInfo.Extra)
 			Bus.TestQueue.Send("peer", []byte(fmt.Sprintf("%v", peerInfo.NodeType)), []byte(peerInfo.ID), []byte(peerInfo.Address))
 
 		default:
@@ -98,6 +98,7 @@ func (h *NodeStreamHandler) Sender(shutdown <-chan struct{}) {
 		case <-cycleTimer:
 			cycleTimer = time.After(cycleInterval)
 			if h.NodeInfoMessage.NodeType != Client {
+				h.NodeInfoMessage.Extra = time.Now().UTC().String()
 				info, err := h.NodeInfoMessage.Marshal()
 				if err != nil {
 					log.Errorf("Marshal Error:%s\n", err)
@@ -112,10 +113,7 @@ func (h *NodeStreamHandler) Sender(shutdown <-chan struct{}) {
 				}
 				h.ReadWriter.WriteString(fmt.Sprintf("%s\n", message))
 				h.ReadWriter.Flush()
-				log.Infof("Timeup PEER is Servant:%s type:%d\n", shortID(h.NodeInfoMessage.ID), h.NodeInfoMessage.NodeType)
-
-			} else {
-				log.Infof("Timeup PEER is Client:%s type:%d\n", shortID(h.NodeInfoMessage.ID), h.NodeInfoMessage.NodeType)
+				log.Debugf("Broadcasting Self ID:%s type:%d\n", shortID(h.NodeInfoMessage.ID), h.NodeInfoMessage.NodeType)
 			}
 
 		case item := <-queue:
