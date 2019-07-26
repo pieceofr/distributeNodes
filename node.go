@@ -238,13 +238,20 @@ func (p *PeerNode) ConnectTo(address string) error {
 	log.Debugf("Connecting .... ID:%s, address:%s TTL:%d", info.ID.String(), info.Addrs[0].String(), peerstore.PermanentAddrTTL)
 	// Add the destination's peer multiaddress in the peerstore.
 	// This will be used during connection and stream creation by libp2p.
-	if p.IsPeerExisted(maddr) {
+
+	shortAddr, err := multiaddr.NewMultiaddr(addrToConnAddr(address))
+	if err != nil {
+		log.Error(err.Error())
+		return err
+	}
+	if p.IsPeerExisted(shortAddr) {
 		if p.Host.Network().Connectedness(info.ID) != network.Connected {
-			fmt.Printf("Found %s!\n", shortID(info.ID.String()))
 			connectErr := p.Host.Connect(context.Background(), *info)
 			if connectErr != nil {
 				log.Errorf("RECONNECT Stream Error:%v", ErrCombind(errReconnectStream, connectErr))
 				return ErrCombind(errReconnectStream, connectErr)
+			} else {
+				log.Infof("ID %s  is not CONNECTED!\n", shortID(info.ID.String()))
 			}
 		}
 		return errPeerHasInPeerStore
@@ -269,6 +276,7 @@ func (p *PeerNode) ConnectTo(address string) error {
 func (p *PeerNode) IsPeerExisted(newAddr multiaddr.Multiaddr) bool {
 	for _, ID := range p.Host.Peerstore().Peers() {
 		for _, addr := range p.Host.Peerstore().PeerInfo(ID).Addrs {
+			log.Debugf("peers in PeerStore:%s     NewAddress:%s\n", addr.String(), newAddr.String())
 			if addr.Equal(newAddr) {
 				log.Warn("Peer is in PeerStore")
 				return true

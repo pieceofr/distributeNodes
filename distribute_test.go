@@ -34,6 +34,12 @@ func TestMain(m *testing.M) {
 	messagebusInit()
 	os.Exit(m.Run())
 }
+
+func TestParseToConnAddr(t *testing.T) {
+	address := "/ip4/127.0.0.1/tcp/12136/p2p/QmdBNQhudua6rWxHy6MY7Z6ciNMBePhjCAx2YHfmupGR15"
+	connAddr := addrToConnAddr(address)
+	assert.Equal(t, connAddr, "/ip4/127.0.0.1/tcp/12136", "Parse Conn Address Error")
+}
 func TestMessagebus(t *testing.T) {
 	Bus.TestQueue.Send("peer")
 	queue := Bus.TestQueue.Chan()
