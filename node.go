@@ -357,7 +357,7 @@ func (p *PeerNode) BusReciever(shutdown <-chan struct{}) {
 				go p.ConnectTo(peerInfo.Address)
 				//go p.SendToPeers(blacklist multiaddr.Multiaddr)
 				log.Info("Broadcating SEND to RECIEVER")
-				Bus.Broadcast.Send("peer", []byte(fmt.Sprintf("%v", peerInfo.NodeType)), []byte(peerInfo.ID), []byte(peerInfo.Address))
+				go Bus.Broadcast.Send("peer", []byte(fmt.Sprintf("%v", peerInfo.NodeType)), []byte(peerInfo.ID), []byte(peerInfo.Address))
 			}
 
 		}
