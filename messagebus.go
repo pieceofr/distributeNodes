@@ -97,7 +97,7 @@ func messagebusInit() {
 
 		case reflect.TypeOf((*BroadcastQueue)(nil)):
 			q := &BroadcastQueue{
-				out:         make([]chan Message, 0, 10),
+				out:         make([]chan Message, 0, 100),
 				defaultSize: queueSize,
 				cache:       make(map[signature]struct{}),
 			}

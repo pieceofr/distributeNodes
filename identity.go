@@ -92,6 +92,5 @@ func (i *Identity) UnmarshalPublicKey(pubKey string) (crypto.PubKey, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	return unmarshalKey, nil
 }
