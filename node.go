@@ -2,13 +2,10 @@ package main
 
 import (
 	"context"
-	"crypto/rand"
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"math"
 	"strconv"
-	"strings"
 	"sync"
 	"time"
 
@@ -193,6 +190,7 @@ func (p *PeerNode) Listen() error {
 		return errors.New("NoHost")
 	}
 	var handleStream NodeStreamHandler
+	handleStream.HandlerType = ListenerHander
 	p.Mutex.Lock()
 	p.Handlers = append(p.Handlers, handleStream)
 	handleStream.Setup(len(p.Handlers), p.NodeInfo)
@@ -289,6 +287,7 @@ func (p *PeerNode) ConnectTo(address string) error {
 	p.Streams = append(p.Streams, s)
 	log.Infof("NEW STREAM ID:%s, address:%s TTL:%d", info.ID.String(), info.Addrs[0].String(), peerstore.PermanentAddrTTL)
 	var handleStream NodeStreamHandler
+	handleStream.HandlerType = ClientHandler
 	p.Mutex.Lock()
 	p.Handlers = append(p.Handlers, handleStream)
 	handleStream.Setup(len(p.Handlers), p.NodeInfo)
@@ -296,20 +295,6 @@ func (p *PeerNode) ConnectTo(address string) error {
 	handleStream.Handler(s)
 	<-make(chan struct{})
 	return nil
-}
-
-//IsPeerExisted peer is existed in the Peerstore
-func (p *PeerNode) IsPeerExisted(newAddr multiaddr.Multiaddr) bool {
-	for _, ID := range p.Host.Peerstore().Peers() {
-		for _, addr := range p.Host.Peerstore().PeerInfo(ID).Addrs {
-			//	log.Debugf("peers in PeerStore:%s     NewAddress:%s\n", addr.String(), newAddr.String())
-			if addr.Equal(newAddr) {
-				log.Info("Peer is in PeerStore")
-				return true
-			}
-		}
-	}
-	return false
 }
 
 //Reset is to close a peer node
@@ -323,32 +308,6 @@ func (p *PeerNode) Reset() {
 		p.Host.Close()
 	}
 	log.Warn("Reset Peer Node")
-}
-
-//IsSameNode check if provided address has the same ip and port with peerNode
-func (p *PeerNode) IsSameNode(addr string) bool {
-	elems := strings.Split(addr, "/")
-	if elems[2] != "" && elems[2] == p.PublicIP {
-		if elems[4] == p.Port {
-			//	log.Debugf("addr[2]:%s  p.Public:%s   elemes[4]:%s p.Port:%s", elems[2], p.PublicIP, elems[4], p.Port)
-			return true
-		}
-	}
-	return false
-}
-
-func randomPort() (int, error) {
-	// Bitmark Open Port from 12130-12150
-	// 12130-12136 reserve for servant node
-	// random port open from 12137 - 12150
-	b := make([]byte, 1)
-	_, err := rand.Read(b)
-	if err != nil {
-		fmt.Println("error:", err)
-		return 0, err
-	}
-	port := 12137 + int(math.Mod(float64(b[0]), float64(13)))
-	return port, nil
 }
 
 //BusReciever recieve message from other component
@@ -383,7 +342,6 @@ func (p *PeerNode) BusReciever(shutdown <-chan struct{}) {
 					log.Info("Help Peers Broadcasting")
 					Bus.Broadcast.Send("peer", []byte(fmt.Sprintf("%v", peerInfo.NodeType)), []byte(peerInfo.ID), []byte(peerInfo.Address), []byte(peerInfo.Extra))
 				}
-
 				//Bus.Broadcast.Send("testing", []byte(fmt.Sprintf("%v", time.Now())))
 			}
 

@@ -19,8 +19,22 @@ const (
 	cycleInterval      = 10 * time.Second
 )
 
+//HandlerType type of Client:0 Listener:1
+type HandlerType int
+
+const (
+	//ClientHandler handler
+	ClientHandler HandlerType = iota
+	//ListenerHander acts as a client only
+	ListenerHander
+)
+
+// PeerWriters write to current Stream
+var PeerWriters []*bufio.ReadWriter
+
 //NodeStreamHandler for  node to handle stream
 type NodeStreamHandler struct {
+	HandlerType
 	Stream     network.Stream
 	ReadWriter *bufio.ReadWriter
 	NodeInfoMessage
@@ -42,6 +56,7 @@ func (h *NodeStreamHandler) Handler(s network.Stream) {
 	h.ReadWriter = bufio.NewReadWriter(bufio.NewReader(s), bufio.NewWriter(s))
 	shutdown := make(chan struct{})
 	h.Shutdown = shutdown
+	PeerWriters = append(PeerWriters, h.ReadWriter)
 	go h.Reciever()
 	go h.Sender(shutdown)
 }
@@ -133,9 +148,17 @@ func (h *NodeStreamHandler) Sender(shutdown <-chan struct{}) {
 					time.Sleep(5 * time.Second)
 					continue
 				}
+
 				h.ReadWriter.WriteString(fmt.Sprintf("%s\n", message))
 				h.ReadWriter.Flush()
-				log.Debugf("Handler: %d Broadcasting Self ID:%s type:%d\n", h.ID, shortID(h.NodeInfoMessage.ID), h.NodeInfoMessage.NodeType)
+				log.Infof("Handler: %d Broadcasting Self ID:%s type:%d\n", h.ID, shortID(h.NodeInfoMessage.ID), h.NodeInfoMessage.NodeType)
+
+				for _, peerWriter := range PeerWriters {
+					peerWriter.WriteString(fmt.Sprintf("%s\n", message))
+					peerWriter.Flush()
+					log.Infof("PeerHandler: %d Broadcasting Self ID:%s type:%d\n", h.ID, shortID(h.NodeInfoMessage.ID), h.NodeInfoMessage.NodeType)
+				}
+
 			}
 		}
 		//log.Infof("NodeType:%v Sender  %s SEND", h.NodeInfoMessage, h.NodeInfoMessage.PublicKey[len(h.NodeInfoMessage.PublicKey)-10:len(h.NodeInfoMessage.PublicKey)-1])
