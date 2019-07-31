@@ -19,29 +19,25 @@ const (
 	cycleInterval      = 10 * time.Second
 )
 
-//BiStreamHandler Bidirectional  StreamHandler
-type BiStreamHandler interface {
-	Handler(s network.Stream)
-	Reciever() error
-	Sender() error
-}
-
 //NodeStreamHandler for  node to handle stream
 type NodeStreamHandler struct {
 	Stream     network.Stream
 	ReadWriter *bufio.ReadWriter
 	NodeInfoMessage
+	ID       int
 	Shutdown chan<- struct{}
 }
 
 //Setup setup Handler
-func (h *NodeStreamHandler) Setup(info NodeInfoMessage) {
+func (h *NodeStreamHandler) Setup(id int, info NodeInfoMessage) {
+	h.ID = id
 	h.NodeInfoMessage = info
+	log.Infof("New Stream Handler:%d\n\n", id)
 }
 
 // Handler  for streamHandler
 func (h *NodeStreamHandler) Handler(s network.Stream) {
-	log.Infof("Start a new stream! direction:%d\n", s.Stat().Direction)
+	log.Infof("Start a new stream! ID:%d  direction:%d\n", h.ID, s.Stat().Direction)
 	h.Stream = s
 	h.ReadWriter = bufio.NewReadWriter(bufio.NewReader(s), bufio.NewWriter(s))
 	shutdown := make(chan struct{})
@@ -51,7 +47,7 @@ func (h *NodeStreamHandler) Handler(s network.Stream) {
 }
 
 //Reciever for NodeStreamHandler
-func (h *NodeStreamHandler) Reciever() error {
+func (h *NodeStreamHandler) Reciever() {
 	for {
 		str, err := h.ReadWriter.ReadString('\n')
 		if err != nil {
@@ -75,14 +71,12 @@ func (h *NodeStreamHandler) Reciever() error {
 				time.Sleep(1 * time.Second)
 				continue
 			}
-			log.Infof("RECIEVE From %v Extra:%v", shortID(peerInfo.ID), peerInfo.Extra)
-			Bus.TestQueue.Send("peer", []byte(fmt.Sprintf("%v", peerInfo.NodeType)), []byte(peerInfo.ID), []byte(peerInfo.Address))
+			log.Infof("Handler: %d RECIEVE From %v Extra:%v", h.ID, shortID(peerInfo.ID), peerInfo.Extra)
+			Bus.TestQueue.Send("peer", []byte(fmt.Sprintf("%v", peerInfo.NodeType)), []byte(peerInfo.ID), []byte(peerInfo.Address), []byte(peerInfo.Extra))
 		default:
 			log.Error(errMessageFormat.Error())
 		}
-		time.Sleep(2 * time.Second)
 	}
-	return nil
 }
 
 //Sender for NodeStreamHandler
@@ -95,6 +89,8 @@ func (h *NodeStreamHandler) Sender(shutdown <-chan struct{}) {
 			break
 		case item := <-queue:
 			switch item.Command {
+			case "testing":
+				log.Infof("#Handler: %d Recieve Broadcasting Message\n", h.ID)
 			case "peer":
 				var peerInfo NodeInfoMessage
 				nType, err := strconv.Atoi(string(item.Parameters[0]))
@@ -105,7 +101,8 @@ func (h *NodeStreamHandler) Sender(shutdown <-chan struct{}) {
 				peerInfo.NodeType = NodeType(nType)
 				peerInfo.ID = string(item.Parameters[1])
 				peerInfo.Address = string(item.Parameters[2])
-				peerInfo.Extra = time.Now().UTC().String()
+				//peerInfo.Extra = fmt.Sprintf("%v", time.Now())
+				peerInfo.Extra = string(item.Parameters[3])
 				infoOut, err := peerInfo.Marshal()
 				if err != nil {
 					log.Error(err.Error())
@@ -116,7 +113,7 @@ func (h *NodeStreamHandler) Sender(shutdown <-chan struct{}) {
 					time.Sleep(10 * time.Second)
 					continue
 				}
-				log.Infof("Broadcasting Item Send: %s \n", message)
+				log.Infof("##Handler: %d Send Peers Announce:%s\n", h.ID, message)
 				h.ReadWriter.WriteString(fmt.Sprintf("%s\n", message))
 				h.ReadWriter.Flush()
 			}
@@ -138,11 +135,11 @@ func (h *NodeStreamHandler) Sender(shutdown <-chan struct{}) {
 				}
 				h.ReadWriter.WriteString(fmt.Sprintf("%s\n", message))
 				h.ReadWriter.Flush()
-				log.Debugf("Broadcasting Self ID:%s type:%d\n", shortID(h.NodeInfoMessage.ID), h.NodeInfoMessage.NodeType)
+				log.Debugf("Handler: %d Broadcasting Self ID:%s type:%d\n", h.ID, shortID(h.NodeInfoMessage.ID), h.NodeInfoMessage.NodeType)
 			}
 		}
 		//log.Infof("NodeType:%v Sender  %s SEND", h.NodeInfoMessage, h.NodeInfoMessage.PublicKey[len(h.NodeInfoMessage.PublicKey)-10:len(h.NodeInfoMessage.PublicKey)-1])
-		time.Sleep(10 * time.Second)
+		//time.Sleep(10 * time.Second)
 	}
 }
 

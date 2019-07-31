@@ -163,6 +163,7 @@ func (queue *BroadcastQueue) Send(command string, parameters ...[]byte) {
 	queue.Lock()
 	if _, ok := queue.cache[sum]; ok {
 		queue.Unlock()
+		log.Info("%%%Message Existed in Broadcasting Q")
 		return
 	}
 	queue.cache[sum] = struct{}{}
