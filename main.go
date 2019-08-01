@@ -5,15 +5,17 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"sync"
 	"time"
 
 	"github.com/bitmark-inc/logger"
 )
 
 var (
-	cfg     config
-	log     *logger.L
-	theNode PeerNode
+	cfg         config
+	log         *logger.L
+	theNode     PeerNode
+	globalMutex *sync.Mutex
 )
 
 func main() {
@@ -27,6 +29,7 @@ func main() {
 		panic(fmt.Sprintf("logger initialization failed: %s", err))
 	}
 	log = logger.New("nodes")
+	globalMutex = &sync.Mutex{}
 	//Initialize messagebus
 	messagebusInit()
 	// Initialize a peer node

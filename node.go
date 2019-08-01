@@ -34,6 +34,7 @@ const (
 var (
 	privateKeyFileName  = "peer.prv"
 	discoveryRetryTimes = 5
+	broadcastInterval   = 3 * time.Second
 )
 
 // PeerNode peer Node struct
@@ -313,10 +314,21 @@ func (p *PeerNode) Reset() {
 //BusReciever recieve message from other component
 func (p *PeerNode) BusReciever(shutdown <-chan struct{}) {
 	queue := Bus.TestQueue.Chan()
-
+	cycleTimer := time.After(broadcastInterval)
+	messageQ := make(map[string]NodeInfoMessage, 100)
 	for {
 		select {
 		case <-shutdown:
+			break
+		case <-cycleTimer:
+			cycleTimer = time.After(cycleInterval)
+			for _, val := range messageQ {
+				if !p.IsSameNode(val.Address) && p.NodeType != Client {
+					log.Info("--->Help Peers Broadcasting ")
+					val.Extra = fmt.Sprintf("%v", time.Now())
+					Bus.Broadcast.Send("peer", []byte(fmt.Sprintf("%v", val.NodeType)), []byte(val.ID), []byte(val.Address), []byte(val.Extra))
+				}
+			}
 			break
 		case item := <-queue:
 			if item.Command != "peer" {
@@ -332,16 +344,12 @@ func (p *PeerNode) BusReciever(shutdown <-chan struct{}) {
 			peerInfo.NodeType = NodeType(nType)
 			peerInfo.ID = string(item.Parameters[1])
 			peerInfo.Address = string(item.Parameters[2])
-			peerInfo.Extra = fmt.Sprintf("%v", time.Now())
-			//peerInfo.Extra = string(item.Parameters[3])
+			peerInfo.Extra = string(item.Parameters[3])
 
 			log.Infof("from queue: %q  %s\n", item.Command, peerInfo.Address)
 			if peerInfo.NodeType != Client {
 				go p.ConnectTo(peerInfo.Address)
-				if !p.IsSameNode(peerInfo.Address) && p.NodeType != Client {
-					log.Info("Help Peers Broadcasting")
-					Bus.Broadcast.Send("peer", []byte(fmt.Sprintf("%v", peerInfo.NodeType)), []byte(peerInfo.ID), []byte(peerInfo.Address), []byte(peerInfo.Extra))
-				}
+				messageQ[peerInfo.ID] = peerInfo
 				//Bus.Broadcast.Send("testing", []byte(fmt.Sprintf("%v", time.Now())))
 			}
 
