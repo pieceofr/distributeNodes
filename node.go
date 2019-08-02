@@ -84,6 +84,7 @@ func (p *PeerNode) Init(cfg config) error {
 		newHost, err := libp2p.New(
 			context.Background(),
 			libp2p.Identity(p.Identity.PrvKey),
+			libp2p.NATPortMap(),
 		)
 		if err != nil {
 			return err
@@ -173,6 +174,7 @@ func (p *PeerNode) NewHost() error {
 		libp2p.ListenAddrs(sourceMultiAddr),
 		libp2p.Identity(p.Identity.PrvKey),
 		libp2p.Peerstore(p.PeersListener),
+		libp2p.NATPortMap(),
 	)
 	if err != nil {
 		return err
