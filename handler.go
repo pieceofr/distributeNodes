@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	libp2pcore "github.com/libp2p/go-libp2p-core"
 	"github.com/libp2p/go-libp2p-core/network"
 )
 
@@ -35,6 +36,7 @@ var handlerNum int
 
 //NodeStreamHandler for  node to handle stream
 type NodeStreamHandler struct {
+	Host *libp2pcore.Host
 	HandlerType
 	Stream     network.Stream
 	ReadWriter *bufio.ReadWriter
@@ -44,7 +46,8 @@ type NodeStreamHandler struct {
 }
 
 //Setup setup Handler
-func (h *NodeStreamHandler) Setup(id int, info NodeInfoMessage) {
+func (h *NodeStreamHandler) Setup(id int, info NodeInfoMessage, host *libp2pcore.Host) {
+	h.Host = host
 	h.ID = id
 	h.NodeInfoMessage = info
 	log.Infof("New Stream Handler:%d\n\n", id)
@@ -68,6 +71,11 @@ func (h *NodeStreamHandler) Handler(s network.Stream) {
 //Reciever for NodeStreamHandler
 func (h *NodeStreamHandler) Reciever(ID, handleNum int) {
 	log.Infof("---Handler-%d-%d Reciever Start---", h.ID, handleNum)
+	em, err := (*h.Host).EventBus().Emitter(new(NodeInfoMessage))
+	if err != nil {
+		panic(err)
+	}
+	defer em.Close()
 	for {
 		str, err := h.ReadWriter.ReadString('\n')
 		if err != nil {
@@ -92,7 +100,11 @@ func (h *NodeStreamHandler) Reciever(ID, handleNum int) {
 				continue
 			}
 			log.Infof("READ -- Handler-%d-%d PeerInfo:%v Extra:%v", h.ID, handleNum, shortID(peerInfo.ID), peerInfo.Extra)
-			Bus.TestQueue.Send("peer", []byte(fmt.Sprintf("%v", peerInfo.NodeType)), []byte(peerInfo.ID), []byte(peerInfo.Address), []byte(peerInfo.Extra))
+			//Bus.TestQueue.Send("peer", []byte(fmt.Sprintf("%v", peerInfo.NodeType)), []byte(peerInfo.ID), []byte(peerInfo.Address), []byte(peerInfo.Extra))
+			em.Emit(peerInfo)
+			if err != nil {
+				log.Error(err.Error())
+			}
 		default:
 			log.Error(errMessageFormat.Error())
 		}
@@ -134,11 +146,6 @@ func (h *NodeStreamHandler) Sender(ID, handleNum int, shutdown <-chan struct{}) 
 					time.Sleep(10 * time.Second)
 					continue
 				}
-				/*
-					log.Infof("##Handler-%d-%d Send Peers Announce Peer Info:%s :%v\n", h.ID, handleNum, peerInfo.Address)
-					h.ReadWriter.WriteString(fmt.Sprintf("%s\n", message))
-					h.ReadWriter.Flush()
-				*/
 				for _, peerWriter := range PeerWriters {
 					peerWriter.WriteString(fmt.Sprintf("%s\n", message))
 					peerWriter.Flush()
@@ -207,4 +214,16 @@ func (i *NodeInfoMessage) String() string {
 		return ""
 	}
 	return string(byteStr)
+}
+
+func (h *NodeStreamHandler) emmitEvent(event interface{}) {
+	switch event.(type) {
+	case NodeInfoMessage:
+		bus := (*h.Host).EventBus()
+		em, err := bus.Emitter(event.(NodeInfoMessage))
+		if err != nil {
+			log.Errorf("emit event error:%v\n", err)
+		}
+		defer em.Close()
+	}
 }

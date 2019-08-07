@@ -33,9 +33,11 @@ func main() {
 	//Initialize messagebus
 	messagebusInit()
 	// Initialize a peer node
-	if err := theNode.Init(cfg); err != nil {
+	if err := theNode.setup(cfg); err != nil {
 		panic(fmt.Sprintf("node initialization failed: %s", err))
 	}
+	go theNode.run()
+
 	defer func() {
 		log.Info("----- Reset and Exit -----")
 		theNode.Reset()

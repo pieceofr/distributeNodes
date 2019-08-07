@@ -34,7 +34,6 @@ const (
 var (
 	privateKeyFileName  = "peer.prv"
 	discoveryRetryTimes = 5
-	broadcastInterval   = 3 * time.Second
 )
 
 // PeerNode peer Node struct
@@ -48,13 +47,13 @@ type PeerNode struct {
 	PeersRemote   peerstore.Peerstore
 	PeersListener peerstore.Peerstore
 	NodeInfo      NodeInfoMessage
-	Shutdown      chan<- struct{}
+	Shutdown      chan struct{}
 	Mutex         *sync.Mutex
 	Handlers      []NodeStreamHandler
 }
 
 //Init a peer node
-func (p *PeerNode) Init(cfg config) error {
+func (p *PeerNode) setup(cfg config) error {
 	p.Mutex = &sync.Mutex{}
 	p.NodeType = NodeType(cfg.NodeType)
 	p.PublicIP = cfg.PublicIP
@@ -71,9 +70,7 @@ func (p *PeerNode) Init(cfg config) error {
 			return genRandErr
 		}
 	}
-	shutdown := make(chan struct{})
-	p.Shutdown = shutdown
-	go p.BusReciever(shutdown)
+	p.Shutdown = make(chan struct{})
 	p.Port = strconv.Itoa(cfg.Port)
 	if Servant == p.NodeType || Server == p.NodeType {
 		if createHostErr := p.NewHost(); createHostErr != nil {
@@ -94,19 +91,20 @@ func (p *PeerNode) Init(cfg config) error {
 	for _, addr := range p.Host.Addrs() {
 		log.Infof("Host Address: \n", addr.String())
 	}
-
 	p.NodeInfo = NodeInfoMessage{NodeType: p.NodeType, ID: fmt.Sprintf("%v", p.Host.ID()), Address: fmt.Sprintf("/ip4/%s/tcp/%v/p2p/%s", p.PublicIP, p.Port, p.Host.ID().Pretty())}
 	log.Infof("NodeAddress:%s\n", p.NodeInfo.Address)
+	log.Info("Exist the Initialization")
+	return nil
+}
 
+func (p *PeerNode) run() {
+	//go p.BusReciever(p.Shutdown)
+	go p.announceCenter(p.Shutdown)
 	if Servant == p.NodeType || Server == p.NodeType {
 		log.Info("Servant go listen routine")
 		go p.Listen()
-
 	}
 	go p.ConnectToFixPeer()
-
-	log.Info("Exist the Initialization")
-	return nil
 }
 
 //SaveIdentity save private key to file
@@ -194,7 +192,7 @@ func (p *PeerNode) Listen() error {
 	handleStream.HandlerType = ListenerHander
 	p.Mutex.Lock()
 	p.Handlers = append(p.Handlers, handleStream)
-	handleStream.Setup(len(p.Handlers), p.NodeInfo)
+	handleStream.Setup(len(p.Handlers), p.NodeInfo, &p.Host)
 	p.Mutex.Unlock()
 	p.Host.SetStreamHandler("/p2p/1.0.0", handleStream.Handler)
 
@@ -291,7 +289,7 @@ func (p *PeerNode) ConnectTo(address string) error {
 	handleStream.HandlerType = ClientHandler
 	p.Mutex.Lock()
 	p.Handlers = append(p.Handlers, handleStream)
-	handleStream.Setup(len(p.Handlers), p.NodeInfo)
+	handleStream.Setup(len(p.Handlers), p.NodeInfo, &p.Host)
 	p.Mutex.Unlock()
 	handleStream.Handler(s)
 	<-make(chan struct{})
@@ -309,50 +307,4 @@ func (p *PeerNode) Reset() {
 		p.Host.Close()
 	}
 	log.Warn("Reset Peer Node")
-}
-
-//BusReciever recieve message from other component
-func (p *PeerNode) BusReciever(shutdown <-chan struct{}) {
-	queue := Bus.TestQueue.Chan()
-	cycleTimer := time.After(broadcastInterval)
-	messageQ := make(map[string]NodeInfoMessage, 100)
-	for {
-		select {
-		case <-shutdown:
-			break
-		case <-cycleTimer:
-			cycleTimer = time.After(cycleInterval)
-			for _, val := range messageQ {
-				if !p.IsSameNode(val.Address) && p.NodeType != Client {
-					log.Info("--->Help Peers Broadcasting ")
-					val.Extra = fmt.Sprintf("%v", time.Now())
-					Bus.Broadcast.Send("peer", []byte(fmt.Sprintf("%v", val.NodeType)), []byte(val.ID), []byte(val.Address), []byte(val.Extra))
-				}
-			}
-			break
-		case item := <-queue:
-			if item.Command != "peer" {
-				log.Error("Command is not Peer")
-				break
-			}
-			var peerInfo NodeInfoMessage
-			nType, err := strconv.Atoi(string(item.Parameters[0]))
-			if err != nil {
-				log.Error(err.Error())
-				continue
-			}
-			peerInfo.NodeType = NodeType(nType)
-			peerInfo.ID = string(item.Parameters[1])
-			peerInfo.Address = string(item.Parameters[2])
-			peerInfo.Extra = string(item.Parameters[3])
-
-			log.Infof("from queue: %q  %s\n", item.Command, peerInfo.Address)
-			if peerInfo.NodeType != Client {
-				go p.ConnectTo(peerInfo.Address)
-				messageQ[peerInfo.ID] = peerInfo
-				//Bus.Broadcast.Send("testing", []byte(fmt.Sprintf("%v", time.Now())))
-			}
-
-		}
-	}
 }
