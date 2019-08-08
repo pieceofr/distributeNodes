@@ -4,10 +4,13 @@ go 1.12
 
 require (
 	github.com/bitmark-inc/logger v0.3.4
+	github.com/gogo/protobuf v1.2.1
+	github.com/golang/protobuf v1.3.0
 	github.com/libp2p/go-libp2p v0.2.0
 	github.com/libp2p/go-libp2p-core v0.0.9
 	github.com/libp2p/go-libp2p-crypto v0.1.0
 	github.com/libp2p/go-libp2p-peerstore v0.1.1
+	github.com/libp2p/go-libp2p-pubsub v0.1.0
 	github.com/mitchellh/mapstructure v1.1.2 // indirect
 	github.com/mr-tron/base58 v1.1.2
 	github.com/multiformats/go-multiaddr v0.0.4

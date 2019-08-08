@@ -11,11 +11,11 @@ import (
 
 	"github.com/libp2p/go-libp2p"
 	libp2pcore "github.com/libp2p/go-libp2p-core"
-
 	"github.com/libp2p/go-libp2p-core/network"
 	libp2pnetwork "github.com/libp2p/go-libp2p-core/network"
 	"github.com/libp2p/go-libp2p-core/peer"
 	peerstore "github.com/libp2p/go-libp2p-peerstore"
+	pubsub "github.com/libp2p/go-libp2p-pubsub"
 	"github.com/multiformats/go-multiaddr"
 )
 
@@ -30,6 +30,7 @@ const (
 	//Server acts as a server only
 	Server
 )
+const pubsubTopic = "/peer/announce/1.0.0"
 
 var (
 	privateKeyFileName  = "peer.prv"
@@ -42,14 +43,15 @@ type PeerNode struct {
 	PublicIP string
 	Port     string
 	Identity
-	Host          libp2pcore.Host
-	Streams       []libp2pnetwork.Stream
-	PeersRemote   peerstore.Peerstore
-	PeersListener peerstore.Peerstore
-	NodeInfo      NodeInfoMessage
-	Shutdown      chan struct{}
-	Mutex         *sync.Mutex
-	Handlers      []NodeStreamHandler
+	Host            libp2pcore.Host
+	Streams         []libp2pnetwork.Stream
+	PeersRemote     peerstore.Peerstore
+	PeersListener   peerstore.Peerstore
+	NodeInfo        NodeInfoMessage
+	Shutdown        chan struct{}
+	Mutex           *sync.Mutex
+	Handlers        []NodeStreamHandler
+	BroadcastStream *pubsub.PubSub
 }
 
 //Init a peer node
@@ -88,6 +90,12 @@ func (p *PeerNode) setup(cfg config) error {
 		p.Port = "" // If user the port ie. 2136. this will be check with owns port
 		p.Host = newHost
 	}
+	ps, err := pubsub.NewGossipSub(context.Background(), p.Host)
+	if err != nil {
+		panic(err)
+	}
+	p.BroadcastStream = ps
+
 	for _, addr := range p.Host.Addrs() {
 		log.Infof("Host Address: \n", addr.String())
 	}
@@ -99,6 +107,11 @@ func (p *PeerNode) setup(cfg config) error {
 
 func (p *PeerNode) run() {
 	//go p.BusReciever(p.Shutdown)
+	sub, err := p.BroadcastStream.Subscribe(pubsubTopic)
+	go subHandler(context.Background(), sub)
+	if err != nil {
+		panic(err)
+	}
 	go p.announceCenter(p.Shutdown)
 	if Servant == p.NodeType || Server == p.NodeType {
 		log.Info("Servant go listen routine")
