@@ -108,7 +108,7 @@ func (p *PeerNode) setup(cfg config) error {
 func (p *PeerNode) run() {
 	//go p.BusReciever(p.Shutdown)
 	sub, err := p.BroadcastStream.Subscribe(pubsubTopic)
-	go subHandler(context.Background(), sub)
+	go p.subHandler(context.Background(), sub)
 	if err != nil {
 		panic(err)
 	}

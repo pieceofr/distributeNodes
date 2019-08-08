@@ -101,10 +101,12 @@ func (h *NodeStreamHandler) Reciever(ID, handleNum int) {
 			}
 			log.Infof("READ -- Handler-%d-%d PeerInfo:%v Extra:%v", h.ID, handleNum, shortID(peerInfo.ID), peerInfo.Extra)
 			//Bus.TestQueue.Send("peer", []byte(fmt.Sprintf("%v", peerInfo.NodeType)), []byte(peerInfo.ID), []byte(peerInfo.Address), []byte(peerInfo.Extra))
-			em.Emit(peerInfo)
-			if err != nil {
-				log.Error(err.Error())
-			}
+			/*
+				em.Emit(peerInfo)
+				if err != nil {
+					log.Error(err.Error())
+				}
+			*/
 		default:
 			log.Error(errMessageFormat.Error())
 		}

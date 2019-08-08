@@ -10,6 +10,10 @@ import (
 
 var broadcastInterval = 10 * time.Second
 
+const (
+	cmdPeer = "peer"
+)
+
 func (p *PeerNode) announceCenter(shutdown chan struct{}) {
 	eventbus := p.Host.EventBus()
 	sub, err := eventbus.Subscribe(new(NodeInfoMessage))
@@ -26,14 +30,13 @@ func (p *PeerNode) announceCenter(shutdown chan struct{}) {
 		case e := <-sub.Out():
 			switch e.(type) {
 			case NodeInfoMessage:
-				log.Debugf("[announce]recieve:%v\n", (e.(NodeInfoMessage)))
+				log.Debugf(" --><-- Recieve NodeInfoMessage:%v\n", (e.(NodeInfoMessage)))
 				messageQ[e.(NodeInfoMessage).ID] = e.(NodeInfoMessage)
 			}
 		case <-cycleTimer:
 			cycleTimer = time.After(cycleInterval)
 			go p.sendSelfNodeMessage()
 			//Help to Broadcast Peers
-			log.Info("***Help peers broadcast")
 			go p.sendPeerNodeMessage(messageQ)
 		}
 	}
@@ -80,7 +83,7 @@ func (p *PeerNode) makeNodeMessage(node *NodeInfoMessage) []byte {
 	var params [][]byte
 	params = append(params, []byte(fmt.Sprintf("%v", node.NodeType)), []byte(node.ID), []byte(node.Address), []byte(node.Extra))
 	req := &NodeMessage{
-		Command:    "peer",
+		Command:    cmdPeer,
 		Parameters: params,
 	}
 	msgBytes, err := proto.Marshal(req)
