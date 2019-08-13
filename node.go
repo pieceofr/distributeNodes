@@ -9,10 +9,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/libp2p/go-libp2p"
+	libp2p "github.com/libp2p/go-libp2p"
 	libp2pcore "github.com/libp2p/go-libp2p-core"
-	"github.com/libp2p/go-libp2p-core/network"
-	libp2pnetwork "github.com/libp2p/go-libp2p-core/network"
+	p2pnet "github.com/libp2p/go-libp2p-core/network"
 	"github.com/libp2p/go-libp2p-core/peer"
 	peerstore "github.com/libp2p/go-libp2p-peerstore"
 	pubsub "github.com/libp2p/go-libp2p-pubsub"
@@ -31,6 +30,7 @@ const (
 	Server
 )
 const pubsubTopic = "/peer/announce/1.0.0"
+const nodeProtocol = "/bitmark/1.0.0"
 
 var (
 	privateKeyFileName  = "peer.prv"
@@ -44,7 +44,7 @@ type PeerNode struct {
 	Port     string
 	Identity
 	Host            libp2pcore.Host
-	Streams         []libp2pnetwork.Stream
+	Streams         []p2pnet.Stream
 	PeersRemote     peerstore.Peerstore
 	PeersListener   peerstore.Peerstore
 	NodeInfo        NodeInfoMessage
@@ -90,16 +90,16 @@ func (p *PeerNode) setup(cfg config) error {
 		p.Port = "" // If user the port ie. 2136. this will be check with owns port
 		p.Host = newHost
 	}
+	p.networkMonitor()
 	ps, err := pubsub.NewGossipSub(context.Background(), p.Host)
 	if err != nil {
 		panic(err)
 	}
 	p.BroadcastStream = ps
-
 	for _, addr := range p.Host.Addrs() {
 		log.Infof("Host Address: \n", addr.String())
 	}
-	p.NodeInfo = NodeInfoMessage{NodeType: p.NodeType, ID: fmt.Sprintf("%v", p.Host.ID()), Address: fmt.Sprintf("/ip4/%s/tcp/%v/p2p/%s", p.PublicIP, p.Port, p.Host.ID().Pretty())}
+	p.NodeInfo = NodeInfoMessage{NodeType: p.NodeType, ID: fmt.Sprintf("%v", p.Host.ID()), Address: fmt.Sprintf("/ip4/%s/tcp/%v%s/%s", p.PublicIP, p.Port, nodeProtocol, p.Host.ID().Pretty())}
 	log.Infof("NodeAddress:%s\n", p.NodeInfo.Address)
 	log.Info("Exist the Initialization")
 	return nil
@@ -207,7 +207,7 @@ func (p *PeerNode) Listen() error {
 	p.Handlers = append(p.Handlers, handleStream)
 	handleStream.Setup(len(p.Handlers), p.NodeInfo, &p.Host)
 	p.Mutex.Unlock()
-	p.Host.SetStreamHandler("/p2p/1.0.0", handleStream.Handler)
+	p.Host.SetStreamHandler(nodeProtocol, handleStream.Handler)
 
 	for _, la := range p.Host.Network().ListenAddresses() {
 		if _, err := la.ValueForProtocol(multiaddr.P_TCP); err == nil {
@@ -274,7 +274,7 @@ func (p *PeerNode) ConnectTo(address string) error {
 	}
 
 	if p.IsPeerExisted(shortAddr) {
-		if p.Host.Network().Connectedness(info.ID) != network.Connected {
+		if p.Host.Network().Connectedness(info.ID) != p2pnet.Connected {
 			connectErr := p.Host.Connect(context.Background(), *info)
 			if connectErr != nil {
 				log.Errorf("RECONNECT Stream Error:%v", ErrCombind(errReconnectStream, connectErr))
@@ -292,7 +292,7 @@ func (p *PeerNode) ConnectTo(address string) error {
 	// Multiaddress of the destination peer is fetched from the peerstore using 'peerId'.
 	log.Debugf("Connecting .... ID:%s, address:%s TTL:%d", info.ID.String(), info.Addrs[0].String(), peerstore.PermanentAddrTTL)
 
-	s, err := p.Host.NewStream(context.Background(), info.ID, "/p2p/1.0.0")
+	s, err := p.Host.NewStream(context.Background(), info.ID, nodeProtocol)
 	if err != nil {
 		return err
 	}

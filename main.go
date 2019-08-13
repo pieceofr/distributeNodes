@@ -30,8 +30,6 @@ func main() {
 	}
 	log = logger.New("nodes")
 	globalMutex = &sync.Mutex{}
-	//Initialize messagebus
-	messagebusInit()
 	// Initialize a peer node
 	if err := theNode.setup(cfg); err != nil {
 		panic(fmt.Sprintf("node initialization failed: %s", err))
