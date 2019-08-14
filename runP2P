@@ -1,0 +1,201 @@
+#!/bin/sh
+# No Arguments:
+#   connect to existing session (if not already connected)
+#   create session and connect if none exists
+# Arguments
+#   a number >= 2 it will delete blocks on all bitmarkds (stop/delete/start)
+
+# distributeNode to start  for both servant s and clients (the same number of clients and servants)
+first=1
+last=1
+
+
+# the tmux session name
+session=LOCAL
+
+# error handler
+ERROR() {
+  printf 'error: '
+  printf "$@"
+  printf '\n'
+  exit 1
+}
+
+# commands required
+list='
+tmux
+pgrep
+killall
+run-distributenodes
+'
+
+for c in ${list}
+do
+  x="$(which "${c}" 2> /dev/null)"
+  [ $? -ne 0 ] && ERROR 'missing program: %s' "${c}"
+  [ -x "${x}" ] || ERROR 'program: "%s" is not executable' "${x}"
+done
+
+
+STOP_ALL_DISTRIBUTENODES() {
+  local pids
+
+  printf 'stopping distributes'
+  killall distributeNodes
+
+  while :
+  do
+    pids=$(pgrep distributeNodes)
+    [ -z "${pids}" ] && break
+    sleep 1
+    printf '.'
+  done
+  printf 'done\n'
+}
+
+START_ALL_DISTRIBUTENODES() {
+  local id command config other
+  tmux list-panes -a -F '#{pane_id} #{pane_title}' | (
+    while read id command config other
+    do
+      case "${command}" in
+        (run-distributenodes)
+          n="${config##*%}"
+          echo "run-distributenodes n=$n"
+          printf 'start: tab(%s) → distributeNodes: %s\n' "${id}" "${n}"
+          extra='start: tab(%s) → distributeNodes: %s\n' "${id}" "${n}"
+          echo "show extrea = $extra"
+          tmux send-keys -t "${id}" 'y' 'C-j'
+          ;;
+        (*)
+          ;;
+      esac
+    done
+  )
+}
+
+
+MAKE_WINDOW() {
+  local session window cmd1 cmd2
+  session="${1}"; shift
+  window="${1}"; shift
+  cmd1="${1}"; shift
+  cmd2="${1}"; shift
+
+  # colour setting
+  tmux set-window-option -t "${session}:${window}" -g window-status-current-style bg=red
+
+  # notifications
+  tmux set-window-option -t "${session}:${window}" -g monitor-activity on
+  tmux set-window-option -t "${session}:${window}" -g visual-activity on
+
+  if [ -n "${cmd1}" ]
+  then
+    tmux respawn-pane -k -t "${session}:${window}.0" "${cmd1}"
+    tmux select-pane -t "${session}:${window}.0" -T "${cmd1}"
+  fi
+
+  if [ -n "${cmd2}" ]
+  then
+    tmux split-window -d -h -p 50 -t "${session}:${window}.0"
+    tmux respawn-pane -k -t "${session}:${window}.1" "${cmd2}"
+    tmux select-pane -t "${session}:${window}.1" -T "${cmd2}"
+  fi
+}
+
+
+NEW_TEST_SESSION() {
+  local command command_list target window cmd1 cmd2 n m
+
+  # format: "tab1 tab2 tab3"
+  #   tabN: tab-name:prog1,arg,arg:prog2,arg,arg
+  # if two progs then split window vertically
+  command_list=''
+  n="${first}"
+  while [ "${n}" -le "${last}" ]
+  do
+    command_list="${command_list} BM-${n}:run-distributenodes,--config=%${n},--sleep=3,--ntype=servant,--debug"
+    if [ "${n}" -lt "${last}" ]
+    then
+      n=$((n + 1))
+      command_list="${command_list}:run-distributenodes,--config=%${n},--sleep=3,--ntype=servant,--debug"
+    fi
+    n=$((n + 1))
+  done
+
+  echo "command_list=${command_list}"
+
+  # some status tabs and an extra shell
+  #command_list="${command_list} info:node-info,-r top:top,-U,${USER},-o,res,-n,20,-i cmd:: shell::"
+  command_list="${command_list}  cmd::"
+
+  target=''
+  for command in ${command_list}
+  do
+    window="${command%%:*}"
+    cmd1="${command#*:}"
+    cmd1="${cmd1%%:*}"
+    cmd2="${command##*:}"
+    [ X"${cmd1}" = X"${cmd2}" ] && cmd2=''
+
+    if [ -z "${target}" ]
+    then
+      tmux new-session -d -s "${session}" -n "${window}"
+    else
+      tmux new-window -a -t "${target}" -n "${window}"
+    fi
+    target="${window}"
+
+    cmd1="$(printf '%s' "${cmd1}" | tr ',' ' ')"
+    cmd2="$(printf '%s' "${cmd2}" | tr ',' ' ')"
+    MAKE_WINDOW "${session}" "${window}" "${cmd1}" "${cmd2}"
+
+  done
+
+  # any mouse mode will stop the X copy/paste from working
+  #tmux set-option -t "${session}" -g mouse-select-window on
+  #tmux set-option -t "${session}" -g mode-mouse on
+
+  tmux set-option -t "${session}" -g status-bg black
+  tmux set-option -t "${session}" -g status-fg white
+  tmux set-option -t "${session}" -g status-left '#[fg=green]#H'
+
+  #set-option -g status-right '#[fg=yellow]#(uptime | cut -d "," -f 2-)'
+  # using inbuilt strftime
+  tmux set-option -t "${session}" -g status-right '#[fg=yellow]%Y-%m-%d %H:%M:%S'
+
+
+  # select the default screen
+  tmux select-window -t "${session}:shell"
+  tmux select-pane -t "${session}:shell.0"
+
+  # display the result
+  tmux attach -t "${session}:shell"
+}
+
+
+# main program
+
+# detect if can connect to a detached session
+have_session=no
+for s in $(tmux list-sessions -F '#{session_name}' 2> /dev/null)
+do
+  [ X"${s}" = X"${session}" ] && have_session=yes && break
+done
+if [ X"${have_session}" = X"yes" ]
+then
+  client="$(tmux list-clients -t LOCAL -F '#{client_name}@#{client_termname}' 2> /dev/null)"
+  if [ -n "${client}" ]
+  then
+    [ X"${blocks}" != X"yes" ] && ERROR 'client: "%s" already connected to: "%s"' "${client}" "${session}"
+    # have a running test so stop/delete/restart
+    STOP_ALL_DISTRIBUTENODES
+    START_ALL_DISTRIBUTENODES
+    echo "START ALL"
+  else
+    tmux attach-session -t "${session}"
+  fi
+else
+  echo "NEW SESSION"
+  NEW_TEST_SESSION
+fi

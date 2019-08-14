@@ -8,36 +8,21 @@ import (
 	proto "github.com/golang/protobuf/proto"
 )
 
-var broadcastInterval = 10 * time.Second
+var broadcastInterval = 15 * time.Second
 
 const (
 	cmdPeer = "peer"
 )
 
 func (p *PeerNode) announceCenter(shutdown chan struct{}) {
-	eventbus := p.Host.EventBus()
-	sub, err := eventbus.Subscribe(new(NodeInfoMessage))
-	defer sub.Close()
-	if err != nil {
-		panic("Can not subscribe NodeInfoMessage")
-	}
-	messageQ := make(map[string]NodeInfoMessage, 100)
-	cycleTimer := time.After(broadcastInterval)
+	selfMulticastTimer := time.After(broadcastInterval)
 	for {
 		select {
 		case <-shutdown:
 			break
-		case e := <-sub.Out():
-			switch e.(type) {
-			case NodeInfoMessage:
-				log.Debugf(" --><-- Recieve NodeInfoMessage:%v\n", (e.(NodeInfoMessage)))
-				messageQ[e.(NodeInfoMessage).ID] = e.(NodeInfoMessage)
-			}
-		case <-cycleTimer:
-			cycleTimer = time.After(cycleInterval)
+		case <-selfMulticastTimer:
+			selfMulticastTimer = time.After(cycleInterval)
 			go p.sendSelfNodeMessage()
-			//Help to Broadcast Peers
-			go p.sendPeerNodeMessage(messageQ)
 		}
 	}
 }

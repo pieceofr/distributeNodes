@@ -83,13 +83,4 @@ func (h *NodeStreamHandler) Reciever(ID, handleNum int) {
 //Sender for NodeStreamHandler
 func (h *NodeStreamHandler) Sender(ID, handleNum int, shutdown <-chan struct{}) {
 	log.Infof("---Handler-%d-%d Sender Start---", h.ID, handleNum)
-	queue := Bus.Broadcast.Chan(-1)
-	for {
-		select {
-		case <-shutdown:
-			break
-		case item := <-queue:
-			log.Infof("#Sender%d Recieve TestQueue Message item:%v\n", h.ID, item)
-		}
-	}
 }

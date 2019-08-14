@@ -6,6 +6,7 @@ import (
 	"math"
 	"math/rand"
 	"strings"
+	"time"
 
 	"github.com/multiformats/go-multiaddr"
 )
@@ -56,4 +57,35 @@ func randomPort() (int, error) {
 	}
 	port := 12137 + int(math.Mod(float64(b[0]), float64(13)))
 	return port, nil
+}
+
+func randNum(num int) int {
+	if 0 == num {
+		return -1
+	}
+	rand.Seed(time.Now().UnixNano())
+	return rand.Intn(num)
+}
+
+func pickNumbersInSize(size, num int) []bool {
+	if size < num || size <= 0 || num <= 0 {
+		log.Warn("invalid input or zero numer")
+		return []bool{}
+	}
+	pickupTable := make([]bool, size)
+	for i := 0; i < num; {
+		if pickNum := randNum(size); -1 == pickNum {
+			return []bool{}
+		} else {
+			if false == pickupTable[pickNum] {
+				pickupTable[pickNum] = true
+				i++
+			}
+		}
+	}
+	ret := ""
+	for _, val := range pickupTable {
+		ret = fmt.Sprintf("%s %v", ret, val)
+	}
+	return pickupTable
 }

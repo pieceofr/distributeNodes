@@ -31,21 +31,26 @@ func TestMain(m *testing.M) {
 		panic(fmt.Sprintf("logger initialization failed: %s", err))
 	}
 	log = logger.New("nodes")
-	messagebusInit()
 	os.Exit(m.Run())
 }
 
+func TestPickNumber(t *testing.T) {
+	pickNumber := pickNumbersInSize(3, 2)
+	assert.NotEqual(t, len(pickNumber), 0, "Pick Wrong Number")
+	pickNumber = pickNumbersInSize(2, 3)
+	assert.Equal(t, len(pickNumber), 0, "Pick Wrong Number")
+	pickNumber = pickNumbersInSize(-1, 1)
+	assert.Equal(t, len(pickNumber), 0, "Pick Wrong Number")
+	pickNumber = pickNumbersInSize(1, -1)
+	assert.Equal(t, len(pickNumber), 0, "Pick Wrong Number")
+	pickNumber = pickNumbersInSize(0, 0)
+	assert.Equal(t, len(pickNumber), 0, "Pick Wrong Number")
+
+}
 func TestParseToConnAddr(t *testing.T) {
 	address := "/ip4/127.0.0.1/tcp/12136/p2p/QmdBNQhudua6rWxHy6MY7Z6ciNMBePhjCAx2YHfmupGR15"
 	connAddr := addrToConnAddr(address)
 	assert.Equal(t, connAddr, "/ip4/127.0.0.1/tcp/12136", "Parse Conn Address Error")
-}
-func TestMessagebus(t *testing.T) {
-	Bus.TestQueue.Send("peer")
-	queue := Bus.TestQueue.Chan()
-	item := <-queue
-	assert.Equal(t, item.Command, "peer", "TestQueue Error")
-	log.Warnf("PASSTestMessagebus command%s ", item.Command)
 }
 func TestIsSameNode(t *testing.T) {
 	addr := `/ip4/118.163.120.180/tcp/12136/p2p/QmeHidiFxXLosH44wkAyq3modWku5gprV168t9VeH1JSyV`
@@ -145,8 +150,9 @@ func TestPeersStore(t *testing.T) {
 	path := filepath.Join(os.Getenv("PWD"), "servant.conf")
 	err := ParseConfigurationFile(path, &servantCfg)
 	assert.NoError(t, err, "Parse servant Configuration file error")
-	err = servantNode.Init(servantCfg)
+	err = servantNode.setup(servantCfg)
 	assert.NoError(t, err, "Init servant node error")
+	servantNode.run()
 
 	time.Sleep(3 * time.Second)
 	var clientConfig config
@@ -154,16 +160,17 @@ func TestPeersStore(t *testing.T) {
 	pathClient1 := filepath.Join(os.Getenv("PWD"), "testing", "client", "client1.conf")
 	err = ParseConfigurationFile(pathClient1, &clientConfig)
 	assert.NoError(t, err, "Parse client Configuration file error")
-	clientNode1.Init(clientConfig)
+	clientNode1.setup(clientConfig)
 	assert.NoError(t, err, "Init client node error")
-
+	clientNode1.run()
 	time.Sleep(3 * time.Second)
 	var clientNode2 PeerNode
 	pathClient2 := filepath.Join(os.Getenv("PWD"), "testing", "client", "client2.conf")
 	err = ParseConfigurationFile(pathClient2, &clientConfig)
 	assert.NoError(t, err, "Parse client Configuration file error")
-	clientNode2.Init(clientConfig)
+	clientNode2.setup(clientConfig)
 	assert.NoError(t, err, "Init client node error")
+	clientNode2.run()
 	log.Infof("PeerStore:%v\n", servantNode.Host.Peerstore().Peers().Len())
 
 	for _, val := range servantNode.Host.Peerstore().Peers() {

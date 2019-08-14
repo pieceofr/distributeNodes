@@ -12,7 +12,7 @@ import (
 	libp2p "github.com/libp2p/go-libp2p"
 	libp2pcore "github.com/libp2p/go-libp2p-core"
 	p2pnet "github.com/libp2p/go-libp2p-core/network"
-	"github.com/libp2p/go-libp2p-core/peer"
+	p2ppeers "github.com/libp2p/go-libp2p-core/peer"
 	peerstore "github.com/libp2p/go-libp2p-peerstore"
 	pubsub "github.com/libp2p/go-libp2p-pubsub"
 	"github.com/multiformats/go-multiaddr"
@@ -30,7 +30,7 @@ const (
 	Server
 )
 const pubsubTopic = "/peer/announce/1.0.0"
-const nodeProtocol = "/bitmark/1.0.0"
+const nodeProtocol = "/p2p"
 
 var (
 	privateKeyFileName  = "peer.prv"
@@ -96,6 +96,7 @@ func (p *PeerNode) setup(cfg config) error {
 		panic(err)
 	}
 	p.BroadcastStream = ps
+	go p.peersTable(p.Shutdown)
 	for _, addr := range p.Host.Addrs() {
 		log.Infof("Host Address: \n", addr.String())
 	}
@@ -189,7 +190,7 @@ func (p *PeerNode) NewHost() error {
 		return err
 	}
 	for _, a := range newHost.Addrs() {
-		log.Infof("New Host Address: %s/%v/%s\n", a, "p2p", peer.IDB58Encode(newHost.ID()))
+		log.Infof("New Host Address: %s/%v/%s\n", a, "p2p", p2ppeers.IDB58Encode(newHost.ID()))
 	}
 
 	p.Host = newHost
@@ -255,7 +256,7 @@ func (p *PeerNode) ConnectTo(address string) error {
 		return err
 	}
 	// Extract the peer ID from the multiaddr.
-	info, err := peer.AddrInfoFromP2pAddr(maddr)
+	info, err := p2ppeers.AddrInfoFromP2pAddr(maddr)
 	if err != nil {
 		log.Error(err.Error())
 		return err

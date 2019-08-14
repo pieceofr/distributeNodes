@@ -12,8 +12,12 @@ import (
 )
 
 func main() {
-	for i := 1; i < 5; i++ {
-		saveGenKey(i, "servant")
+	//Chnage here to generage key
+	//count ->postfix and max number
+	//prefix -> name of file
+	// go run genPrvKey.go
+	for i := 1; i <= 20; i++ {
+		saveGenKey(i, "client")
 	}
 
 }
