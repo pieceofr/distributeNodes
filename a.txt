@@ -1,0 +1,56 @@
+ARGS: -v --ntype 'client' --config '%1' --debug --
+nodetype:client
+run config-file=/home/pieceofr2/wks_go/src/distributeNodes/testing/client/client1.conf
+starting bitmarkd...
+configuration: /home/pieceofr2/wks_go/src/distributeNodes/testing/client/client1.conf
+use config=/home/pieceofr2/wks_go/src/distributeNodes/testing/client/client1.conf
+2019-08-14 17:38:22 [WARN] LOGGER: ===== Logging system started =====
+2019-08-14 17:38:22 [INFO] nodes: Use Static Identity
+2019-08-14 17:38:22 [INFO] nodes: Load Static Identity
+2019-08-14 17:38:22 [INFO] nodes: Host Address: 
+%!(EXTRA string=/ip4/127.0.0.1/tcp/35263)
+2019-08-14 17:38:22 [INFO] nodes: Host Address: 
+%!(EXTRA string=/ip4/172.16.23.94/tcp/35263)
+2019-08-14 17:38:22 [INFO] nodes: Host Address: 
+%!(EXTRA string=/ip4/172.17.0.1/tcp/35263)
+2019-08-14 17:38:22 [INFO] nodes: Host Address: 
+%!(EXTRA string=/ip6/::1/tcp/42679)
+2019-08-14 17:38:22 [INFO] nodes: Host Address: 
+%!(EXTRA string=/ip6/2001:b030:2314:200:e82a:adb2:6036:13c2/tcp/42679)
+2019-08-14 17:38:22 [INFO] nodes: Host Address: 
+%!(EXTRA string=/ip6/2001:b030:2303:100:e82a:adb2:6036:13c2/tcp/42679)
+2019-08-14 17:38:22 [INFO] nodes: Host Address: 
+%!(EXTRA string=/ip6/2001:b030:2314:200:4448:4350:1:3fec/tcp/42679)
+2019-08-14 17:38:22 [INFO] nodes: Host Address: 
+%!(EXTRA string=/ip6/2001:b030:2303:100:f181:9db1:5c72:441/tcp/42679)
+2019-08-14 17:38:22 [INFO] nodes: Host Address: 
+%!(EXTRA string=/ip6/2001:b030:2303:100:23ea:7849:b0ac:1904/tcp/42679)
+2019-08-14 17:38:22 [INFO] nodes: Host Address: 
+%!(EXTRA string=/ip6/2001:b030:2314:200:f181:9db1:5c72:441/tcp/42679)
+2019-08-14 17:38:22 [INFO] nodes: Host Address: 
+%!(EXTRA string=/ip6/2001:b030:2314:200:a564:31a9:dcd0:275e/tcp/42679)
+2019-08-14 17:38:22 [INFO] nodes: Host Address: 
+%!(EXTRA string=/ip6/2001:b030:2303:100:444f:434b:4552:1/tcp/42679)
+2019-08-14 17:38:22 [INFO] nodes: NodeAddress:/ip4/127.0.0.1/tcp//p2p/QmcPb63z7bwRZZXWY1MoAKfUgAPYiWqMLu6Y43zUjjFHJw
+
+2019-08-14 17:38:22 [INFO] nodes: Exist the Initialization
+2019-08-14 17:38:22 [DEBUG] nodes: Connecting .... ID:QmZHMPNV3dXa85258iATVyb24STipPBKQrZNt8Sngc2cqm, address:/ip4/127.0.0.1/tcp/12137 TTL:9223372036854775807
+2019-08-14 17:38:22 [INFO] nodes: -- Sub start listen --
+2019-08-14 17:38:22 [ERROR] nodes: failed to dial : all dials failed
+  * [/ip4/127.0.0.1/tcp/12137] dial tcp4 127.0.0.1:12137: connect: connection refused
+2019-08-14 17:38:25 [DEBUG] nodes: Connecting .... ID:QmdBNQhudua6rWxHy6MY7Z6ciNMBePhjCAx2YHfmupGR15, address:/ip4/127.0.0.1/tcp/12136 TTL:9223372036854775807
+2019-08-14 17:38:25 [ERROR] nodes: failed to dial : all dials failed
+  * [/ip4/127.0.0.1/tcp/12136] dial tcp4 127.0.0.1:12136: connect: connection refused
+2019-08-14 17:38:28 [INFO] nodes: Peer is in PeerStore
+2019-08-14 17:38:28 [ERROR] nodes: RECONNECT Stream Error:Stream Recconect Fail-dial backoff
+2019-08-14 17:38:28 [ERROR] nodes: Stream Recconect Fail-dial backoff
+2019-08-14 17:38:31 [INFO] nodes: Peer is in PeerStore
+2019-08-14 17:38:31 [ERROR] nodes: RECONNECT Stream Error:Stream Recconect Fail-failed to dial : all dials failed
+  * [/ip4/127.0.0.1/tcp/12136] dial tcp4 127.0.0.1:12136: connect: connection refused
+2019-08-14 17:38:31 [ERROR] nodes: Stream Recconect Fail-failed to dial : all dials failed
+  * [/ip4/127.0.0.1/tcp/12136] dial tcp4 127.0.0.1:12136: connect: connection refused
+2019-08-14 17:38:34 [INFO] nodes: Peer is in PeerStore
+2019-08-14 17:38:34 [ERROR] nodes: RECONNECT Stream Error:Stream Recconect Fail-failed to dial : all dials failed
+  * [/ip4/127.0.0.1/tcp/12137] dial tcp4 127.0.0.1:12137: connect: connection refused
+2019-08-14 17:38:34 [ERROR] nodes: Stream Recconect Fail-failed to dial : all dials failed
+  * [/ip4/127.0.0.1/tcp/12137] dial tcp4 127.0.0.1:12137: connect: connection refused

@@ -1,0 +1,894 @@
+2019-08-14 16:44:05 [INFO] nodes: Use Static Identity
+2019-08-14 16:44:05 [INFO] nodes: Load Static Identity
+2019-08-14 16:44:05 [INFO] nodes: New Host Address: /ip4/127.0.0.1/tcp/12143/p2p/QmPVB7kaTDzx88sq4JTYXYcffgUHfiKKSEYPG3WgFo2Bhf
+
+2019-08-14 16:44:05 [INFO] nodes: New Host Address: /ip4/172.16.23.94/tcp/12143/p2p/QmPVB7kaTDzx88sq4JTYXYcffgUHfiKKSEYPG3WgFo2Bhf
+
+2019-08-14 16:44:05 [INFO] nodes: New Host Address: /ip4/172.17.0.1/tcp/12143/p2p/QmPVB7kaTDzx88sq4JTYXYcffgUHfiKKSEYPG3WgFo2Bhf
+
+2019-08-14 16:44:05 [INFO] nodes: Host Address: 
+%!(EXTRA string=/ip4/127.0.0.1/tcp/12143)
+2019-08-14 16:44:05 [INFO] nodes: Host Address: 
+%!(EXTRA string=/ip4/172.16.23.94/tcp/12143)
+2019-08-14 16:44:05 [INFO] nodes: Host Address: 
+%!(EXTRA string=/ip4/172.17.0.1/tcp/12143)
+2019-08-14 16:44:05 [INFO] nodes: NodeAddress:/ip4/127.0.0.1/tcp/12143/p2p/QmPVB7kaTDzx88sq4JTYXYcffgUHfiKKSEYPG3WgFo2Bhf
+
+2019-08-14 16:44:05 [INFO] nodes: Exist the Initialization
+2019-08-14 16:44:05 [INFO] nodes: Servant go listen routine
+2019-08-14 16:44:05 [DEBUG] nodes: Connecting .... ID:QmZHMPNV3dXa85258iATVyb24STipPBKQrZNt8Sngc2cqm, address:/ip4/127.0.0.1/tcp/12137 TTL:9223372036854775807
+2019-08-14 16:44:05 [INFO] nodes: -- Sub start listen --
+2019-08-14 16:44:05 [INFO] nodes: New Stream Handler:1
+
+
+2019-08-14 16:44:05 [INFO] nodes: LISTEN ON ===
+2019-08-14 16:44:05 [INFO] nodes: /ip4/127.0.0.1/tcp/12143/p2p/QmPVB7kaTDzx88sq4JTYXYcffgUHfiKKSEYPG3WgFo2Bhf' on another console.
+
+2019-08-14 16:44:05 [INFO] nodes: /p2p-circuit
+
+2019-08-14 16:44:05 [INFO] nodes: 
+Waiting for incoming connection
+
+
+2019-08-14 16:44:05 [INFO] nodes: @@: Conn: /ip4/127.0.0.1/tcp/12137 Connected at 2019-08-14 16:44:05.626531991 +0800 CST m=+0.011561654
+
+2019-08-14 16:44:05 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12137- is Opened at 2019-08-14 16:44:05.626584578 +0800 CST m=+0.011614221
+
+2019-08-14 16:44:05 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12137- is Opened at 2019-08-14 16:44:05.626598202 +0800 CST m=+0.011627882
+
+2019-08-14 16:44:05 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12137- is Opened at 2019-08-14 16:44:05.626610358 +0800 CST m=+0.011640002
+
+2019-08-14 16:44:05 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12137- is Opened at 2019-08-14 16:44:05.626620917 +0800 CST m=+0.011650561
+
+2019-08-14 16:44:05 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12137- is Opened at 2019-08-14 16:44:05.626628881 +0800 CST m=+0.011658545
+
+2019-08-14 16:44:05 [INFO] nodes: NEW STREAM ID:QmZHMPNV3dXa85258iATVyb24STipPBKQrZNt8Sngc2cqm, address:/ip4/127.0.0.1/tcp/12137 TTL:9223372036854775807
+2019-08-14 16:44:05 [INFO] nodes: New Stream Handler:2
+
+
+2019-08-14 16:44:05 [INFO] nodes: ---Handler-2-1 Reciever Start---
+2019-08-14 16:44:05 [INFO] nodes: Start a new stream! ID:2  HandleNumber:1 direction:2
+
+2019-08-14 16:44:05 [INFO] nodes: ---Handler-2-1 Sender Start---
+2019-08-14 16:44:05 [INFO] nodes: @@Stream :/ip4/127.0.0.1/tcp/12137-/ipfs/id/1.0.0 is Closed at 2019-08-14 16:44:05.627406823 +0800 CST m=+0.012436468
+
+2019-08-14 16:44:05 [INFO] nodes: @@Stream :/ip4/127.0.0.1/tcp/12137-/ipfs/id/1.0.0 is Closed at 2019-08-14 16:44:05.62742652 +0800 CST m=+0.012456166
+
+2019-08-14 16:44:20 [INFO] nodes: -->>SUB Recieve: peer  ID:Nt8Sngc2cq 
+
+2019-08-14 16:44:20 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12137/p2p/QmZHMPNV3dXa85258iATVyb24STipPBKQrZNt8Sngc2cqm QmZHMPNV3dXa85258iATVyb24STipPBKQrZNt8Sngc2cqm 2019-08-14 16:44:20.562234329 +0800 CST m=+15.004094925}
+
+2019-08-14 16:44:20 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12137/p2p/QmZHMPNV3dXa85258iATVyb24STipPBKQrZNt8Sngc2cqm QmZHMPNV3dXa85258iATVyb24STipPBKQrZNt8Sngc2cqm 2019-08-14 16:44:20.562234329 +0800 CST m=+15.004094925}
+
+2019-08-14 16:44:20 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12137/p2p/QmZHMPNV3dXa85258iATVyb24STipPBKQrZNt8Sngc2cqm
+
+2019-08-14 16:44:20 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:20 [INFO] nodes: -->>SUB Recieve: peer  ID:44XkKwQgUN 
+
+2019-08-14 16:44:20 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12138/p2p/QmaBRLueCbZDJ43BeoB8FnHZsDzb1u2NZrh44XkKwQgUNV QmaBRLueCbZDJ43BeoB8FnHZsDzb1u2NZrh44XkKwQgUNV 2019-08-14 16:44:20.567892977 +0800 CST m=+15.003931765}
+
+2019-08-14 16:44:20 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12138/p2p/QmaBRLueCbZDJ43BeoB8FnHZsDzb1u2NZrh44XkKwQgUNV QmaBRLueCbZDJ43BeoB8FnHZsDzb1u2NZrh44XkKwQgUNV 2019-08-14 16:44:20.567892977 +0800 CST m=+15.003931765}
+
+2019-08-14 16:44:20 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12138/p2p/QmaBRLueCbZDJ43BeoB8FnHZsDzb1u2NZrh44XkKwQgUNV
+
+2019-08-14 16:44:20 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12137/p2p/QmZHMPNV3dXa85258iATVyb24STipPBKQrZNt8Sngc2cqm
+
+2019-08-14 16:44:20 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:20 [DEBUG] nodes: Connecting .... ID:QmaBRLueCbZDJ43BeoB8FnHZsDzb1u2NZrh44XkKwQgUNV, address:/ip4/127.0.0.1/tcp/12138 TTL:9223372036854775807
+2019-08-14 16:44:20 [INFO] nodes: @@: Conn: /ip4/127.0.0.1/tcp/12138 Connected at 2019-08-14 16:44:20.57729596 +0800 CST m=+14.962325623
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12138- is Opened at 2019-08-14 16:44:20.5773462 +0800 CST m=+14.962375859
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12138- is Opened at 2019-08-14 16:44:20.577365169 +0800 CST m=+14.962394815
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12138- is Opened at 2019-08-14 16:44:20.577377973 +0800 CST m=+14.962407622
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12138- is Opened at 2019-08-14 16:44:20.577477506 +0800 CST m=+14.962507160
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12138- is Opened at 2019-08-14 16:44:20.577521054 +0800 CST m=+14.962550702
+
+2019-08-14 16:44:20 [INFO] nodes: NEW STREAM ID:QmaBRLueCbZDJ43BeoB8FnHZsDzb1u2NZrh44XkKwQgUNV, address:/ip4/127.0.0.1/tcp/12138 TTL:9223372036854775807
+2019-08-14 16:44:20 [INFO] nodes: New Stream Handler:3
+
+
+2019-08-14 16:44:20 [INFO] nodes: Start a new stream! ID:3  HandleNumber:2 direction:2
+
+2019-08-14 16:44:20 [INFO] nodes: ---Handler-3-2 Sender Start---
+2019-08-14 16:44:20 [INFO] nodes: ---Handler-3-2 Reciever Start---
+2019-08-14 16:44:20 [INFO] nodes: @@Stream :/ip4/127.0.0.1/tcp/12138-/ipfs/id/1.0.0 is Closed at 2019-08-14 16:44:20.578591426 +0800 CST m=+14.963621077
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream :/ip4/127.0.0.1/tcp/12138-/ipfs/id/1.0.0 is Closed at 2019-08-14 16:44:20.579839865 +0800 CST m=+14.964869532
+
+2019-08-14 16:44:20 [INFO] nodes: -->>SUB Recieve: peer  ID:knUmwcMRZ8 
+
+2019-08-14 16:44:20 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12139/p2p/QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J 2019-08-14 16:44:20.579777615 +0800 CST m=+15.004126629}
+
+2019-08-14 16:44:20 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12139/p2p/QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J 2019-08-14 16:44:20.579777615 +0800 CST m=+15.004126629}
+
+2019-08-14 16:44:20 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12138/p2p/QmaBRLueCbZDJ43BeoB8FnHZsDzb1u2NZrh44XkKwQgUNV
+
+2019-08-14 16:44:20 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12137/p2p/QmZHMPNV3dXa85258iATVyb24STipPBKQrZNt8Sngc2cqm
+
+2019-08-14 16:44:20 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12139/p2p/QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J
+
+2019-08-14 16:44:20 [DEBUG] nodes: Connecting .... ID:QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J, address:/ip4/127.0.0.1/tcp/12139 TTL:9223372036854775807
+2019-08-14 16:44:20 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:20 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:20 [INFO] nodes: @@: Conn: /ip4/127.0.0.1/tcp/12139 Connected at 2019-08-14 16:44:20.586351561 +0800 CST m=+14.971381221
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12139- is Opened at 2019-08-14 16:44:20.586372186 +0800 CST m=+14.971401831
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12139- is Opened at 2019-08-14 16:44:20.586472262 +0800 CST m=+14.971501921
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12139- is Opened at 2019-08-14 16:44:20.586506655 +0800 CST m=+14.971536308
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12139- is Opened at 2019-08-14 16:44:20.586550682 +0800 CST m=+14.971580340
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12139- is Opened at 2019-08-14 16:44:20.5865752 +0800 CST m=+14.971604853
+
+2019-08-14 16:44:20 [INFO] nodes: NEW STREAM ID:QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J, address:/ip4/127.0.0.1/tcp/12139 TTL:9223372036854775807
+2019-08-14 16:44:20 [INFO] nodes: New Stream Handler:4
+
+
+2019-08-14 16:44:20 [INFO] nodes: Start a new stream! ID:4  HandleNumber:3 direction:2
+
+2019-08-14 16:44:20 [INFO] nodes: ---Handler-4-3 Sender Start---
+2019-08-14 16:44:20 [INFO] nodes: ---Handler-4-3 Reciever Start---
+2019-08-14 16:44:20 [INFO] nodes: -->>SUB Recieve: peer  ID:ncWCFaUEJi 
+
+2019-08-14 16:44:20 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12140/p2p/QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL 2019-08-14 16:44:20.58475134 +0800 CST m=+15.004019569}
+
+2019-08-14 16:44:20 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12140/p2p/QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL 2019-08-14 16:44:20.58475134 +0800 CST m=+15.004019569}
+
+2019-08-14 16:44:20 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12139/p2p/QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J
+
+2019-08-14 16:44:20 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12137/p2p/QmZHMPNV3dXa85258iATVyb24STipPBKQrZNt8Sngc2cqm
+
+2019-08-14 16:44:20 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12140/p2p/QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL
+
+2019-08-14 16:44:20 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:20 [DEBUG] nodes: Connecting .... ID:QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL, address:/ip4/127.0.0.1/tcp/12140 TTL:9223372036854775807
+2019-08-14 16:44:20 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:20 [INFO] nodes: @@Stream :/ip4/127.0.0.1/tcp/12139-/ipfs/id/1.0.0 is Closed at 2019-08-14 16:44:20.591988704 +0800 CST m=+14.977018353
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream :/ip4/127.0.0.1/tcp/12139-/ipfs/id/1.0.0 is Closed at 2019-08-14 16:44:20.592409607 +0800 CST m=+14.977439262
+
+2019-08-14 16:44:20 [INFO] nodes: @@: Conn: /ip4/127.0.0.1/tcp/12140 Connected at 2019-08-14 16:44:20.592653932 +0800 CST m=+14.977683583
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12140- is Opened at 2019-08-14 16:44:20.592671903 +0800 CST m=+14.977701555
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12140- is Opened at 2019-08-14 16:44:20.592736296 +0800 CST m=+14.977765945
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12140- is Opened at 2019-08-14 16:44:20.592763406 +0800 CST m=+14.977793061
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12140- is Opened at 2019-08-14 16:44:20.592794987 +0800 CST m=+14.977824637
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12140- is Opened at 2019-08-14 16:44:20.592822585 +0800 CST m=+14.977852233
+
+2019-08-14 16:44:20 [INFO] nodes: NEW STREAM ID:QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL, address:/ip4/127.0.0.1/tcp/12140 TTL:9223372036854775807
+2019-08-14 16:44:20 [INFO] nodes: New Stream Handler:5
+
+
+2019-08-14 16:44:20 [INFO] nodes: Start a new stream! ID:5  HandleNumber:4 direction:2
+
+2019-08-14 16:44:20 [INFO] nodes: ---Handler-5-4 Sender Start---
+2019-08-14 16:44:20 [INFO] nodes: ---Handler-5-4 Reciever Start---
+2019-08-14 16:44:20 [INFO] nodes: @@Stream :/ip4/127.0.0.1/tcp/12140-/ipfs/id/1.0.0 is Closed at 2019-08-14 16:44:20.59569702 +0800 CST m=+14.980726696
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream :/ip4/127.0.0.1/tcp/12140-/ipfs/id/1.0.0 is Closed at 2019-08-14 16:44:20.596213635 +0800 CST m=+14.981243297
+
+2019-08-14 16:44:20 [INFO] nodes: -->>SUB Recieve: peer  ID:83x4G3Hkwn 
+
+2019-08-14 16:44:20 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12141/p2p/QmNep6b6g5Rdhu7WC9ERPHkFMj5caX3K6cg83x4G3Hkwn3 QmNep6b6g5Rdhu7WC9ERPHkFMj5caX3K6cg83x4G3Hkwn3 2019-08-14 16:44:20.600031567 +0800 CST m=+15.004079496}
+
+2019-08-14 16:44:20 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12141/p2p/QmNep6b6g5Rdhu7WC9ERPHkFMj5caX3K6cg83x4G3Hkwn3 QmNep6b6g5Rdhu7WC9ERPHkFMj5caX3K6cg83x4G3Hkwn3 2019-08-14 16:44:20.600031567 +0800 CST m=+15.004079496}
+
+2019-08-14 16:44:20 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12138/p2p/QmaBRLueCbZDJ43BeoB8FnHZsDzb1u2NZrh44XkKwQgUNV
+
+2019-08-14 16:44:20 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12137/p2p/QmZHMPNV3dXa85258iATVyb24STipPBKQrZNt8Sngc2cqm
+
+2019-08-14 16:44:20 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12140/p2p/QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL
+
+2019-08-14 16:44:20 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:20 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:20 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:20 [INFO] nodes: -->>SUB Recieve: peer  ID:HCC6nT2sjo 
+
+2019-08-14 16:44:20 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12142/p2p/QmTuyQDanH4BBbjA6P8euSHvU5UeBk8BnzUHCC6nT2sjoh QmTuyQDanH4BBbjA6P8euSHvU5UeBk8BnzUHCC6nT2sjoh 2019-08-14 16:44:20.605836141 +0800 CST m=+15.004086672}
+
+2019-08-14 16:44:20 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12142/p2p/QmTuyQDanH4BBbjA6P8euSHvU5UeBk8BnzUHCC6nT2sjoh QmTuyQDanH4BBbjA6P8euSHvU5UeBk8BnzUHCC6nT2sjoh 2019-08-14 16:44:20.605836141 +0800 CST m=+15.004086672}
+
+2019-08-14 16:44:20 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12141/p2p/QmNep6b6g5Rdhu7WC9ERPHkFMj5caX3K6cg83x4G3Hkwn3
+
+2019-08-14 16:44:20 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12142/p2p/QmTuyQDanH4BBbjA6P8euSHvU5UeBk8BnzUHCC6nT2sjoh
+
+2019-08-14 16:44:20 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12138/p2p/QmaBRLueCbZDJ43BeoB8FnHZsDzb1u2NZrh44XkKwQgUNV
+
+2019-08-14 16:44:20 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:20 [DEBUG] nodes: Connecting .... ID:QmNep6b6g5Rdhu7WC9ERPHkFMj5caX3K6cg83x4G3Hkwn3, address:/ip4/127.0.0.1/tcp/12141 TTL:9223372036854775807
+2019-08-14 16:44:20 [DEBUG] nodes: Connecting .... ID:QmTuyQDanH4BBbjA6P8euSHvU5UeBk8BnzUHCC6nT2sjoh, address:/ip4/127.0.0.1/tcp/12142 TTL:9223372036854775807
+2019-08-14 16:44:20 [INFO] nodes: @@: Conn: /ip4/127.0.0.1/tcp/12141 Connected at 2019-08-14 16:44:20.611395958 +0800 CST m=+14.996425640
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12141- is Opened at 2019-08-14 16:44:20.611412703 +0800 CST m=+14.996442370
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12141- is Opened at 2019-08-14 16:44:20.611430389 +0800 CST m=+14.996460048
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12141- is Opened at 2019-08-14 16:44:20.611451246 +0800 CST m=+14.996480901
+
+2019-08-14 16:44:20 [INFO] nodes: @@: Conn: /ip4/127.0.0.1/tcp/12142 Connected at 2019-08-14 16:44:20.611515707 +0800 CST m=+14.996545363
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12142- is Opened at 2019-08-14 16:44:20.611530568 +0800 CST m=+14.996560231
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12142- is Opened at 2019-08-14 16:44:20.611554714 +0800 CST m=+14.996584371
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12141- is Opened at 2019-08-14 16:44:20.61156458 +0800 CST m=+14.996594223
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12141- is Opened at 2019-08-14 16:44:20.611556022 +0800 CST m=+14.996585676
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12142- is Opened at 2019-08-14 16:44:20.611567472 +0800 CST m=+14.996597147
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12142- is Opened at 2019-08-14 16:44:20.611596113 +0800 CST m=+14.996625769
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12142- is Opened at 2019-08-14 16:44:20.612284714 +0800 CST m=+14.997314389
+
+2019-08-14 16:44:20 [INFO] nodes: NEW STREAM ID:QmNep6b6g5Rdhu7WC9ERPHkFMj5caX3K6cg83x4G3Hkwn3, address:/ip4/127.0.0.1/tcp/12141 TTL:9223372036854775807
+2019-08-14 16:44:20 [INFO] nodes: New Stream Handler:6
+
+
+2019-08-14 16:44:20 [INFO] nodes: Start a new stream! ID:6  HandleNumber:5 direction:2
+
+2019-08-14 16:44:20 [INFO] nodes: ---Handler-6-5 Sender Start---
+2019-08-14 16:44:20 [INFO] nodes: @@Stream :/ip4/127.0.0.1/tcp/12141-/ipfs/id/1.0.0 is Closed at 2019-08-14 16:44:20.612887842 +0800 CST m=+14.997917496
+
+2019-08-14 16:44:20 [INFO] nodes: ---Handler-6-5 Reciever Start---
+2019-08-14 16:44:20 [INFO] nodes: NEW STREAM ID:QmTuyQDanH4BBbjA6P8euSHvU5UeBk8BnzUHCC6nT2sjoh, address:/ip4/127.0.0.1/tcp/12142 TTL:9223372036854775807
+2019-08-14 16:44:20 [INFO] nodes: New Stream Handler:7
+
+
+2019-08-14 16:44:20 [INFO] nodes: Start a new stream! ID:7  HandleNumber:6 direction:2
+
+2019-08-14 16:44:20 [INFO] nodes: ---Handler-7-6 Sender Start---
+2019-08-14 16:44:20 [INFO] nodes: ---Handler-7-6 Reciever Start---
+2019-08-14 16:44:20 [INFO] nodes: @@Stream :/ip4/127.0.0.1/tcp/12142-/ipfs/id/1.0.0 is Closed at 2019-08-14 16:44:20.613195216 +0800 CST m=+14.998224878
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream :/ip4/127.0.0.1/tcp/12141-/ipfs/id/1.0.0 is Closed at 2019-08-14 16:44:20.613313704 +0800 CST m=+14.998343350
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream :/ip4/127.0.0.1/tcp/12142-/ipfs/id/1.0.0 is Closed at 2019-08-14 16:44:20.613435541 +0800 CST m=+14.998465191
+
+2019-08-14 16:44:20 [INFO] nodes: <<--- broadcasting SELF : PG3WgFo2Bh
+
+2019-08-14 16:44:20 [INFO] nodes: -->>SUB Recieve: peer  ID:PG3WgFo2Bh 
+
+2019-08-14 16:44:20 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12143/p2p/QmPVB7kaTDzx88sq4JTYXYcffgUHfiKKSEYPG3WgFo2Bhf QmPVB7kaTDzx88sq4JTYXYcffgUHfiKKSEYPG3WgFo2Bhf 2019-08-14 16:44:20.618822817 +0800 CST m=+15.003852460}
+
+2019-08-14 16:44:20 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12143/p2p/QmPVB7kaTDzx88sq4JTYXYcffgUHfiKKSEYPG3WgFo2Bhf QmPVB7kaTDzx88sq4JTYXYcffgUHfiKKSEYPG3WgFo2Bhf 2019-08-14 16:44:20.618822817 +0800 CST m=+15.003852460}
+
+2019-08-14 16:44:20 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12143/p2p/QmPVB7kaTDzx88sq4JTYXYcffgUHfiKKSEYPG3WgFo2Bhf
+
+2019-08-14 16:44:20 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12141/p2p/QmNep6b6g5Rdhu7WC9ERPHkFMj5caX3K6cg83x4G3Hkwn3
+
+2019-08-14 16:44:20 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12139/p2p/QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J
+
+2019-08-14 16:44:20 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:20 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:20 [INFO] nodes: -->>SUB Recieve: peer  ID:xLRRAvScDP 
+
+2019-08-14 16:44:20 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12144/p2p/QmYJTwuYNRDThZc1KE8UuBb25J6gmck5yP8xLRRAvScDP9 QmYJTwuYNRDThZc1KE8UuBb25J6gmck5yP8xLRRAvScDP9 2019-08-14 16:44:20.624367539 +0800 CST m=+15.003889730}
+
+2019-08-14 16:44:20 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12144/p2p/QmYJTwuYNRDThZc1KE8UuBb25J6gmck5yP8xLRRAvScDP9 QmYJTwuYNRDThZc1KE8UuBb25J6gmck5yP8xLRRAvScDP9 2019-08-14 16:44:20.624367539 +0800 CST m=+15.003889730}
+
+2019-08-14 16:44:20 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12137/p2p/QmZHMPNV3dXa85258iATVyb24STipPBKQrZNt8Sngc2cqm
+
+2019-08-14 16:44:20 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12142/p2p/QmTuyQDanH4BBbjA6P8euSHvU5UeBk8BnzUHCC6nT2sjoh
+
+2019-08-14 16:44:20 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12143/p2p/QmPVB7kaTDzx88sq4JTYXYcffgUHfiKKSEYPG3WgFo2Bhf
+
+2019-08-14 16:44:20 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:20 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:20 [INFO] nodes: @@: Conn: /ip4/127.0.0.1/tcp/12145 Connected at 2019-08-14 16:44:20.628534381 +0800 CST m=+15.013564065
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12145- is Opened at 2019-08-14 16:44:20.628561003 +0800 CST m=+15.013590657
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12145- is Opened at 2019-08-14 16:44:20.628576323 +0800 CST m=+15.013605971
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12145- is Opened at 2019-08-14 16:44:20.628646001 +0800 CST m=+15.013675645
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12145- is Opened at 2019-08-14 16:44:20.628650028 +0800 CST m=+15.013679682
+
+2019-08-14 16:44:20 [INFO] nodes: Start a new stream! ID:1  HandleNumber:7 direction:1
+
+2019-08-14 16:44:20 [INFO] nodes: ---Handler-1-7 Reciever Start---
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12145- is Opened at 2019-08-14 16:44:20.628730654 +0800 CST m=+15.013760327
+
+2019-08-14 16:44:20 [INFO] nodes: ---Handler-1-7 Sender Start---
+2019-08-14 16:44:20 [INFO] nodes: @@Stream :/ip4/127.0.0.1/tcp/12145-/ipfs/id/1.0.0 is Closed at 2019-08-14 16:44:20.629377464 +0800 CST m=+15.014407107
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream :/ip4/127.0.0.1/tcp/12145-/ipfs/id/1.0.0 is Closed at 2019-08-14 16:44:20.629517714 +0800 CST m=+15.014547372
+
+2019-08-14 16:44:20 [INFO] nodes: -->>SUB Recieve: peer  ID:Mz3bRqB36w 
+
+2019-08-14 16:44:20 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12145/p2p/QmcVtiHsmd2JXZ7jKXytA6wvgdJ34U7ZPJ4Mz3bRqB36ww QmcVtiHsmd2JXZ7jKXytA6wvgdJ34U7ZPJ4Mz3bRqB36ww 2019-08-14 16:44:20.642058549 +0800 CST m=+15.003970566}
+
+2019-08-14 16:44:20 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12145/p2p/QmcVtiHsmd2JXZ7jKXytA6wvgdJ34U7ZPJ4Mz3bRqB36ww QmcVtiHsmd2JXZ7jKXytA6wvgdJ34U7ZPJ4Mz3bRqB36ww 2019-08-14 16:44:20.642058549 +0800 CST m=+15.003970566}
+
+2019-08-14 16:44:20 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12140/p2p/QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL
+
+2019-08-14 16:44:20 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12138/p2p/QmaBRLueCbZDJ43BeoB8FnHZsDzb1u2NZrh44XkKwQgUNV
+
+2019-08-14 16:44:20 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12144/p2p/QmYJTwuYNRDThZc1KE8UuBb25J6gmck5yP8xLRRAvScDP9
+
+2019-08-14 16:44:20 [DEBUG] nodes: Connecting .... ID:QmYJTwuYNRDThZc1KE8UuBb25J6gmck5yP8xLRRAvScDP9, address:/ip4/127.0.0.1/tcp/12144 TTL:9223372036854775807
+2019-08-14 16:44:20 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:20 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:20 [INFO] nodes: @@: Conn: /ip4/127.0.0.1/tcp/12144 Connected at 2019-08-14 16:44:20.647938655 +0800 CST m=+15.032968318
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12144- is Opened at 2019-08-14 16:44:20.647952282 +0800 CST m=+15.032981940
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12144- is Opened at 2019-08-14 16:44:20.647950133 +0800 CST m=+15.032979802
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12144- is Opened at 2019-08-14 16:44:20.647979133 +0800 CST m=+15.033008782
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12144- is Opened at 2019-08-14 16:44:20.648042959 +0800 CST m=+15.033072606
+
+2019-08-14 16:44:20 [INFO] nodes: -->>SUB Recieve: peer  ID:Cj33y5Hxx7 
+
+2019-08-14 16:44:20 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12146/p2p/QmR2ykuCBPY27hLUCJDa6KxVForfLUvz6AcCj33y5Hxx7D QmR2ykuCBPY27hLUCJDa6KxVForfLUvz6AcCj33y5Hxx7D 2019-08-14 16:44:20.647164028 +0800 CST m=+15.005184670}
+
+2019-08-14 16:44:20 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12146/p2p/QmR2ykuCBPY27hLUCJDa6KxVForfLUvz6AcCj33y5Hxx7D QmR2ykuCBPY27hLUCJDa6KxVForfLUvz6AcCj33y5Hxx7D 2019-08-14 16:44:20.647164028 +0800 CST m=+15.005184670}
+
+2019-08-14 16:44:20 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12140/p2p/QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL
+
+2019-08-14 16:44:20 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12142/p2p/QmTuyQDanH4BBbjA6P8euSHvU5UeBk8BnzUHCC6nT2sjoh
+
+2019-08-14 16:44:20 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12139/p2p/QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J
+
+2019-08-14 16:44:20 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:20 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:20 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12144- is Opened at 2019-08-14 16:44:20.650093871 +0800 CST m=+15.035123549
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12144- is Opened at 2019-08-14 16:44:20.650104891 +0800 CST m=+15.035134541
+
+2019-08-14 16:44:20 [INFO] nodes: Start a new stream! ID:1  HandleNumber:8 direction:1
+
+2019-08-14 16:44:20 [INFO] nodes: ---Handler-1-8 Sender Start---
+2019-08-14 16:44:20 [INFO] nodes: ---Handler-1-8 Reciever Start---
+2019-08-14 16:44:20 [INFO] nodes: NEW STREAM ID:QmYJTwuYNRDThZc1KE8UuBb25J6gmck5yP8xLRRAvScDP9, address:/ip4/127.0.0.1/tcp/12144 TTL:9223372036854775807
+2019-08-14 16:44:20 [INFO] nodes: New Stream Handler:8
+
+
+2019-08-14 16:44:20 [INFO] nodes: Start a new stream! ID:8  HandleNumber:9 direction:2
+
+2019-08-14 16:44:20 [INFO] nodes: ---Handler-8-9 Sender Start---
+2019-08-14 16:44:20 [INFO] nodes: ---Handler-8-9 Reciever Start---
+2019-08-14 16:44:20 [INFO] nodes: @@Stream :/ip4/127.0.0.1/tcp/12144-/ipfs/id/1.0.0 is Closed at 2019-08-14 16:44:20.650970215 +0800 CST m=+15.035999869
+
+2019-08-14 16:44:20 [INFO] nodes: @@Stream :/ip4/127.0.0.1/tcp/12144-/ipfs/id/1.0.0 is Closed at 2019-08-14 16:44:20.651026992 +0800 CST m=+15.036056650
+
+2019-08-14 16:44:30 [INFO] nodes: -->>SUB Recieve: peer  ID:Nt8Sngc2cq 
+
+2019-08-14 16:44:30 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12137/p2p/QmZHMPNV3dXa85258iATVyb24STipPBKQrZNt8Sngc2cqm QmZHMPNV3dXa85258iATVyb24STipPBKQrZNt8Sngc2cqm 2019-08-14 16:44:30.562336265 +0800 CST m=+25.004196850}
+
+2019-08-14 16:44:30 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12137/p2p/QmZHMPNV3dXa85258iATVyb24STipPBKQrZNt8Sngc2cqm QmZHMPNV3dXa85258iATVyb24STipPBKQrZNt8Sngc2cqm 2019-08-14 16:44:30.562336265 +0800 CST m=+25.004196850}
+
+2019-08-14 16:44:30 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12141/p2p/QmNep6b6g5Rdhu7WC9ERPHkFMj5caX3K6cg83x4G3Hkwn3
+
+2019-08-14 16:44:30 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12139/p2p/QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J
+
+2019-08-14 16:44:30 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12145/p2p/QmcVtiHsmd2JXZ7jKXytA6wvgdJ34U7ZPJ4Mz3bRqB36ww
+
+2019-08-14 16:44:30 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:30 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:30 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:30 [INFO] nodes: -->>SUB Recieve: peer  ID:44XkKwQgUN 
+
+2019-08-14 16:44:30 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12138/p2p/QmaBRLueCbZDJ43BeoB8FnHZsDzb1u2NZrh44XkKwQgUNV QmaBRLueCbZDJ43BeoB8FnHZsDzb1u2NZrh44XkKwQgUNV 2019-08-14 16:44:30.568002511 +0800 CST m=+25.004041306}
+
+2019-08-14 16:44:30 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12138/p2p/QmaBRLueCbZDJ43BeoB8FnHZsDzb1u2NZrh44XkKwQgUNV QmaBRLueCbZDJ43BeoB8FnHZsDzb1u2NZrh44XkKwQgUNV 2019-08-14 16:44:30.568002511 +0800 CST m=+25.004041306}
+
+2019-08-14 16:44:30 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12141/p2p/QmNep6b6g5Rdhu7WC9ERPHkFMj5caX3K6cg83x4G3Hkwn3
+
+2019-08-14 16:44:30 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12144/p2p/QmYJTwuYNRDThZc1KE8UuBb25J6gmck5yP8xLRRAvScDP9
+
+2019-08-14 16:44:30 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12137/p2p/QmZHMPNV3dXa85258iATVyb24STipPBKQrZNt8Sngc2cqm
+
+2019-08-14 16:44:30 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:30 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:30 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:30 [INFO] nodes: -->>SUB Recieve: peer  ID:knUmwcMRZ8 
+
+2019-08-14 16:44:30 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12139/p2p/QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J 2019-08-14 16:44:30.579844923 +0800 CST m=+25.004193922}
+
+2019-08-14 16:44:30 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12139/p2p/QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J 2019-08-14 16:44:30.579844923 +0800 CST m=+25.004193922}
+
+2019-08-14 16:44:30 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12144/p2p/QmYJTwuYNRDThZc1KE8UuBb25J6gmck5yP8xLRRAvScDP9
+
+2019-08-14 16:44:30 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12140/p2p/QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL
+
+2019-08-14 16:44:30 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12141/p2p/QmNep6b6g5Rdhu7WC9ERPHkFMj5caX3K6cg83x4G3Hkwn3
+
+2019-08-14 16:44:30 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:30 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:30 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:30 [INFO] nodes: @@: Conn: /ip4/127.0.0.1/tcp/12146 Connected at 2019-08-14 16:44:30.585245112 +0800 CST m=+24.970274780
+
+2019-08-14 16:44:30 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12146- is Opened at 2019-08-14 16:44:30.585261916 +0800 CST m=+24.970291584
+
+2019-08-14 16:44:30 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12146- is Opened at 2019-08-14 16:44:30.585287155 +0800 CST m=+24.970316816
+
+2019-08-14 16:44:30 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12146- is Opened at 2019-08-14 16:44:30.585356785 +0800 CST m=+24.970386458
+
+2019-08-14 16:44:30 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12146- is Opened at 2019-08-14 16:44:30.585359775 +0800 CST m=+24.970389419
+
+2019-08-14 16:44:30 [INFO] nodes: @@Stream : /ip4/127.0.0.1/tcp/12146- is Opened at 2019-08-14 16:44:30.585365242 +0800 CST m=+24.970394912
+
+2019-08-14 16:44:30 [INFO] nodes: Start a new stream! ID:1  HandleNumber:10 direction:1
+
+2019-08-14 16:44:30 [INFO] nodes: ---Handler-1-10 Sender Start---
+2019-08-14 16:44:30 [INFO] nodes: ---Handler-1-10 Reciever Start---
+2019-08-14 16:44:30 [INFO] nodes: @@Stream :/ip4/127.0.0.1/tcp/12146-/ipfs/id/1.0.0 is Closed at 2019-08-14 16:44:30.586097381 +0800 CST m=+24.971127027
+
+2019-08-14 16:44:30 [INFO] nodes: @@Stream :/ip4/127.0.0.1/tcp/12146-/ipfs/id/1.0.0 is Closed at 2019-08-14 16:44:30.586127694 +0800 CST m=+24.971157354
+
+2019-08-14 16:44:30 [INFO] nodes: -->>SUB Recieve: peer  ID:ncWCFaUEJi 
+
+2019-08-14 16:44:30 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12140/p2p/QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL 2019-08-14 16:44:30.584820716 +0800 CST m=+25.004088930}
+
+2019-08-14 16:44:30 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12140/p2p/QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL 2019-08-14 16:44:30.584820716 +0800 CST m=+25.004088930}
+
+2019-08-14 16:44:30 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12138/p2p/QmaBRLueCbZDJ43BeoB8FnHZsDzb1u2NZrh44XkKwQgUNV
+
+2019-08-14 16:44:30 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12144/p2p/QmYJTwuYNRDThZc1KE8UuBb25J6gmck5yP8xLRRAvScDP9
+
+2019-08-14 16:44:30 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12146/p2p/QmR2ykuCBPY27hLUCJDa6KxVForfLUvz6AcCj33y5Hxx7D
+
+2019-08-14 16:44:30 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:30 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:30 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:30 [INFO] nodes: -->>SUB Recieve: peer  ID:83x4G3Hkwn 
+
+2019-08-14 16:44:30 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12141/p2p/QmNep6b6g5Rdhu7WC9ERPHkFMj5caX3K6cg83x4G3Hkwn3 QmNep6b6g5Rdhu7WC9ERPHkFMj5caX3K6cg83x4G3Hkwn3 2019-08-14 16:44:30.60015103 +0800 CST m=+25.004198954}
+
+2019-08-14 16:44:30 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12141/p2p/QmNep6b6g5Rdhu7WC9ERPHkFMj5caX3K6cg83x4G3Hkwn3 QmNep6b6g5Rdhu7WC9ERPHkFMj5caX3K6cg83x4G3Hkwn3 2019-08-14 16:44:30.60015103 +0800 CST m=+25.004198954}
+
+2019-08-14 16:44:30 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12144/p2p/QmYJTwuYNRDThZc1KE8UuBb25J6gmck5yP8xLRRAvScDP9
+
+2019-08-14 16:44:30 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12145/p2p/QmcVtiHsmd2JXZ7jKXytA6wvgdJ34U7ZPJ4Mz3bRqB36ww
+
+2019-08-14 16:44:30 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12141/p2p/QmNep6b6g5Rdhu7WC9ERPHkFMj5caX3K6cg83x4G3Hkwn3
+
+2019-08-14 16:44:30 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:30 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:30 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:30 [INFO] nodes: -->>SUB Recieve: peer  ID:HCC6nT2sjo 
+
+2019-08-14 16:44:30 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12142/p2p/QmTuyQDanH4BBbjA6P8euSHvU5UeBk8BnzUHCC6nT2sjoh QmTuyQDanH4BBbjA6P8euSHvU5UeBk8BnzUHCC6nT2sjoh 2019-08-14 16:44:30.605928624 +0800 CST m=+25.004179143}
+
+2019-08-14 16:44:30 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12142/p2p/QmTuyQDanH4BBbjA6P8euSHvU5UeBk8BnzUHCC6nT2sjoh QmTuyQDanH4BBbjA6P8euSHvU5UeBk8BnzUHCC6nT2sjoh 2019-08-14 16:44:30.605928624 +0800 CST m=+25.004179143}
+
+2019-08-14 16:44:30 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12142/p2p/QmTuyQDanH4BBbjA6P8euSHvU5UeBk8BnzUHCC6nT2sjoh
+
+2019-08-14 16:44:30 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12138/p2p/QmaBRLueCbZDJ43BeoB8FnHZsDzb1u2NZrh44XkKwQgUNV
+
+2019-08-14 16:44:30 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12144/p2p/QmYJTwuYNRDThZc1KE8UuBb25J6gmck5yP8xLRRAvScDP9
+
+2019-08-14 16:44:30 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:30 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:30 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:30 [INFO] nodes: <<--- broadcasting SELF : PG3WgFo2Bh
+
+2019-08-14 16:44:30 [INFO] nodes: -->>SUB Recieve: peer  ID:PG3WgFo2Bh 
+
+2019-08-14 16:44:30 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12143/p2p/QmPVB7kaTDzx88sq4JTYXYcffgUHfiKKSEYPG3WgFo2Bhf QmPVB7kaTDzx88sq4JTYXYcffgUHfiKKSEYPG3WgFo2Bhf 2019-08-14 16:44:30.618891097 +0800 CST m=+25.003920749}
+
+2019-08-14 16:44:30 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12143/p2p/QmPVB7kaTDzx88sq4JTYXYcffgUHfiKKSEYPG3WgFo2Bhf QmPVB7kaTDzx88sq4JTYXYcffgUHfiKKSEYPG3WgFo2Bhf 2019-08-14 16:44:30.618891097 +0800 CST m=+25.003920749}
+
+2019-08-14 16:44:30 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12140/p2p/QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL
+
+2019-08-14 16:44:30 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12142/p2p/QmTuyQDanH4BBbjA6P8euSHvU5UeBk8BnzUHCC6nT2sjoh
+
+2019-08-14 16:44:30 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12139/p2p/QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J
+
+2019-08-14 16:44:30 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:30 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:30 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:30 [INFO] nodes: -->>SUB Recieve: peer  ID:xLRRAvScDP 
+
+2019-08-14 16:44:30 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12144/p2p/QmYJTwuYNRDThZc1KE8UuBb25J6gmck5yP8xLRRAvScDP9 QmYJTwuYNRDThZc1KE8UuBb25J6gmck5yP8xLRRAvScDP9 2019-08-14 16:44:30.624447654 +0800 CST m=+25.003969854}
+
+2019-08-14 16:44:30 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12144/p2p/QmYJTwuYNRDThZc1KE8UuBb25J6gmck5yP8xLRRAvScDP9 QmYJTwuYNRDThZc1KE8UuBb25J6gmck5yP8xLRRAvScDP9 2019-08-14 16:44:30.624447654 +0800 CST m=+25.003969854}
+
+2019-08-14 16:44:30 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12143/p2p/QmPVB7kaTDzx88sq4JTYXYcffgUHfiKKSEYPG3WgFo2Bhf
+
+2019-08-14 16:44:30 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12140/p2p/QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL
+
+2019-08-14 16:44:30 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12141/p2p/QmNep6b6g5Rdhu7WC9ERPHkFMj5caX3K6cg83x4G3Hkwn3
+
+2019-08-14 16:44:30 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:30 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:30 [INFO] nodes: -->>SUB Recieve: peer  ID:Mz3bRqB36w 
+
+2019-08-14 16:44:30 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12145/p2p/QmcVtiHsmd2JXZ7jKXytA6wvgdJ34U7ZPJ4Mz3bRqB36ww QmcVtiHsmd2JXZ7jKXytA6wvgdJ34U7ZPJ4Mz3bRqB36ww 2019-08-14 16:44:30.642163572 +0800 CST m=+25.004075602}
+
+2019-08-14 16:44:30 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12145/p2p/QmcVtiHsmd2JXZ7jKXytA6wvgdJ34U7ZPJ4Mz3bRqB36ww QmcVtiHsmd2JXZ7jKXytA6wvgdJ34U7ZPJ4Mz3bRqB36ww 2019-08-14 16:44:30.642163572 +0800 CST m=+25.004075602}
+
+2019-08-14 16:44:30 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12141/p2p/QmNep6b6g5Rdhu7WC9ERPHkFMj5caX3K6cg83x4G3Hkwn3
+
+2019-08-14 16:44:30 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12142/p2p/QmTuyQDanH4BBbjA6P8euSHvU5UeBk8BnzUHCC6nT2sjoh
+
+2019-08-14 16:44:30 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12146/p2p/QmR2ykuCBPY27hLUCJDa6KxVForfLUvz6AcCj33y5Hxx7D
+
+2019-08-14 16:44:30 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:30 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:30 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:30 [INFO] nodes: -->>SUB Recieve: peer  ID:Cj33y5Hxx7 
+
+2019-08-14 16:44:30 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12146/p2p/QmR2ykuCBPY27hLUCJDa6KxVForfLUvz6AcCj33y5Hxx7D QmR2ykuCBPY27hLUCJDa6KxVForfLUvz6AcCj33y5Hxx7D 2019-08-14 16:44:30.647249701 +0800 CST m=+25.005270314}
+
+2019-08-14 16:44:30 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12146/p2p/QmR2ykuCBPY27hLUCJDa6KxVForfLUvz6AcCj33y5Hxx7D QmR2ykuCBPY27hLUCJDa6KxVForfLUvz6AcCj33y5Hxx7D 2019-08-14 16:44:30.647249701 +0800 CST m=+25.005270314}
+
+2019-08-14 16:44:30 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12144/p2p/QmYJTwuYNRDThZc1KE8UuBb25J6gmck5yP8xLRRAvScDP9
+
+2019-08-14 16:44:30 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12142/p2p/QmTuyQDanH4BBbjA6P8euSHvU5UeBk8BnzUHCC6nT2sjoh
+
+2019-08-14 16:44:30 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12139/p2p/QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J
+
+2019-08-14 16:44:30 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:30 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:30 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:40 [INFO] nodes: -->>SUB Recieve: peer  ID:Nt8Sngc2cq 
+
+2019-08-14 16:44:40 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12137/p2p/QmZHMPNV3dXa85258iATVyb24STipPBKQrZNt8Sngc2cqm QmZHMPNV3dXa85258iATVyb24STipPBKQrZNt8Sngc2cqm 2019-08-14 16:44:40.56243807 +0800 CST m=+35.004298654}
+
+2019-08-14 16:44:40 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12137/p2p/QmZHMPNV3dXa85258iATVyb24STipPBKQrZNt8Sngc2cqm QmZHMPNV3dXa85258iATVyb24STipPBKQrZNt8Sngc2cqm 2019-08-14 16:44:40.56243807 +0800 CST m=+35.004298654}
+
+2019-08-14 16:44:40 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12140/p2p/QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL
+
+2019-08-14 16:44:40 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12145/p2p/QmcVtiHsmd2JXZ7jKXytA6wvgdJ34U7ZPJ4Mz3bRqB36ww
+
+2019-08-14 16:44:40 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12142/p2p/QmTuyQDanH4BBbjA6P8euSHvU5UeBk8BnzUHCC6nT2sjoh
+
+2019-08-14 16:44:40 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:40 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:40 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:40 [INFO] nodes: -->>SUB Recieve: peer  ID:44XkKwQgUN 
+
+2019-08-14 16:44:40 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12138/p2p/QmaBRLueCbZDJ43BeoB8FnHZsDzb1u2NZrh44XkKwQgUNV QmaBRLueCbZDJ43BeoB8FnHZsDzb1u2NZrh44XkKwQgUNV 2019-08-14 16:44:40.568098247 +0800 CST m=+35.004137038}
+
+2019-08-14 16:44:40 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12138/p2p/QmaBRLueCbZDJ43BeoB8FnHZsDzb1u2NZrh44XkKwQgUNV QmaBRLueCbZDJ43BeoB8FnHZsDzb1u2NZrh44XkKwQgUNV 2019-08-14 16:44:40.568098247 +0800 CST m=+35.004137038}
+
+2019-08-14 16:44:40 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12137/p2p/QmZHMPNV3dXa85258iATVyb24STipPBKQrZNt8Sngc2cqm
+
+2019-08-14 16:44:40 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12141/p2p/QmNep6b6g5Rdhu7WC9ERPHkFMj5caX3K6cg83x4G3Hkwn3
+
+2019-08-14 16:44:40 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12142/p2p/QmTuyQDanH4BBbjA6P8euSHvU5UeBk8BnzUHCC6nT2sjoh
+
+2019-08-14 16:44:40 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:40 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:40 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:40 [INFO] nodes: -->>SUB Recieve: peer  ID:knUmwcMRZ8 
+
+2019-08-14 16:44:40 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12139/p2p/QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J 2019-08-14 16:44:40.57993639 +0800 CST m=+35.004285385}
+
+2019-08-14 16:44:40 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12139/p2p/QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J 2019-08-14 16:44:40.57993639 +0800 CST m=+35.004285385}
+
+2019-08-14 16:44:40 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12144/p2p/QmYJTwuYNRDThZc1KE8UuBb25J6gmck5yP8xLRRAvScDP9
+
+2019-08-14 16:44:40 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12137/p2p/QmZHMPNV3dXa85258iATVyb24STipPBKQrZNt8Sngc2cqm
+
+2019-08-14 16:44:40 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12145/p2p/QmcVtiHsmd2JXZ7jKXytA6wvgdJ34U7ZPJ4Mz3bRqB36ww
+
+2019-08-14 16:44:40 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:40 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:40 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:40 [INFO] nodes: -->>SUB Recieve: peer  ID:ncWCFaUEJi 
+
+2019-08-14 16:44:40 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12140/p2p/QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL 2019-08-14 16:44:40.584909415 +0800 CST m=+35.004177629}
+
+2019-08-14 16:44:40 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12140/p2p/QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL 2019-08-14 16:44:40.584909415 +0800 CST m=+35.004177629}
+
+2019-08-14 16:44:40 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12140/p2p/QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL
+
+2019-08-14 16:44:40 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12145/p2p/QmcVtiHsmd2JXZ7jKXytA6wvgdJ34U7ZPJ4Mz3bRqB36ww
+
+2019-08-14 16:44:40 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12139/p2p/QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J
+
+2019-08-14 16:44:40 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:40 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:40 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:40 [INFO] nodes: -->>SUB Recieve: peer  ID:83x4G3Hkwn 
+
+2019-08-14 16:44:40 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12141/p2p/QmNep6b6g5Rdhu7WC9ERPHkFMj5caX3K6cg83x4G3Hkwn3 QmNep6b6g5Rdhu7WC9ERPHkFMj5caX3K6cg83x4G3Hkwn3 2019-08-14 16:44:40.600219469 +0800 CST m=+35.004267381}
+
+2019-08-14 16:44:40 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12141/p2p/QmNep6b6g5Rdhu7WC9ERPHkFMj5caX3K6cg83x4G3Hkwn3 QmNep6b6g5Rdhu7WC9ERPHkFMj5caX3K6cg83x4G3Hkwn3 2019-08-14 16:44:40.600219469 +0800 CST m=+35.004267381}
+
+2019-08-14 16:44:40 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12141/p2p/QmNep6b6g5Rdhu7WC9ERPHkFMj5caX3K6cg83x4G3Hkwn3
+
+2019-08-14 16:44:40 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12142/p2p/QmTuyQDanH4BBbjA6P8euSHvU5UeBk8BnzUHCC6nT2sjoh
+
+2019-08-14 16:44:40 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12144/p2p/QmYJTwuYNRDThZc1KE8UuBb25J6gmck5yP8xLRRAvScDP9
+
+2019-08-14 16:44:40 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:40 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:40 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:40 [INFO] nodes: -->>SUB Recieve: peer  ID:HCC6nT2sjo 
+
+2019-08-14 16:44:40 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12142/p2p/QmTuyQDanH4BBbjA6P8euSHvU5UeBk8BnzUHCC6nT2sjoh QmTuyQDanH4BBbjA6P8euSHvU5UeBk8BnzUHCC6nT2sjoh 2019-08-14 16:44:40.605993365 +0800 CST m=+35.004243909}
+
+2019-08-14 16:44:40 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12142/p2p/QmTuyQDanH4BBbjA6P8euSHvU5UeBk8BnzUHCC6nT2sjoh QmTuyQDanH4BBbjA6P8euSHvU5UeBk8BnzUHCC6nT2sjoh 2019-08-14 16:44:40.605993365 +0800 CST m=+35.004243909}
+
+2019-08-14 16:44:40 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12145/p2p/QmcVtiHsmd2JXZ7jKXytA6wvgdJ34U7ZPJ4Mz3bRqB36ww
+
+2019-08-14 16:44:40 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12139/p2p/QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J
+
+2019-08-14 16:44:40 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12138/p2p/QmaBRLueCbZDJ43BeoB8FnHZsDzb1u2NZrh44XkKwQgUNV
+
+2019-08-14 16:44:40 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:40 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:40 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:40 [INFO] nodes: <<--- broadcasting SELF : PG3WgFo2Bh
+
+2019-08-14 16:44:40 [INFO] nodes: -->>SUB Recieve: peer  ID:PG3WgFo2Bh 
+
+2019-08-14 16:44:40 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12143/p2p/QmPVB7kaTDzx88sq4JTYXYcffgUHfiKKSEYPG3WgFo2Bhf QmPVB7kaTDzx88sq4JTYXYcffgUHfiKKSEYPG3WgFo2Bhf 2019-08-14 16:44:40.618981174 +0800 CST m=+35.004010824}
+
+2019-08-14 16:44:40 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12143/p2p/QmPVB7kaTDzx88sq4JTYXYcffgUHfiKKSEYPG3WgFo2Bhf QmPVB7kaTDzx88sq4JTYXYcffgUHfiKKSEYPG3WgFo2Bhf 2019-08-14 16:44:40.618981174 +0800 CST m=+35.004010824}
+
+2019-08-14 16:44:40 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12146/p2p/QmR2ykuCBPY27hLUCJDa6KxVForfLUvz6AcCj33y5Hxx7D
+
+2019-08-14 16:44:40 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12145/p2p/QmcVtiHsmd2JXZ7jKXytA6wvgdJ34U7ZPJ4Mz3bRqB36ww
+
+2019-08-14 16:44:40 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12142/p2p/QmTuyQDanH4BBbjA6P8euSHvU5UeBk8BnzUHCC6nT2sjoh
+
+2019-08-14 16:44:40 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:40 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:40 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:40 [INFO] nodes: -->>SUB Recieve: peer  ID:xLRRAvScDP 
+
+2019-08-14 16:44:40 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12144/p2p/QmYJTwuYNRDThZc1KE8UuBb25J6gmck5yP8xLRRAvScDP9 QmYJTwuYNRDThZc1KE8UuBb25J6gmck5yP8xLRRAvScDP9 2019-08-14 16:44:40.624517375 +0800 CST m=+35.004039558}
+
+2019-08-14 16:44:40 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12144/p2p/QmYJTwuYNRDThZc1KE8UuBb25J6gmck5yP8xLRRAvScDP9 QmYJTwuYNRDThZc1KE8UuBb25J6gmck5yP8xLRRAvScDP9 2019-08-14 16:44:40.624517375 +0800 CST m=+35.004039558}
+
+2019-08-14 16:44:40 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12146/p2p/QmR2ykuCBPY27hLUCJDa6KxVForfLUvz6AcCj33y5Hxx7D
+
+2019-08-14 16:44:40 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12138/p2p/QmaBRLueCbZDJ43BeoB8FnHZsDzb1u2NZrh44XkKwQgUNV
+
+2019-08-14 16:44:40 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12145/p2p/QmcVtiHsmd2JXZ7jKXytA6wvgdJ34U7ZPJ4Mz3bRqB36ww
+
+2019-08-14 16:44:40 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:40 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:40 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:40 [INFO] nodes: -->>SUB Recieve: peer  ID:Mz3bRqB36w 
+
+2019-08-14 16:44:40 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12145/p2p/QmcVtiHsmd2JXZ7jKXytA6wvgdJ34U7ZPJ4Mz3bRqB36ww QmcVtiHsmd2JXZ7jKXytA6wvgdJ34U7ZPJ4Mz3bRqB36ww 2019-08-14 16:44:40.642196104 +0800 CST m=+35.004108140}
+
+2019-08-14 16:44:40 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12145/p2p/QmcVtiHsmd2JXZ7jKXytA6wvgdJ34U7ZPJ4Mz3bRqB36ww QmcVtiHsmd2JXZ7jKXytA6wvgdJ34U7ZPJ4Mz3bRqB36ww 2019-08-14 16:44:40.642196104 +0800 CST m=+35.004108140}
+
+2019-08-14 16:44:40 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12146/p2p/QmR2ykuCBPY27hLUCJDa6KxVForfLUvz6AcCj33y5Hxx7D
+
+2019-08-14 16:44:40 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12138/p2p/QmaBRLueCbZDJ43BeoB8FnHZsDzb1u2NZrh44XkKwQgUNV
+
+2019-08-14 16:44:40 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12140/p2p/QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL
+
+2019-08-14 16:44:40 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:40 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:40 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:40 [INFO] nodes: -->>SUB Recieve: peer  ID:Cj33y5Hxx7 
+
+2019-08-14 16:44:40 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12146/p2p/QmR2ykuCBPY27hLUCJDa6KxVForfLUvz6AcCj33y5Hxx7D QmR2ykuCBPY27hLUCJDa6KxVForfLUvz6AcCj33y5Hxx7D 2019-08-14 16:44:40.647325522 +0800 CST m=+35.005346135}
+
+2019-08-14 16:44:40 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12146/p2p/QmR2ykuCBPY27hLUCJDa6KxVForfLUvz6AcCj33y5Hxx7D QmR2ykuCBPY27hLUCJDa6KxVForfLUvz6AcCj33y5Hxx7D 2019-08-14 16:44:40.647325522 +0800 CST m=+35.005346135}
+
+2019-08-14 16:44:40 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12146/p2p/QmR2ykuCBPY27hLUCJDa6KxVForfLUvz6AcCj33y5Hxx7D
+
+2019-08-14 16:44:40 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12138/p2p/QmaBRLueCbZDJ43BeoB8FnHZsDzb1u2NZrh44XkKwQgUNV
+
+2019-08-14 16:44:40 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12142/p2p/QmTuyQDanH4BBbjA6P8euSHvU5UeBk8BnzUHCC6nT2sjoh
+
+2019-08-14 16:44:40 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:40 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:40 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:50 [INFO] nodes: -->>SUB Recieve: peer  ID:Nt8Sngc2cq 
+
+2019-08-14 16:44:50 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12137/p2p/QmZHMPNV3dXa85258iATVyb24STipPBKQrZNt8Sngc2cqm QmZHMPNV3dXa85258iATVyb24STipPBKQrZNt8Sngc2cqm 2019-08-14 16:44:50.562517787 +0800 CST m=+45.004378386}
+
+2019-08-14 16:44:50 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12137/p2p/QmZHMPNV3dXa85258iATVyb24STipPBKQrZNt8Sngc2cqm QmZHMPNV3dXa85258iATVyb24STipPBKQrZNt8Sngc2cqm 2019-08-14 16:44:50.562517787 +0800 CST m=+45.004378386}
+
+2019-08-14 16:44:50 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12139/p2p/QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J
+
+2019-08-14 16:44:50 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12145/p2p/QmcVtiHsmd2JXZ7jKXytA6wvgdJ34U7ZPJ4Mz3bRqB36ww
+
+2019-08-14 16:44:50 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12140/p2p/QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL
+
+2019-08-14 16:44:50 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:50 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:50 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:50 [INFO] nodes: -->>SUB Recieve: peer  ID:44XkKwQgUN 
+
+2019-08-14 16:44:50 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12138/p2p/QmaBRLueCbZDJ43BeoB8FnHZsDzb1u2NZrh44XkKwQgUNV QmaBRLueCbZDJ43BeoB8FnHZsDzb1u2NZrh44XkKwQgUNV 2019-08-14 16:44:50.568161686 +0800 CST m=+45.004200487}
+
+2019-08-14 16:44:50 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12138/p2p/QmaBRLueCbZDJ43BeoB8FnHZsDzb1u2NZrh44XkKwQgUNV QmaBRLueCbZDJ43BeoB8FnHZsDzb1u2NZrh44XkKwQgUNV 2019-08-14 16:44:50.568161686 +0800 CST m=+45.004200487}
+
+2019-08-14 16:44:50 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12140/p2p/QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL
+
+2019-08-14 16:44:50 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12145/p2p/QmcVtiHsmd2JXZ7jKXytA6wvgdJ34U7ZPJ4Mz3bRqB36ww
+
+2019-08-14 16:44:50 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12142/p2p/QmTuyQDanH4BBbjA6P8euSHvU5UeBk8BnzUHCC6nT2sjoh
+
+2019-08-14 16:44:50 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:50 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:50 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:50 [INFO] nodes: -->>SUB Recieve: peer  ID:knUmwcMRZ8 
+
+2019-08-14 16:44:50 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12139/p2p/QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J 2019-08-14 16:44:50.579996511 +0800 CST m=+45.004345532}
+
+2019-08-14 16:44:50 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12139/p2p/QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J 2019-08-14 16:44:50.579996511 +0800 CST m=+45.004345532}
+
+2019-08-14 16:44:50 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12137/p2p/QmZHMPNV3dXa85258iATVyb24STipPBKQrZNt8Sngc2cqm
+
+2019-08-14 16:44:50 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12141/p2p/QmNep6b6g5Rdhu7WC9ERPHkFMj5caX3K6cg83x4G3Hkwn3
+
+2019-08-14 16:44:50 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12139/p2p/QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J
+
+2019-08-14 16:44:50 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:50 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:50 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:50 [INFO] nodes: -->>SUB Recieve: peer  ID:ncWCFaUEJi 
+
+2019-08-14 16:44:50 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12140/p2p/QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL 2019-08-14 16:44:50.584970674 +0800 CST m=+45.004238885}
+
+2019-08-14 16:44:50 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12140/p2p/QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL 2019-08-14 16:44:50.584970674 +0800 CST m=+45.004238885}
+
+2019-08-14 16:44:50 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12143/p2p/QmPVB7kaTDzx88sq4JTYXYcffgUHfiKKSEYPG3WgFo2Bhf
+
+2019-08-14 16:44:50 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12137/p2p/QmZHMPNV3dXa85258iATVyb24STipPBKQrZNt8Sngc2cqm
+
+2019-08-14 16:44:50 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12145/p2p/QmcVtiHsmd2JXZ7jKXytA6wvgdJ34U7ZPJ4Mz3bRqB36ww
+
+2019-08-14 16:44:50 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:50 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:50 [INFO] nodes: -->>SUB Recieve: peer  ID:83x4G3Hkwn 
+
+2019-08-14 16:44:50 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12141/p2p/QmNep6b6g5Rdhu7WC9ERPHkFMj5caX3K6cg83x4G3Hkwn3 QmNep6b6g5Rdhu7WC9ERPHkFMj5caX3K6cg83x4G3Hkwn3 2019-08-14 16:44:50.600306122 +0800 CST m=+45.004354053}
+
+2019-08-14 16:44:50 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12141/p2p/QmNep6b6g5Rdhu7WC9ERPHkFMj5caX3K6cg83x4G3Hkwn3 QmNep6b6g5Rdhu7WC9ERPHkFMj5caX3K6cg83x4G3Hkwn3 2019-08-14 16:44:50.600306122 +0800 CST m=+45.004354053}
+
+2019-08-14 16:44:50 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12146/p2p/QmR2ykuCBPY27hLUCJDa6KxVForfLUvz6AcCj33y5Hxx7D
+
+2019-08-14 16:44:50 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12139/p2p/QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J
+
+2019-08-14 16:44:50 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12140/p2p/QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL
+
+2019-08-14 16:44:50 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:50 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:50 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:50 [INFO] nodes: -->>SUB Recieve: peer  ID:HCC6nT2sjo 
+
+2019-08-14 16:44:50 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12142/p2p/QmTuyQDanH4BBbjA6P8euSHvU5UeBk8BnzUHCC6nT2sjoh QmTuyQDanH4BBbjA6P8euSHvU5UeBk8BnzUHCC6nT2sjoh 2019-08-14 16:44:50.606053191 +0800 CST m=+45.004303715}
+
+2019-08-14 16:44:50 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12142/p2p/QmTuyQDanH4BBbjA6P8euSHvU5UeBk8BnzUHCC6nT2sjoh QmTuyQDanH4BBbjA6P8euSHvU5UeBk8BnzUHCC6nT2sjoh 2019-08-14 16:44:50.606053191 +0800 CST m=+45.004303715}
+
+2019-08-14 16:44:50 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12144/p2p/QmYJTwuYNRDThZc1KE8UuBb25J6gmck5yP8xLRRAvScDP9
+
+2019-08-14 16:44:50 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12145/p2p/QmcVtiHsmd2JXZ7jKXytA6wvgdJ34U7ZPJ4Mz3bRqB36ww
+
+2019-08-14 16:44:50 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12146/p2p/QmR2ykuCBPY27hLUCJDa6KxVForfLUvz6AcCj33y5Hxx7D
+
+2019-08-14 16:44:50 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:50 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:50 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:50 [INFO] nodes: <<--- broadcasting SELF : PG3WgFo2Bh
+
+2019-08-14 16:44:50 [INFO] nodes: -->>SUB Recieve: peer  ID:PG3WgFo2Bh 
+
+2019-08-14 16:44:50 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12143/p2p/QmPVB7kaTDzx88sq4JTYXYcffgUHfiKKSEYPG3WgFo2Bhf QmPVB7kaTDzx88sq4JTYXYcffgUHfiKKSEYPG3WgFo2Bhf 2019-08-14 16:44:50.619085223 +0800 CST m=+45.004114880}
+
+2019-08-14 16:44:50 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12143/p2p/QmPVB7kaTDzx88sq4JTYXYcffgUHfiKKSEYPG3WgFo2Bhf QmPVB7kaTDzx88sq4JTYXYcffgUHfiKKSEYPG3WgFo2Bhf 2019-08-14 16:44:50.619085223 +0800 CST m=+45.004114880}
+
+2019-08-14 16:44:50 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12143/p2p/QmPVB7kaTDzx88sq4JTYXYcffgUHfiKKSEYPG3WgFo2Bhf
+
+2019-08-14 16:44:50 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12145/p2p/QmcVtiHsmd2JXZ7jKXytA6wvgdJ34U7ZPJ4Mz3bRqB36ww
+
+2019-08-14 16:44:50 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12141/p2p/QmNep6b6g5Rdhu7WC9ERPHkFMj5caX3K6cg83x4G3Hkwn3
+
+2019-08-14 16:44:50 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:50 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:50 [INFO] nodes: -->>SUB Recieve: peer  ID:xLRRAvScDP 
+
+2019-08-14 16:44:50 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12144/p2p/QmYJTwuYNRDThZc1KE8UuBb25J6gmck5yP8xLRRAvScDP9 QmYJTwuYNRDThZc1KE8UuBb25J6gmck5yP8xLRRAvScDP9 2019-08-14 16:44:50.624586932 +0800 CST m=+45.004109143}
+
+2019-08-14 16:44:50 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12144/p2p/QmYJTwuYNRDThZc1KE8UuBb25J6gmck5yP8xLRRAvScDP9 QmYJTwuYNRDThZc1KE8UuBb25J6gmck5yP8xLRRAvScDP9 2019-08-14 16:44:50.624586932 +0800 CST m=+45.004109143}
+
+2019-08-14 16:44:50 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12139/p2p/QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J
+
+2019-08-14 16:44:50 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12143/p2p/QmPVB7kaTDzx88sq4JTYXYcffgUHfiKKSEYPG3WgFo2Bhf
+
+2019-08-14 16:44:50 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12144/p2p/QmYJTwuYNRDThZc1KE8UuBb25J6gmck5yP8xLRRAvScDP9
+
+2019-08-14 16:44:50 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:50 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:50 [INFO] nodes: -->>SUB Recieve: peer  ID:Mz3bRqB36w 
+
+2019-08-14 16:44:50 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12145/p2p/QmcVtiHsmd2JXZ7jKXytA6wvgdJ34U7ZPJ4Mz3bRqB36ww QmcVtiHsmd2JXZ7jKXytA6wvgdJ34U7ZPJ4Mz3bRqB36ww 2019-08-14 16:44:50.642256728 +0800 CST m=+45.004168742}
+
+2019-08-14 16:44:50 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12145/p2p/QmcVtiHsmd2JXZ7jKXytA6wvgdJ34U7ZPJ4Mz3bRqB36ww QmcVtiHsmd2JXZ7jKXytA6wvgdJ34U7ZPJ4Mz3bRqB36ww 2019-08-14 16:44:50.642256728 +0800 CST m=+45.004168742}
+
+2019-08-14 16:44:50 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12138/p2p/QmaBRLueCbZDJ43BeoB8FnHZsDzb1u2NZrh44XkKwQgUNV
+
+2019-08-14 16:44:50 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12144/p2p/QmYJTwuYNRDThZc1KE8UuBb25J6gmck5yP8xLRRAvScDP9
+
+2019-08-14 16:44:50 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12140/p2p/QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL
+
+2019-08-14 16:44:50 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:50 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:50 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:50 [INFO] nodes: -->>SUB Recieve: peer  ID:Cj33y5Hxx7 
+
+2019-08-14 16:44:50 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12146/p2p/QmR2ykuCBPY27hLUCJDa6KxVForfLUvz6AcCj33y5Hxx7D QmR2ykuCBPY27hLUCJDa6KxVForfLUvz6AcCj33y5Hxx7D 2019-08-14 16:44:50.647384576 +0800 CST m=+45.005405182}
+
+2019-08-14 16:44:50 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12146/p2p/QmR2ykuCBPY27hLUCJDa6KxVForfLUvz6AcCj33y5Hxx7D QmR2ykuCBPY27hLUCJDa6KxVForfLUvz6AcCj33y5Hxx7D 2019-08-14 16:44:50.647384576 +0800 CST m=+45.005405182}
+
+2019-08-14 16:44:50 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12137/p2p/QmZHMPNV3dXa85258iATVyb24STipPBKQrZNt8Sngc2cqm
+
+2019-08-14 16:44:50 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12140/p2p/QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL
+
+2019-08-14 16:44:50 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12144/p2p/QmYJTwuYNRDThZc1KE8UuBb25J6gmck5yP8xLRRAvScDP9
+
+2019-08-14 16:44:50 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:50 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:50 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:44:58 [ERROR] nodes: stream reset
+2019-08-14 16:44:58 [INFO] nodes: @@Conn: /ip4/127.0.0.1/tcp/12138 Disconnected at 2019-08-14 16:44:58.182725975 +0800 CST m=+52.567755624
+
+2019-08-14 16:44:58 [INFO] nodes: @@Stream :/ip4/127.0.0.1/tcp/12138-/p2p is Closed at 2019-08-14 16:44:58.18273837 +0800 CST m=+52.567768024
+
+2019-08-14 16:44:58 [INFO] nodes: @@Stream :/ip4/127.0.0.1/tcp/12138-/meshsub/1.0.0 is Closed at 2019-08-14 16:44:58.182747198 +0800 CST m=+52.567776866
+
+2019-08-14 16:44:58 [INFO] nodes: @@Stream :/ip4/127.0.0.1/tcp/12138-/meshsub/1.0.0 is Closed at 2019-08-14 16:44:58.182740348 +0800 CST m=+52.567770004
+
+2019-08-14 16:44:58 [ERROR] nodes: stream reset
+2019-08-14 16:44:58 [INFO] nodes: @@Stream :/ip4/127.0.0.1/tcp/12137-/p2p is Closed at 2019-08-14 16:44:58.403283648 +0800 CST m=+52.788313327
+
+2019-08-14 16:44:58 [INFO] nodes: @@Stream :/ip4/127.0.0.1/tcp/12137-/meshsub/1.0.0 is Closed at 2019-08-14 16:44:58.403288719 +0800 CST m=+52.788318365
+
+2019-08-14 16:44:58 [INFO] nodes: @@Conn: /ip4/127.0.0.1/tcp/12137 Disconnected at 2019-08-14 16:44:58.403281611 +0800 CST m=+52.788311291
+
+2019-08-14 16:44:58 [INFO] nodes: @@Stream :/ip4/127.0.0.1/tcp/12137-/meshsub/1.0.0 is Closed at 2019-08-14 16:44:58.403284516 +0800 CST m=+52.788314166
+
+2019-08-14 16:44:59 [ERROR] nodes: stream reset
+2019-08-14 16:44:59 [ERROR] nodes: stream reset
+2019-08-14 16:45:00 [ERROR] nodes: stream reset
+2019-08-14 16:45:00 [ERROR] nodes: stream reset
+2019-08-14 16:45:00 [INFO] nodes: -->>SUB Recieve: peer  ID:knUmwcMRZ8 
+
+2019-08-14 16:45:00 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12139/p2p/QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J 2019-08-14 16:45:00.58018393 +0800 CST m=+55.004532932}
+
+2019-08-14 16:45:00 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12139/p2p/QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J QmRedhEzGeuoKhSevfhy9jNnLgAQccyK3ptknUmwcMRZ8J 2019-08-14 16:45:00.58018393 +0800 CST m=+55.004532932}
+
+2019-08-14 16:45:00 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12137/p2p/QmZHMPNV3dXa85258iATVyb24STipPBKQrZNt8Sngc2cqm
+
+2019-08-14 16:45:00 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12143/p2p/QmPVB7kaTDzx88sq4JTYXYcffgUHfiKKSEYPG3WgFo2Bhf
+
+2019-08-14 16:45:00 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12144/p2p/QmYJTwuYNRDThZc1KE8UuBb25J6gmck5yP8xLRRAvScDP9
+
+2019-08-14 16:45:00 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:45:00 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:45:00 [ERROR] nodes: RECONNECT Stream Error:Stream Recconect Fail-failed to dial : all dials failed
+  * [/ip4/172.16.23.94/tcp/12137] dial tcp4 172.16.23.94:12137: connect: connection refused
+  * [/ip4/127.0.0.1/tcp/12137] dial tcp4 127.0.0.1:12137: connect: connection refused
+  * [/ip4/172.17.0.1/tcp/12137] dial tcp4 172.17.0.1:12137: connect: connection refused
+2019-08-14 16:45:00 [INFO] nodes: -->>SUB Recieve: peer  ID:ncWCFaUEJi 
+
+2019-08-14 16:45:00 [DEBUG] nodes:  --><--  Emit PeerInfo:{1 /ip4/127.0.0.1/tcp/12140/p2p/QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL 2019-08-14 16:45:00.585032202 +0800 CST m=+55.004300414}
+
+2019-08-14 16:45:00 [INFO] nodes:  --><-- Recieve NodeInfoMessage:{1 /ip4/127.0.0.1/tcp/12140/p2p/QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL QmdSSTtY8N65Sc2SmpQ7X36wMTsoL9ujtRyncWCFaUEJiL 2019-08-14 16:45:00.585032202 +0800 CST m=+55.004300414}
+
+2019-08-14 16:45:00 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12138/p2p/QmaBRLueCbZDJ43BeoB8FnHZsDzb1u2NZrh44XkKwQgUNV
+
+2019-08-14 16:45:00 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12144/p2p/QmYJTwuYNRDThZc1KE8UuBb25J6gmck5yP8xLRRAvScDP9
+
+2019-08-14 16:45:00 [INFO] nodes: @@Try to Connect to /ip4/127.0.0.1/tcp/12141/p2p/QmNep6b6g5Rdhu7WC9ERPHkFMj5caX3K6cg83x4G3Hkwn3
+
+2019-08-14 16:45:00 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:45:00 [INFO] nodes: Peer is in PeerStore
+2019-08-14 16:45:00 [INFO] nodes: Peer is in PeerStore
