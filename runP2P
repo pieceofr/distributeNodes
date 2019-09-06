@@ -7,8 +7,10 @@
 
 # distributeNode to start  for both servant s and clients (the same number of clients and servants)
 first=1
-last=1
+last=10
 
+# type of node
+ntype=servant
 
 # the tmux session name
 session=LOCAL
@@ -27,6 +29,7 @@ tmux
 pgrep
 killall
 run-distributenodes
+run-distributenodes-client
 '
 
 for c in ${list}
@@ -35,7 +38,32 @@ do
   [ $? -ne 0 ] && ERROR 'missing program: %s' "${c}"
   [ -x "${x}" ] || ERROR 'program: "%s" is not executable' "${x}"
 done
-
+## PRINT MANUAL
+USAGE()
+{
+  if [ -n "$1" ]
+  then
+    printf 'error: '
+    printf "$@"
+    printf '\n'
+  fi
+  echo usage: $(basename "$0") '[options] runP2P-arguments...'
+  echo '       --ntype             -t            node type (servant|client)'
+  exit 1
+}
+## SETUP Commandline argument
+while [ "$1" != "" ]; do
+  case $1 in
+     -t | --ntype )    shift
+                               ntype=$1
+                                echo "ARG ntype=$ntype"
+                                ;;
+        * )                     usage
+                               echo "ARG NONE"
+                                exit 1
+    esac
+    shift
+done
 
 STOP_ALL_DISTRIBUTENODES() {
   local pids
@@ -114,11 +142,24 @@ NEW_TEST_SESSION() {
   n="${first}"
   while [ "${n}" -le "${last}" ]
   do
-    command_list="${command_list} BM-${n}:run-distributenodes,--config=%${n},--sleep=3,--ntype=servant,--debug"
+    if [ ${ntype} = "client" ]
+      then
+        command_list="${command_list} BM-${n}:run-distributenodes-client,--config=%${n},--sleep=3"
+        echo "use client"
+      else
+        command_list="${command_list} BM-${n}:run-distributenodes,--config=%${n},--sleep=3"
+    fi
+  
     if [ "${n}" -lt "${last}" ]
     then
       n=$((n + 1))
-      command_list="${command_list}:run-distributenodes,--config=%${n},--sleep=3,--ntype=servant,--debug"
+       if [ ${ntype} = "client" ]
+        then
+         command_list="${command_list}:run-distributenodes-client,--config=%${n},--sleep=3"
+        echo "use client"
+        else
+        command_list="${command_list}:run-distributenodes,--config=%${n},--sleep=3"
+      fi 
     fi
     n=$((n + 1))
   done
@@ -136,6 +177,9 @@ NEW_TEST_SESSION() {
     cmd1="${command#*:}"
     cmd1="${cmd1%%:*}"
     cmd2="${command##*:}"
+    echo "window:${window}"
+    echo "cmd1:${cmd1}"
+    echo "cmd2:${cmd2}"
     [ X"${cmd1}" = X"${cmd2}" ] && cmd2=''
 
     if [ -z "${target}" ]

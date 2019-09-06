@@ -2,13 +2,13 @@ package main
 
 import (
 	"crypto/rand"
+	"encoding/hex"
 	"io/ioutil"
 	"os"
 	"path"
 	"strconv"
 
 	crypto "github.com/libp2p/go-libp2p-crypto"
-	"github.com/mr-tron/base58"
 )
 
 func main() {
@@ -17,7 +17,7 @@ func main() {
 	//prefix -> name of file
 	// go run genPrvKey.go
 	for i := 1; i <= 20; i++ {
-		saveGenKey(i, "client")
+		saveGenKey(i, "servant")
 	}
 
 }
@@ -40,18 +40,18 @@ func saveGenKey(count int, prefix string) error {
 
 func randKey() (crypto.PrivKey, error) {
 	r := rand.Reader
-	prvKey, _, err := crypto.GenerateKeyPairWithReader(crypto.RSA, 2048, r)
-
+	prvKey, _, err := crypto.GenerateEd25519Key(r)
 	if err != nil {
 		return nil, err
 	}
 	return prvKey, nil
 }
-func marshalPrvKey(prvKey crypto.PrivKey) (string, error) {
+func marshalPrvKey(prvKey crypto.PrivKey) ([]byte, error) {
 	marshalKey, err := crypto.MarshalPrivateKey(prvKey)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	encoded := base58.Encode(marshalKey)
-	return encoded, nil
+	hexEncodeKey := make([]byte, hex.EncodedLen(len(marshalKey)))
+	hex.Encode(hexEncodeKey, marshalKey)
+	return hexEncodeKey, nil
 }

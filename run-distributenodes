@@ -20,7 +20,6 @@ USAGE()
   echo usage: $(basename "$0") '[options] bitmarkd-arguments...'
   echo '       --help             -h            this message'
   echo '       --verbose          -v            more messages'
-  echo '       --ntype=TYPE   -t    TYPE   type of node'
   echo '       --config=FILE      -c FILE       set configuration file ['"${config}"']'
   echo '                                        or %1..%99 or %T1..%T99 or %L1..%L99'
   echo '       --sleep=SECONDS    -s SECONDS    start delay'
@@ -51,11 +50,11 @@ case "$(uname)" in
 esac
 [ -x "${getopt}" ] || ERROR 'getopt: "%s" is not executable or not installed' "${getopt}"
 
-args=$(${getopt} -o hvc:grf:s:D --long=help,verbose,ntype:,config:,sleep:,debug -- "$@") || exit 1
+args=$(${getopt} -o hvc:grf:s:D --long=help,verbose,config:,sleep:,debug -- "$@") || exit 1
 
 # replace the arguments with the parsed values
 eval set -- "${args}"
-echo  "ARGS:${args}"
+echo "ARGS:${args}"
 ### START MAIN RUN
 while :
 do
@@ -63,17 +62,13 @@ do
     (-v|--verbose)
       verbose=yes
       ;;
-    (-t|--ntype)
-      nodetype="$2"
-      echo "nodetype:$nodetype"
-      shift
-      ;;
     (-c|--config)
+      nodetype=servant
       case "$2" in
         (%[1-9]|%[1-9][0-9]|%T[1-9]|%T[1-9][0-9]|%L[1-9]|%L[1-9][0-9])
           n="${2#%}"
           config="$HOME/wks_go/src/distributeNodes/testing/${nodetype}/${nodetype}${n}.conf"
-          echo "run config-file=$config"
+          #config="$HOME/wks_go/src/distributeNodes/testing/client/client${n}.conf"
           ;;
         (%*)
           ERROR 'unsupported config shortcut: %s' "$2"

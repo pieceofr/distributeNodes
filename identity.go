@@ -2,10 +2,10 @@ package main
 
 import (
 	"crypto/rand"
+	"encoding/hex"
 	"errors"
 
 	crypto "github.com/libp2p/go-libp2p-crypto"
-	"github.com/mr-tron/base58"
 )
 
 //Identity A identity who own this node
@@ -15,8 +15,7 @@ type Identity struct {
 
 func randKey() (crypto.PrivKey, error) {
 	r := rand.Reader
-	prvKey, _, err := crypto.GenerateKeyPairWithReader(crypto.RSA, 2048, r)
-
+	prvKey, _, err := crypto.GenerateEd25519Key(r)
 	if err != nil {
 		return nil, err
 	}
@@ -44,53 +43,28 @@ func (i *Identity) randIdentity() error {
 	return nil
 }
 
-//MarshalPrvKey from base58 string to private key
-func (i *Identity) MarshalPrvKey() (string, error) {
+//MarshalPrvKey from hex encoded string to private key
+func (i *Identity) MarshalPrvKey() ([]byte, error) {
 	marshalKey, err := crypto.MarshalPrivateKey(i.PrvKey)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	encoded := base58.Encode(marshalKey)
-	return encoded, nil
+	hexEncodeKey := make([]byte, hex.EncodedLen(len(marshalKey)))
+	hex.Encode(hexEncodeKey, marshalKey)
+	return hexEncodeKey, nil
 }
 
-//UnmarshalPrvKey from base58 string to private key
-func (i *Identity) UnmarshalPrvKey(prvKey string) error {
-	decoded, err := base58.Decode(prvKey)
+//UnmarshalPrvKey from hex string to private key
+func (i *Identity) UnmarshalPrvKey(prvKey []byte) error {
+	hexDecodeKey := make([]byte, hex.DecodedLen(len(prvKey)))
+	_, err := hex.Decode(hexDecodeKey, prvKey)
 	if err != nil {
 		return err
 	}
-	unmarshalKey, err := crypto.UnmarshalPrivateKey(decoded)
+	unmarshalKey, err := crypto.UnmarshalPrivateKey(hexDecodeKey)
 	if err != nil {
 		return err
 	}
 	i.PrvKey = unmarshalKey
 	return nil
-}
-
-//MarshalPublicKey from base58 string to public  key
-func (i *Identity) MarshalPublicKey() (string, error) {
-	pkey, err := i.PublicKey()
-	if err != nil {
-		return "", err
-	}
-	marshalKey, err := crypto.MarshalPublicKey(pkey)
-	if err != nil {
-		return "", err
-	}
-	encoded := base58.Encode(marshalKey)
-	return encoded, nil
-}
-
-//UnmarshalPublicKey from base58 string to private key
-func (i *Identity) UnmarshalPublicKey(pubKey string) (crypto.PubKey, error) {
-	decoded, err := base58.Decode(pubKey)
-	if err != nil {
-		return nil, err
-	}
-	unmarshalKey, err := crypto.UnmarshalPublicKey(decoded)
-	if err != nil {
-		return nil, err
-	}
-	return unmarshalKey, nil
 }

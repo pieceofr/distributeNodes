@@ -30,11 +30,12 @@ func (p *PeerNode) subHandler(ctx context.Context, sub *pubsub.Subscription) {
 			continue
 		}
 		log.Infof("-->>SUB Recieve: %v  ID:%s \n", req.Command, shortID(string(req.Parameters[1])))
+
 		if req.Command == cmdPeer {
 			peerInfo := NodeInfoMessage{
 				NodeType: NodeType(1),
 				ID:       string(req.Parameters[1]),
-				Address:  string(req.Parameters[2]),
+				Address:  append([]string{}, string(req.Parameters[2])),
 				Extra:    string(req.Parameters[3]),
 			}
 			em.Emit(peerInfo)

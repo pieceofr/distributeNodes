@@ -1,10 +1,15 @@
 package main
 
 import (
+	"time"
+
 	p2ppeers "github.com/libp2p/go-libp2p-core/peer"
 )
 
-const numberOfConnections = 3
+const (
+	numberOfConnections = 3
+	printInterval       = 40 * time.Second
+)
 
 var messageQ map[string]NodeInfoMessage
 
@@ -15,6 +20,7 @@ func (p *PeerNode) peersTable(shutdown chan struct{}) {
 	if err != nil {
 		panic("Can not subscribe NodeInfoMessage")
 	}
+	selfPrintTimer := time.After(printInterval)
 	defer sub.Close()
 	for {
 		select {
@@ -29,6 +35,15 @@ func (p *PeerNode) peersTable(shutdown chan struct{}) {
 				p.Mutex.Unlock()
 				p.connectPeerCandidates(&messageQ)
 			}
+		case <-selfPrintTimer:
+			selfPrintTimer = time.After(broadcastInterval)
+			p.Mutex.Lock()
+			log.Infof("----------peerTable List Start-----------\n")
+			for key, node := range messageQ {
+				log.Infof("[---] ID:%v  NODE:%v\n", key, node)
+			}
+			log.Infof("----------peerTable List End-----------\n")
+			p.Mutex.Unlock()
 		}
 	}
 }
@@ -45,8 +60,10 @@ func (p *PeerNode) connectPeerCandidates(peersTable *map[string]NodeInfoMessage)
 	for key, node := range *peersTable {
 		if count < len(pickedNumbers) && pickedNumbers[count] {
 			if p2ppeers.ID(key) != p.Host.ID() {
-				go p.ConnectTo(node.Address)
-				log.Infof("@@Try to Connect to %s\n", node.Address)
+				for _, addr := range node.Address {
+					go p.ConnectTo(addr, false)
+					log.Infof("@@Try to Connect to %s\n", node.Address)
+				}
 			}
 		}
 		count++

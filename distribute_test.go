@@ -4,10 +4,8 @@ import (
 	"fmt"
 	"os"
 	"path"
-	"path/filepath"
 	"strconv"
 	"testing"
-	"time"
 
 	"github.com/bitmark-inc/logger"
 	"github.com/stretchr/testify/assert"
@@ -57,7 +55,9 @@ func TestIsSameNode(t *testing.T) {
 	addrDiffPort := "/ip4/118.163.120.180/tcp/12140/p2p/QmeHidiFxXLosH44wkAyq3modWku5gprV168t9VeH1JSyV"
 	addrDiffPublicPort := "/ip4/118.163.120.180/tcp/12140/p2p/QmeHidiFxXLosH44wkAyq3modWku5gprV168t9VeH1JSyV"
 	addrDiffID := "/ip4/118.163.120.180/tcp/12136/p2p/QmeHidiFxXLosH44wkAyq3modWku5gprV168t9VeH1JSyV"
-	var p = PeerNode{PublicIP: "118.163.120.180", Port: "12136"}
+	var IPs []string
+	IPs = append(IPs, "118.163.120.180")
+	var p = PeerNode{PublicIP: IPs, Port: "12136"}
 	assert.True(t, p.IsSameNode(addr), "Should be the same")
 	assert.True(t, !p.IsSameNode(addrDiffPort), "Should not be the same")
 	assert.True(t, !p.IsSameNode(addrDiffPublicPort), "Should not be the same")
@@ -100,12 +100,13 @@ func TestKeyMarshalUnmarshal(t *testing.T) {
 	prv, err := randKey()
 	//Marshall Key
 	assert.NoError(t, err, "randKey Error")
+	prvBytes, _ := prv.Bytes()
+	assert.NotEqual(t, len(prvBytes), 0, "private key is zero length")
 	id := Identity{PrvKey: prv}
 	serialKey, err := id.MarshalPrvKey()
 	assert.NoError(t, err, "Marshal Private Key Error")
-
 	err = id.UnmarshalPrvKey(serialKey)
-	assert.NoError(t, err, "Unmarshal Private Key Error")
+	assert.NoError(t, err, "Unmarshal Private Key Error=", err)
 	serialKey2, err := id.MarshalPrvKey()
 	assert.NoError(t, err, "Marshal Private Key2 Error")
 	assert.Equal(t, serialKey, serialKey2, "Error on Marshal and Unmarshal keys")
@@ -139,46 +140,5 @@ func TestSaveLoadPrivateKey(t *testing.T) {
 	newKey, err := newNode.MarshalPrvKey()
 	assert.NoError(t, err, "marshal key error")
 	assert.Equal(t, oriKey, newKey, "oriKey, newKey not equal")
-
-}
-
-func TestPeersStore(t *testing.T) {
-	log.Warn("===== Start TestPeersStore ======")
-	var servantCfg config
-	var servantNode PeerNode
-	//path := filepath.Join(os.Getenv("PWD"), "testing", "servant", "servant.conf")
-	path := filepath.Join(os.Getenv("PWD"), "servant.conf")
-	err := ParseConfigurationFile(path, &servantCfg)
-	assert.NoError(t, err, "Parse servant Configuration file error")
-	err = servantNode.setup(servantCfg)
-	assert.NoError(t, err, "Init servant node error")
-	servantNode.run()
-
-	time.Sleep(3 * time.Second)
-	var clientConfig config
-	var clientNode1 PeerNode
-	pathClient1 := filepath.Join(os.Getenv("PWD"), "testing", "client", "client1.conf")
-	err = ParseConfigurationFile(pathClient1, &clientConfig)
-	assert.NoError(t, err, "Parse client Configuration file error")
-	clientNode1.setup(clientConfig)
-	assert.NoError(t, err, "Init client node error")
-	clientNode1.run()
-	time.Sleep(3 * time.Second)
-	var clientNode2 PeerNode
-	pathClient2 := filepath.Join(os.Getenv("PWD"), "testing", "client", "client2.conf")
-	err = ParseConfigurationFile(pathClient2, &clientConfig)
-	assert.NoError(t, err, "Parse client Configuration file error")
-	clientNode2.setup(clientConfig)
-	assert.NoError(t, err, "Init client node error")
-	clientNode2.run()
-	log.Infof("PeerStore:%v\n", servantNode.Host.Peerstore().Peers().Len())
-
-	for _, val := range servantNode.Host.Peerstore().Peers() {
-		log.Infof("SERVANT:%v STORE Peer:%v\n", servantNode.Host.ID(), val)
-	}
-
-	for _, val := range clientNode1.Host.Peerstore().Peers() {
-		log.Infof("CLIENT:%v STORE Peer:%v\n", clientNode1.Host.ID(), val)
-	}
 
 }

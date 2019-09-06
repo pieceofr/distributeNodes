@@ -12,10 +12,11 @@ import (
 	libp2p "github.com/libp2p/go-libp2p"
 	libp2pcore "github.com/libp2p/go-libp2p-core"
 	p2pnet "github.com/libp2p/go-libp2p-core/network"
-	p2ppeers "github.com/libp2p/go-libp2p-core/peer"
 	peerstore "github.com/libp2p/go-libp2p-peerstore"
 	pubsub "github.com/libp2p/go-libp2p-pubsub"
+	tls "github.com/libp2p/go-libp2p-tls"
 	"github.com/multiformats/go-multiaddr"
+	//manet "github.com/multiformats/go-multiaddr-net"
 )
 
 //NodeType present the type of a node
@@ -40,13 +41,12 @@ var (
 // PeerNode peer Node struct
 type PeerNode struct {
 	NodeType
-	PublicIP string
+	PublicIP []string
 	Port     string
 	Identity
 	Host            libp2pcore.Host
 	Streams         []p2pnet.Stream
 	PeersRemote     peerstore.Peerstore
-	PeersListener   peerstore.Peerstore
 	NodeInfo        NodeInfoMessage
 	Shutdown        chan struct{}
 	Mutex           *sync.Mutex
@@ -54,28 +54,30 @@ type PeerNode struct {
 	BroadcastStream *pubsub.PubSub
 }
 
-//Init a peer node
+//Init/setup a peer node
 func (p *PeerNode) setup(cfg config) error {
 	p.Mutex = &sync.Mutex{}
 	p.NodeType = NodeType(cfg.NodeType)
 	p.PublicIP = cfg.PublicIP
-	if cfg.StaticIdentity.UseStatic {
+	if cfg.StaticIdentity.UseStatic { // Use static identity from file
 		log.Info("Use Static Identity")
 		privateKeyFileName = cfg.StaticIdentity.KeyFile
 		if loadErr := p.LoadIdentity(privateKeyFileName); loadErr != nil {
+			log.Error(loadErr.Error())
 			return loadErr
 		}
 		log.Info("Load Static Identity")
-	} else {
+	} else { // Random Generate Identity
 		if genRandErr := p.NewRandomNode(); genRandErr != nil {
 			log.Error(genRandErr.Error())
 			return genRandErr
 		}
 	}
+
 	p.Shutdown = make(chan struct{})
 	p.Port = strconv.Itoa(cfg.Port)
 	if Servant == p.NodeType || Server == p.NodeType {
-		if createHostErr := p.NewHost(); createHostErr != nil {
+		if createHostErr := p.NewServantHost(); createHostErr != nil {
 			log.Error("createHostErr")
 			panic(createHostErr)
 		}
@@ -83,6 +85,7 @@ func (p *PeerNode) setup(cfg config) error {
 		newHost, err := libp2p.New(
 			context.Background(),
 			libp2p.Identity(p.Identity.PrvKey),
+			libp2p.Security(tls.ID, tls.New),
 		)
 		if err != nil {
 			return err
@@ -98,9 +101,19 @@ func (p *PeerNode) setup(cfg config) error {
 	p.BroadcastStream = ps
 	go p.peersTable(p.Shutdown)
 	for _, addr := range p.Host.Addrs() {
-		log.Infof("Host Address: \n", addr.String())
+		log.Infof("Host Address: %v\n", addr)
 	}
-	p.NodeInfo = NodeInfoMessage{NodeType: p.NodeType, ID: fmt.Sprintf("%v", p.Host.ID()), Address: fmt.Sprintf("/ip4/%s/tcp/%v%s/%s", p.PublicIP, p.Port, nodeProtocol, p.Host.ID().Pretty())}
+
+	addrs := []string{}
+	for _, ip := range p.PublicIP {
+		addrs = append(addrs, fmt.Sprintf("/ip4/%s/tcp/%v%s/%s", ip, p.Port, nodeProtocol, p.Host.ID().Pretty()))
+	}
+
+	p.NodeInfo = NodeInfoMessage{
+		NodeType: p.NodeType,
+		ID:       fmt.Sprintf("%v", p.Host.ID()),
+		Address:  addrs,
+	}
 	log.Infof("NodeAddress:%s\n", p.NodeInfo.Address)
 	log.Info("Exist the Initialization")
 	return nil
@@ -108,6 +121,7 @@ func (p *PeerNode) setup(cfg config) error {
 
 func (p *PeerNode) run() {
 	//go p.BusReciever(p.Shutdown)
+	go registerRPC(&p.Host)
 	sub, err := p.BroadcastStream.Subscribe(pubsubTopic)
 	go p.subHandler(context.Background(), sub)
 	if err != nil {
@@ -146,7 +160,7 @@ func (p *PeerNode) LoadIdentity(file string) error {
 		return err
 	}
 
-	err = p.UnmarshalPrvKey(string(keyBytes))
+	err = p.UnmarshalPrvKey(keyBytes)
 	if err != nil {
 		return err
 	}
@@ -167,30 +181,34 @@ func (p *PeerNode) NewRandomNode() error {
 		return err
 	}
 	p.Port = strconv.Itoa(port)
-	pkey, err := p.MarshalPublicKey()
-	log.Debugf("NewRandomNode:PublicKey:%s   Port:%s", pkey, p.Port)
 	return nil
 }
 
-//NewHost Create a NewHost of server
-func (p *PeerNode) NewHost() error {
-	// 0.0.0.0 will listen on any interface device.
-	sourceMultiAddr, err := multiaddr.NewMultiaddr(fmt.Sprintf("/ip4/%s/tcp/%s", "0.0.0.0", p.Port))
+// NewServantHost Create a NewHost of server
+func (p *PeerNode) NewServantHost() error {
+	listenAddrIPV4, err := multiaddr.NewMultiaddr(fmt.Sprintf("/ip4/%s/tcp/%s", "0.0.0.0", p.Port))
 	if err != nil {
-		log.Error(err.Error())
 		panic(err)
 	}
+
+	listenAddrIPV6, err := multiaddr.NewMultiaddr(fmt.Sprintf("/ip6/%s/tcp/%s", "::", p.Port))
+	if err != nil {
+		panic(err)
+	}
+
+	//listenAddrs := listenAddrIPV4.Encapsulate(listenAddrIPV6)
 	newHost, err := libp2p.New(
 		context.Background(),
-		libp2p.ListenAddrs(sourceMultiAddr),
+		libp2p.ListenAddrs(listenAddrIPV4, listenAddrIPV6),
 		libp2p.Identity(p.Identity.PrvKey),
-		libp2p.Peerstore(p.PeersListener),
+		libp2p.Peerstore(p.PeersRemote),
+		libp2p.Security(tls.ID, tls.New),
 	)
 	if err != nil {
 		return err
 	}
 	for _, a := range newHost.Addrs() {
-		log.Infof("New Host Address: %s/%v/%s\n", a, "p2p", p2ppeers.IDB58Encode(newHost.ID()))
+		log.Infof("New Host Address: %s/%v/%s\n", a, "p2p", newHost.ID())
 	}
 
 	p.Host = newHost
@@ -215,7 +233,9 @@ func (p *PeerNode) Listen() error {
 			return err
 		}
 		log.Infof("LISTEN ON ===")
-		log.Infof("/ip4/%s/tcp/%v/%v/%s' on another console.\n", p.PublicIP, p.Port, "p2p", p.Host.ID().Pretty())
+		for _, ip := range p.PublicIP {
+			log.Infof("/ip4/%s/tcp/%v/%v/%s' on another console.\n", ip, p.Port, "p2p", p.Host.ID().Pretty())
+		}
 		log.Infof("%s\n", la.String())
 		log.Info("\nWaiting for incoming connection\n\n")
 	}
@@ -230,7 +250,7 @@ func (p *PeerNode) ConnectToFixPeer() error {
 		if err != nil {
 			return err
 		}
-		err = p.ConnectTo(addr)
+		err = p.ConnectTo(addr, true)
 		if nil == err {
 			i = 10
 			log.Infof("HAS CONNECT ED TO : ", addr)
@@ -242,7 +262,7 @@ func (p *PeerNode) ConnectToFixPeer() error {
 }
 
 //ConnectTo connect to servant or server
-func (p *PeerNode) ConnectTo(address string) error {
+func (p *PeerNode) ConnectTo(address string, bootstrap bool) error {
 	if p.NodeType == Server {
 		return errors.New("NodeType:Server.Do not have ability to connect")
 	}
@@ -250,55 +270,24 @@ func (p *PeerNode) ConnectTo(address string) error {
 		return errSameNode
 	}
 
-	maddr, err := multiaddr.NewMultiaddr(address)
-	if err != nil {
-		log.Error(err.Error())
-		return err
-	}
 	// Extract the peer ID from the multiaddr.
-	info, err := p2ppeers.AddrInfoFromP2pAddr(maddr)
+	info, err := AddrStringToAddrInfo(address)
 	if err != nil {
-		log.Error(err.Error())
 		return err
 	}
-	if info == nil {
-		return errors.New("info is nil")
-	}
-
-	// Add the destination's peer multiaddress in the peerstore.
-	// This will be used during connection and stream creation by libp2p.
-
-	shortAddr, err := multiaddr.NewMultiaddr(addrToConnAddr(address))
-	if err != nil {
-		log.Error(err.Error())
-		return err
-	}
-
-	if p.IsPeerExisted(shortAddr) {
-		if p.Host.Network().Connectedness(info.ID) != p2pnet.Connected {
-			connectErr := p.Host.Connect(context.Background(), *info)
-			if connectErr != nil {
-				log.Errorf("RECONNECT Stream Error:%v", ErrCombind(errReconnectStream, connectErr))
-				return ErrCombind(errReconnectStream, connectErr)
-			} else {
-				log.Infof("ID %s  is not CONNECTED!\n", shortID(info.ID.String()))
-			}
-		}
-		return errPeerHasInPeerStore
-	}
-
-	p.Host.Peerstore().AddAddrs(info.ID, info.Addrs, peerstore.PermanentAddrTTL)
-	//	p.PeersRemote.AddAddrs(info.ID, info.Addrs, peerstore.PermanentAddrTTL)
-	// Start a stream with the destination.
-	// Multiaddress of the destination peer is fetched from the peerstore using 'peerId'.
-	log.Debugf("Connecting .... ID:%s, address:%s TTL:%d", info.ID.String(), info.Addrs[0].String(), peerstore.PermanentAddrTTL)
 
 	s, err := p.Host.NewStream(context.Background(), info.ID, nodeProtocol)
 	if err != nil {
 		return err
 	}
 	p.Streams = append(p.Streams, s)
-	log.Infof("NEW STREAM ID:%s, address:%s TTL:%d", info.ID.String(), info.Addrs[0].String(), peerstore.PermanentAddrTTL)
+	if bootstrap {
+		p.Host.Peerstore().AddAddrs(info.ID, info.Addrs, peerstore.ConnectedAddrTTL)
+		log.Debugf("---> Connected to  ID:%s, address:%s TTL:%d", info.ID.String(), info.Addrs[0].String(), peerstore.ConnectedAddrTTL)
+	} else {
+		p.Host.Peerstore().AddAddrs(info.ID, info.Addrs, peerstore.PermanentAddrTTL)
+		log.Debugf("---> Connected to. ID:%s, address:%s TTL:%d", info.ID.String(), info.Addrs[0].String(), peerstore.PermanentAddrTTL)
+	}
 	var handleStream NodeStreamHandler
 	handleStream.HandlerType = ClientHandler
 	p.Mutex.Lock()
@@ -313,7 +302,7 @@ func (p *PeerNode) ConnectTo(address string) error {
 //Reset is to close a peer node
 func (p *PeerNode) Reset() {
 	p.NodeType = Servant
-	p.PublicIP = ""
+	p.PublicIP = []string{}
 	p.Port = ""
 	p.Identity.PrvKey = nil
 

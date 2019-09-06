@@ -28,10 +28,14 @@ func (p *PeerNode) IsPeerExisted(newAddr multiaddr.Multiaddr) bool {
 //IsSameNode check if provided address has the same ip and port with peerNode
 func (p *PeerNode) IsSameNode(addr string) bool {
 	elems := strings.Split(addr, "/")
-	if elems[2] != "" && elems[2] == p.PublicIP {
-		if elems[4] == p.Port {
-			//	log.Debugf("addr[2]:%s  p.Public:%s   elemes[4]:%s p.Port:%s", elems[2], p.PublicIP, elems[4], p.Port)
-			return true
+	if elems[2] != "" {
+		for _, ip := range p.PublicIP {
+			if elems[2] == ip {
+				if elems[4] == p.Port {
+					log.Debugf("addr[2]:%s  p.Public:%s   elemes[4]:%s p.Port:%s", elems[2], ip, elems[4], p.Port)
+					return true
+				}
+			}
 		}
 	}
 	return false

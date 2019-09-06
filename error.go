@@ -10,6 +10,7 @@ var (
 	errMessageFormat      = errors.New("Message Format Is Invalid")
 	errPeerHasInPeerStore = errors.New("peer has in the peer store")
 	errReconnectStream    = errors.New("Stream Recconect Fail")
+	errNotFound           = errors.New("Object is not found")
 )
 
 //ErrCombind all Errors together

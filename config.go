@@ -15,7 +15,7 @@ type config struct {
 	DataDirectory  string               `gluamapper:"data_directory" json:"data_directory"`
 	Logging        logger.Configuration `gluamapper:"logging" json:"loggin"`
 	NodeType       int                  `gluamapper:"node_type" json:"node_type"`
-	PublicIP       string               `gluamapper:"public_ip" json:"public_ip"`
+	PublicIP       []string             `gluamapper:"public_ip" json:"public_ip"`
 	Port           int                  `gluamapper:"port" json:"port"`
 	StaticIdentity `gluamapper:"static_identity" json:"static_identity"`
 }

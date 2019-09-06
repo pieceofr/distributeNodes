@@ -35,7 +35,6 @@ func main() {
 		panic(fmt.Sprintf("node initialization failed: %s", err))
 	}
 	go theNode.run()
-
 	defer func() {
 		log.Info("----- Reset and Exit -----")
 		theNode.Reset()
