@@ -250,7 +250,7 @@ func (p *PeerNode) ConnectToFixPeer() error {
 		if err != nil {
 			return err
 		}
-		err = p.ConnectTo(addr, true)
+		err = p.ConnectTo(addr)
 		if nil == err {
 			i = 10
 			log.Infof("HAS CONNECT ED TO : ", addr)
@@ -262,7 +262,7 @@ func (p *PeerNode) ConnectToFixPeer() error {
 }
 
 //ConnectTo connect to servant or server
-func (p *PeerNode) ConnectTo(address string, bootstrap bool) error {
+func (p *PeerNode) ConnectTo(address string) error {
 	if p.NodeType == Server {
 		return errors.New("NodeType:Server.Do not have ability to connect")
 	}
@@ -270,24 +270,24 @@ func (p *PeerNode) ConnectTo(address string, bootstrap bool) error {
 		return errSameNode
 	}
 
-	// Extract the peer ID from the multiaddr.
 	info, err := AddrStringToAddrInfo(address)
 	if err != nil {
+		log.Error(err.Error())
 		return err
 	}
+
+	p.Host.Peerstore().AddAddrs(info.ID, info.Addrs, peerstore.PermanentAddrTTL)
+	//	p.PeersRemote.AddAddrs(info.ID, info.Addrs, peerstore.PermanentAddrTTL)
+	// Start a stream with the destination.
+	// Multiaddress of the destination peer is fetched from the peerstore using 'peerId'.
+	log.Debugf("Connecting .... ID:%s, address:%s TTL:%d", info.ID.String(), info.Addrs[0].String(), peerstore.PermanentAddrTTL)
 
 	s, err := p.Host.NewStream(context.Background(), info.ID, nodeProtocol)
 	if err != nil {
 		return err
 	}
 	p.Streams = append(p.Streams, s)
-	if bootstrap {
-		p.Host.Peerstore().AddAddrs(info.ID, info.Addrs, peerstore.ConnectedAddrTTL)
-		log.Debugf("---> Connected to  ID:%s, address:%s TTL:%d", info.ID.String(), info.Addrs[0].String(), peerstore.ConnectedAddrTTL)
-	} else {
-		p.Host.Peerstore().AddAddrs(info.ID, info.Addrs, peerstore.PermanentAddrTTL)
-		log.Debugf("---> Connected to. ID:%s, address:%s TTL:%d", info.ID.String(), info.Addrs[0].String(), peerstore.PermanentAddrTTL)
-	}
+	log.Infof("NEW STREAM ID:%s, address:%s TTL:%d", info.ID.String(), info.Addrs[0].String(), peerstore.PermanentAddrTTL)
 	var handleStream NodeStreamHandler
 	handleStream.HandlerType = ClientHandler
 	p.Mutex.Lock()
