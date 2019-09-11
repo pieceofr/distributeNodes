@@ -3,6 +3,8 @@ package main
 import (
 	"encoding/json"
 	"strings"
+
+	"github.com/libp2p/go-libp2p-core/peer"
 )
 
 // NodeInfoMessage is a message to inform peers about noder
@@ -42,8 +44,9 @@ func addrToConnAddr(addr string) string {
 }
 
 func shortID(id string) string {
-	if len(id) > 11 {
-		return id[len(id)-11 : len(id)-1]
+	ID, err := peer.IDFromString(id)
+	if err != nil {
+		return ""
 	}
-	return id
+	return ID.ShortString()
 }
