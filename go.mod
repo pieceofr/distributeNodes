@@ -4,9 +4,12 @@ go 1.12
 
 require (
 	github.com/bitmark-inc/logger v0.3.4
+	github.com/blang/semver v3.5.1+incompatible // indirect
 	github.com/ethereum/go-ethereum v1.9.1
 	github.com/gogo/protobuf v1.2.1
 	github.com/golang/protobuf v1.3.0
+	github.com/ipfs/go-ipfs-api v0.0.2 // indirect
+	github.com/kr/fs v0.1.0 // indirect
 	github.com/libp2p/go-libp2p v0.2.0
 	github.com/libp2p/go-libp2p-core v0.0.9
 	github.com/libp2p/go-libp2p-crypto v0.1.0
@@ -22,8 +25,15 @@ require (
 	github.com/multiformats/go-multiaddr v0.0.4
 	github.com/onsi/ginkgo v1.9.0 // indirect
 	github.com/onsi/gomega v1.6.0 // indirect
+	github.com/sabhiram/go-gitignore v0.0.0-20180611051255-d3107576ba94 // indirect
 	github.com/sirupsen/logrus v1.4.2
 	github.com/stretchr/testify v1.3.0
+	github.com/urfave/cli v1.22.0 // indirect
+	github.com/whyrusleeping/gx v0.14.2 // indirect
+	github.com/whyrusleeping/gx-go v1.9.0 // indirect
+	github.com/whyrusleeping/json-filter v0.0.0-20160615203754-ff25329a9528 // indirect
+	github.com/whyrusleeping/progmeter v0.0.0-20180725015555-f3e57218a75b // indirect
+	github.com/whyrusleeping/stump v0.0.0-20160611222256-206f8f13aae1 // indirect
 	github.com/yuin/gluamapper v0.0.0-20150323120927-d836955830e7
 	github.com/yuin/gopher-lua v0.0.0-20190514113301-1cd887cd7036
 	golang.org/x/crypto v0.0.0-20190618222545-ea8f1a30c443
