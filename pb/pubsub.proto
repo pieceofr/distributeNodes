@@ -1,7 +1,0 @@
-syntax = "proto3";
-package main;
-
- message NodeMessage {
-    string command = 1;
-    repeated bytes Parameters = 2;
-  }

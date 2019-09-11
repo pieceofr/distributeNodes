@@ -15,7 +15,8 @@ import (
 	peerstore "github.com/libp2p/go-libp2p-peerstore"
 	pubsub "github.com/libp2p/go-libp2p-pubsub"
 	tls "github.com/libp2p/go-libp2p-tls"
-	"github.com/multiformats/go-multiaddr"
+	ma "github.com/multiformats/go-multiaddr"
+	multiaddr "github.com/multiformats/go-multiaddr"
 	//manet "github.com/multiformats/go-multiaddr-net"
 )
 
@@ -100,21 +101,20 @@ func (p *PeerNode) setup(cfg config) error {
 	}
 	p.BroadcastStream = ps
 	go p.peersTable(p.Shutdown)
-	for _, addr := range p.Host.Addrs() {
-		log.Infof("Host Address: %v\n", addr)
-	}
 
-	addrs := []string{}
+	maAddrs := []ma.Multiaddr{}
 	for _, ip := range p.PublicIP {
-		addrs = append(addrs, fmt.Sprintf("/ip4/%s/tcp/%v%s/%s", ip, p.Port, nodeProtocol, p.Host.ID().Pretty()))
+		addr, err := ma.NewMultiaddr(fmt.Sprintf("/ip4/%s/tcp/%v%s/%s", ip, p.Port, nodeProtocol, p.Host.ID().Pretty()))
+		if nil == err {
+			maAddrs = append(maAddrs, addr)
+		}
 	}
 
 	p.NodeInfo = NodeInfoMessage{
-		NodeType: p.NodeType,
-		ID:       fmt.Sprintf("%v", p.Host.ID()),
-		Address:  addrs,
+		NodeType: uint32(p.NodeType),
+		ID:       p.Host.ID().String(),
+		Addrs:    &Addrs{Address: GetBytesFromMultiaddr(maAddrs)},
 	}
-	log.Infof("NodeAddress:%s\n", p.NodeInfo.Address)
 	log.Info("Exist the Initialization")
 	return nil
 }
@@ -250,7 +250,11 @@ func (p *PeerNode) ConnectToFixPeer() error {
 		if err != nil {
 			return err
 		}
-		err = p.ConnectTo(addr)
+		maAddr, err := ma.NewMultiaddr(addr)
+		if err != nil {
+			return nil
+		}
+		err = p.ConnectTo(maAddr)
 		if nil == err {
 			i = 10
 			log.Infof("HAS CONNECT ED TO : ", addr)
@@ -262,15 +266,16 @@ func (p *PeerNode) ConnectToFixPeer() error {
 }
 
 //ConnectTo connect to servant or server
-func (p *PeerNode) ConnectTo(address string) error {
+func (p *PeerNode) ConnectTo(address ma.Multiaddr) error {
 	if p.NodeType == Server {
 		return errors.New("NodeType:Server.Do not have ability to connect")
 	}
-	if p.IsSameNode(address) {
+	if p.IsSameMa(address) {
 		return errSameNode
 	}
 
-	info, err := AddrStringToAddrInfo(address)
+	info, err := addrMaToAddrInfo(address)
+
 	if err != nil {
 		log.Error(err.Error())
 		return err

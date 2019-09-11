@@ -8,7 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/multiformats/go-multiaddr"
+	ma "github.com/multiformats/go-multiaddr"
+	multiaddr "github.com/multiformats/go-multiaddr"
 )
 
 //IsPeerExisted peer is existed in the Peerstore
@@ -20,6 +21,17 @@ func (p *PeerNode) IsPeerExisted(newAddr multiaddr.Multiaddr) bool {
 				log.Info("Peer is in PeerStore")
 				return true
 			}
+		}
+	}
+	return false
+}
+
+//IsSameMa Check if PeerNode has the same address
+func (p *PeerNode) IsSameMa(addr ma.Multiaddr) bool {
+	for _, a := range p.Host.Addrs() {
+		if strings.Contains(addr.String(), a.String()) {
+			log.Infof("The same string listenAddr:%s NodeInfoMessage:%s", a.String(), addr.String())
+			return true
 		}
 	}
 	return false
@@ -92,4 +104,25 @@ func pickNumbersInSize(size, num int) []bool {
 		ret = fmt.Sprintf("%s %v", ret, val)
 	}
 	return pickupTable
+}
+
+// GetMultiAddrsFromBytes take  [][]byte listeners and convert them into []Multiaddr format
+func GetMultiAddrsFromBytes(listners [][]byte) []ma.Multiaddr {
+	var maAddrs []ma.Multiaddr
+	for _, addr := range listners {
+		maAddr, err := ma.NewMultiaddrBytes(addr)
+		if nil == err {
+			maAddrs = append(maAddrs, maAddr)
+		}
+	}
+	return maAddrs
+}
+
+// GetBytesFromMultiaddr take []Multiaddr format listeners and convert them into   [][]byte
+func GetBytesFromMultiaddr(listners []ma.Multiaddr) [][]byte {
+	var byteAddrs [][]byte
+	for _, addr := range listners {
+		byteAddrs = append(byteAddrs, addr.Bytes())
+	}
+	return byteAddrs
 }

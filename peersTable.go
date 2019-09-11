@@ -60,9 +60,9 @@ func (p *PeerNode) connectPeerCandidates(peersTable *map[string]NodeInfoMessage)
 	for key, node := range *peersTable {
 		if count < len(pickedNumbers) && pickedNumbers[count] {
 			if p2ppeers.ID(key) != p.Host.ID() {
-				for _, addr := range node.Address {
+				for _, addr := range GetMultiAddrsFromBytes(node.Addrs.Address) {
 					go p.ConnectTo(addr)
-					log.Infof("@@Try to Connect to %s\n", node.Address)
+					log.Infof("@@Try to Connect to %s\n", addr.String())
 				}
 			}
 		}

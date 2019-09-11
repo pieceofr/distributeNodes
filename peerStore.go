@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	p2ppeers "github.com/libp2p/go-libp2p-core/peer"
+	ma "github.com/multiformats/go-multiaddr"
 	multiaddr "github.com/multiformats/go-multiaddr"
 )
 
@@ -20,6 +21,19 @@ func AddrStringToAddrInfo(addr string) (*p2ppeers.AddrInfo, error) {
 	}
 	// Extract the peer ID from the multiaddr.
 	info, err := p2ppeers.AddrInfoFromP2pAddr(maddr)
+	if err != nil {
+		log.Error(err.Error())
+		return nil, err
+	}
+	if nil == info {
+		return nil, errors.New("AddrInfo is nil")
+	}
+	//p.PeersRemote.AddAddrs(info.ID, info.Addrs, peerstore.PermanentAddrTTL)
+	return info, nil
+}
+
+func addrMaToAddrInfo(ma ma.Multiaddr) (*p2ppeers.AddrInfo, error) {
+	info, err := p2ppeers.AddrInfoFromP2pAddr(ma)
 	if err != nil {
 		log.Error(err.Error())
 		return nil, err

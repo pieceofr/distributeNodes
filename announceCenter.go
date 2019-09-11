@@ -29,7 +29,7 @@ func (p *PeerNode) announceCenter(shutdown chan struct{}) {
 
 func (p *PeerNode) sendSelfNodeMessage() error {
 	// Broadcast self
-	if Client == p.NodeInfo.NodeType {
+	if uint32(Client) == p.NodeInfo.NodeType {
 		return nil
 	}
 	p.NodeInfo.Extra = fmt.Sprintf("%v", time.Now())
@@ -72,19 +72,20 @@ func (p *PeerNode) sendPeerNodeMessage(peersInfo map[string]NodeInfoMessage) err
 func (p *PeerNode) makeNodeMessage(node *NodeInfoMessage) [][]byte {
 	var params [][]byte
 	var messages [][]byte
-	for _, addr := range node.Address {
-		params = append(params, []byte(fmt.Sprintf("%v", node.NodeType)), []byte(node.ID), []byte(addr), []byte(node.Extra))
-
-		req := &NodeMessage{
-			Command:    cmdPeer,
-			Parameters: params,
-		}
-		msgBytes, err := proto.Marshal(req)
-		if err != nil {
-			log.Warnf("broadcast proto error: %v\n", err)
-			return nil
-		}
-		messages = append(messages, msgBytes)
+	param, err := proto.Marshal(node)
+	if err != nil {
+		return nil
 	}
+	params = append(params, param)
+	req := &NodeMessage{
+		Command:    cmdPeer,
+		Parameters: params,
+	}
+	msgBytes, err := proto.Marshal(req)
+	if err != nil {
+		log.Warnf("broadcast proto error: %v\n", err)
+		return nil
+	}
+	messages = append(messages, msgBytes)
 	return messages
 }

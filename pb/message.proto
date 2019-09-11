@@ -1,0 +1,18 @@
+syntax = "proto3";
+package main;
+
+ message NodeMessage {
+    string command = 1;
+    repeated bytes Parameters = 2;
+  }
+
+message Addrs {
+  repeated bytes Address = 1;
+}
+message NodeInfoMessage  {
+    uint32 NodeType  = 1;
+    string ID = 2;
+    Addrs Addrs = 3;
+    string Extra  = 4;
+  }
+  

@@ -29,20 +29,17 @@ func (p *PeerNode) subHandler(ctx context.Context, sub *pubsub.Subscription) {
 			fmt.Fprintln(os.Stderr, err)
 			continue
 		}
-		log.Infof("-->>SUB Recieve: %v  ID:%s \n", req.Command, shortID(string(req.Parameters[1])))
 
 		if req.Command == cmdPeer {
-			peerInfo := NodeInfoMessage{
-				NodeType: NodeType(1),
-				ID:       string(req.Parameters[1]),
-				Address:  append([]string{}, string(req.Parameters[2])),
-				Extra:    string(req.Parameters[3]),
-			}
-			em.Emit(peerInfo)
+			var info NodeInfoMessage
+			proto.Unmarshal(req.Parameters[0], &info)
+			em.Emit(info)
 			if err != nil {
 				log.Error(err.Error())
 			}
-			log.Debugf(" --><--  Emit PeerInfo:%v\n", peerInfo)
+			log.Debugf(" --><--  Emit PeerInfo:%v\n", info.ID)
+		} else {
+			log.Info("unsupported command")
 		}
 	}
 }
