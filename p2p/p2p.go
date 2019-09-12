@@ -23,7 +23,8 @@ type P2P struct {
 // New creates new P2P struct
 func New(identity peer.ID, peerHost *p2phost.Host, peerstore pstore.Peerstore, logger *logger.L) *P2P {
 	log = logger
-	log.Info("P2P: create a new P2P")
+	log.Infof("P2P: create a new P2P! proto prefix :%v", maPrefix)
+
 	return &P2P{
 		identity:  identity,
 		peerHost:  peerHost,

@@ -9,6 +9,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/libp2p/go-libp2p-core/protocol"
+
 	"github.com/libp2p/go-libp2p-core/peer"
 
 	ifpsp2p "distributeNodes/p2p"
@@ -36,7 +38,8 @@ const (
 	Server
 )
 const pubsubTopic = "/peer/announce/1.0.0"
-const nodeProtocol = "/p2p"
+
+var nodeProtocol = ma.ProtocolWithCode(ma.P_P2P).Name
 
 var (
 	privateKeyFileName  = "peer.prv"
@@ -111,7 +114,7 @@ func (p *PeerNode) setup(cfg config) error {
 
 	maAddrs := []ma.Multiaddr{}
 	for _, ip := range p.PublicIP {
-		addr, err := ma.NewMultiaddr(fmt.Sprintf("/ip4/%s/tcp/%v%s/%s", ip, p.Port, nodeProtocol, p.Host.ID().Pretty()))
+		addr, err := ma.NewMultiaddr(fmt.Sprintf("/ip4/%s/tcp/%v/%s/%s", ip, p.Port, nodeProtocol, p.Host.ID().Pretty()))
 		if nil == err {
 			maAddrs = append(maAddrs, addr)
 		}
@@ -144,7 +147,7 @@ func (p *PeerNode) run() {
 		}
 		maAddr := ma.Multiaddr(listenAddrIPV4)
 		// Create a P2P listener
-		p.P2P.ForwardLocal(context.Background(), p.Host.ID(), nodeProtocol, maAddr)
+		p.P2P.ForwardLocal(context.Background(), p.Host.ID(), protocol.ID(nodeProtocol), maAddr)
 	}
 	go p.ConnectToFixPeer()
 }
@@ -240,7 +243,7 @@ func (p *PeerNode) Listen() error {
 	p.Handlers = append(p.Handlers, handleStream)
 	handleStream.Setup(len(p.Handlers), p.NodeInfo, &p.Host)
 	p.Mutex.Unlock()
-	p.Host.SetStreamHandler(nodeProtocol, handleStream.Handler)
+	p.Host.SetStreamHandler(protocol.ID(nodeProtocol), handleStream.Handler)
 
 	for _, la := range p.Host.Network().ListenAddresses() {
 		if _, err := la.ValueForProtocol(multiaddr.P_TCP); err == nil {
@@ -293,7 +296,7 @@ func (p *PeerNode) ConnectTo(address ma.Multiaddr) error {
 	if err != nil {
 		return err
 	}
-	p.P2P.ForwardRemote(context.Background(), nodeProtocol, address, true)
+	p.P2P.ForwardRemote(context.Background(), protocol.ID(nodeProtocol), address, true)
 	p.Host.Connect(context.Background(), *info)
 	<-make(chan struct{})
 	return nil
