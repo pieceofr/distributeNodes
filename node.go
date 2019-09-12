@@ -9,6 +9,10 @@ import (
 	"sync"
 	"time"
 
+	"github.com/libp2p/go-libp2p-core/peer"
+
+	ifpsp2p "distributeNodes/p2p"
+
 	libp2p "github.com/libp2p/go-libp2p"
 	libp2pcore "github.com/libp2p/go-libp2p-core"
 	p2pnet "github.com/libp2p/go-libp2p-core/network"
@@ -41,11 +45,12 @@ var (
 
 // PeerNode peer Node struct
 type PeerNode struct {
+	*ifpsp2p.P2P
 	NodeType
+	libp2pcore.Host
 	PublicIP []string
 	Port     string
 	Identity
-	Host            libp2pcore.Host
 	Streams         []p2pnet.Stream
 	PeersRemote     peerstore.Peerstore
 	NodeInfo        NodeInfoMessage
@@ -82,7 +87,7 @@ func (p *PeerNode) setup(cfg config) error {
 			log.Error("createHostErr")
 			panic(createHostErr)
 		}
-	} else {
+	} else { // create client host
 		newHost, err := libp2p.New(
 			context.Background(),
 			libp2p.Identity(p.Identity.PrvKey),
@@ -94,6 +99,8 @@ func (p *PeerNode) setup(cfg config) error {
 		p.Port = "" // If user the port ie. 2136. this will be check with owns port
 		p.Host = newHost
 	}
+	p.P2P = ifpsp2p.New(p.Host.ID(), &p.Host, p.PeersRemote, log)
+
 	p.networkMonitor()
 	ps, err := pubsub.NewGossipSub(context.Background(), p.Host)
 	if err != nil {
@@ -128,9 +135,16 @@ func (p *PeerNode) run() {
 		panic(err)
 	}
 	go p.announceCenter(p.Shutdown)
+	// Servant start to Listen
 	if Servant == p.NodeType || Server == p.NodeType {
 		log.Info("Servant go listen routine")
-		go p.Listen()
+		listenAddrIPV4, err := multiaddr.NewMultiaddr(fmt.Sprintf("/ip4/%s/tcp/%s", "0.0.0.0", p.Port))
+		if err != nil {
+			panic(err)
+		}
+		maAddr := ma.Multiaddr(listenAddrIPV4)
+		// Create a P2P listener
+		p.P2P.ForwardLocal(context.Background(), p.Host.ID(), nodeProtocol, maAddr)
 	}
 	go p.ConnectToFixPeer()
 }
@@ -234,7 +248,7 @@ func (p *PeerNode) Listen() error {
 		}
 		log.Infof("LISTEN ON ===")
 		for _, ip := range p.PublicIP {
-			log.Infof("/ip4/%s/tcp/%v/%v/%s' on another console.\n", ip, p.Port, "p2p", p.Host.ID().Pretty())
+			log.Infof("Listen on /ip4/%s/tcp/%v/%v/%s'\n", ip, p.Port, "p2p", p.Host.ID().Pretty())
 		}
 		log.Infof("%s\n", la.String())
 		log.Info("\nWaiting for incoming connection\n\n")
@@ -250,6 +264,8 @@ func (p *PeerNode) ConnectToFixPeer() error {
 		if err != nil {
 			return err
 		}
+
+		log.Infof("Connecting ...bootstrap:[%d]:%s", i, addr)
 		maAddr, err := ma.NewMultiaddr(addr)
 		if err != nil {
 			return nil
@@ -273,33 +289,12 @@ func (p *PeerNode) ConnectTo(address ma.Multiaddr) error {
 	if p.IsSameMa(address) {
 		return errSameNode
 	}
-
-	info, err := addrMaToAddrInfo(address)
-
-	if err != nil {
-		log.Error(err.Error())
-		return err
-	}
-
-	p.Host.Peerstore().AddAddrs(info.ID, info.Addrs, peerstore.PermanentAddrTTL)
-	//	p.PeersRemote.AddAddrs(info.ID, info.Addrs, peerstore.PermanentAddrTTL)
-	// Start a stream with the destination.
-	// Multiaddress of the destination peer is fetched from the peerstore using 'peerId'.
-	log.Debugf("Connecting .... ID:%s, address:%s TTL:%d", info.ID.String(), info.Addrs[0].String(), peerstore.PermanentAddrTTL)
-
-	s, err := p.Host.NewStream(context.Background(), info.ID, nodeProtocol)
+	info, err := peer.AddrInfoFromP2pAddr(address)
 	if err != nil {
 		return err
 	}
-	p.Streams = append(p.Streams, s)
-	log.Infof("NEW STREAM ID:%s, address:%s TTL:%d", info.ID.String(), info.Addrs[0].String(), peerstore.PermanentAddrTTL)
-	var handleStream NodeStreamHandler
-	handleStream.HandlerType = ClientHandler
-	p.Mutex.Lock()
-	p.Handlers = append(p.Handlers, handleStream)
-	handleStream.Setup(len(p.Handlers), p.NodeInfo, &p.Host)
-	p.Mutex.Unlock()
-	handleStream.Handler(s)
+	p.P2P.ForwardRemote(context.Background(), nodeProtocol, address, true)
+	p.Host.Connect(context.Background(), *info)
 	<-make(chan struct{})
 	return nil
 }

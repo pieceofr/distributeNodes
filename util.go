@@ -30,7 +30,7 @@ func (p *PeerNode) IsPeerExisted(newAddr multiaddr.Multiaddr) bool {
 func (p *PeerNode) IsSameMa(addr ma.Multiaddr) bool {
 	for _, a := range p.Host.Addrs() {
 		if strings.Contains(addr.String(), a.String()) {
-			log.Infof("The same string listenAddr:%s NodeInfoMessage:%s", a.String(), addr.String())
+			log.Infof("The same string listenAddr:%s Input :%s", a.String(), addr.String())
 			return true
 		}
 	}
