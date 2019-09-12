@@ -78,21 +78,10 @@ func (p *PeerNode) setup(cfg config) error {
 	p.Shutdown = make(chan struct{})
 	p.Port = strconv.Itoa(cfg.Port)
 	if Servant == p.NodeType || Server == p.NodeType {
-		if createHostErr := p.NewServantHost(); createHostErr != nil {
+		if createHostErr := p.NewHost(); createHostErr != nil {
 			log.Error("createHostErr")
 			panic(createHostErr)
 		}
-	} else {
-		newHost, err := libp2p.New(
-			context.Background(),
-			libp2p.Identity(p.Identity.PrvKey),
-			libp2p.Security(tls.ID, tls.New),
-		)
-		if err != nil {
-			return err
-		}
-		p.Port = "" // If user the port ie. 2136. this will be check with owns port
-		p.Host = newHost
 	}
 	p.networkMonitor()
 	ps, err := pubsub.NewGossipSub(context.Background(), p.Host)
@@ -184,29 +173,30 @@ func (p *PeerNode) NewRandomNode() error {
 	return nil
 }
 
-// NewServantHost Create a NewHost of server
-func (p *PeerNode) NewServantHost() error {
+// NewHost Create a NewHost of server
+func (p *PeerNode) NewHost() error {
+	// Prepare Listeners
 	listenAddrIPV4, err := multiaddr.NewMultiaddr(fmt.Sprintf("/ip4/%s/tcp/%s", "0.0.0.0", p.Port))
 	if err != nil {
 		panic(err)
 	}
-
 	listenAddrIPV6, err := multiaddr.NewMultiaddr(fmt.Sprintf("/ip6/%s/tcp/%s", "::", p.Port))
 	if err != nil {
 		panic(err)
 	}
+	/*
+		addrsFactory := func(addrs []ma.Multiaddr) []ma.Multiaddr {
+			addrs = append(addrs, listenAddrIPV4, listenAddrIPV6)
+			return addrs
+		}
+	*/
+	options := []libp2p.Option{libp2p.Identity(p.Identity.PrvKey), libp2p.Security(tls.ID, tls.New), libp2p.Peerstore(p.PeersRemote)}
 
-	//listenAddrs := listenAddrIPV4.Encapsulate(listenAddrIPV6)
-	newHost, err := libp2p.New(
-		context.Background(),
-		libp2p.ListenAddrs(listenAddrIPV4, listenAddrIPV6),
-		libp2p.Identity(p.Identity.PrvKey),
-		libp2p.Peerstore(p.PeersRemote),
-		libp2p.Security(tls.ID, tls.New),
-	)
-	if err != nil {
-		return err
+	if p.NodeType != Client {
+		options = append(options, libp2p.ListenAddrs(listenAddrIPV4, listenAddrIPV6))
 	}
+	newHost, err := libp2p.New(context.Background(), options...)
+
 	for _, a := range newHost.Addrs() {
 		log.Infof("New Host Address: %s/%v/%s\n", a, "p2p", newHost.ID())
 	}
